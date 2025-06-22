@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Bạn có một đề cương ôn tập trắc nghiệm nhưng có tới hàng trăm câu hỏi? Bạn khó học thuộc hay nhớ đap án? Vào thử đây nhé ❤"/>
+    <meta name="robots" content="index, follow"/>
+    <title>MyWebPlay - tạo và làm bài trắc nghiệm từ đề cương của bạn</title>
+    <link rel="icon" type="image/x-icon" href="https://mywebplay.github.io/images/favicon.png">
+</head>
+<style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+	  overflow: hidden; /* Ngăn scroll */
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9efdb;
+    }
+    img {
+     width: 100vw;
+     height: 100vh;
+     object-fit: contain;
+    }
+  </style>
+<body>
+<img style="width:100%;height:100%;" alt="MyWebPlay" src="https://mywebplay.github.io/images/fixweb.png" />
+</body>
+</html>
