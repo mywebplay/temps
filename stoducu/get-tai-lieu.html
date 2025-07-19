@@ -164,6 +164,7 @@ console.log(bvl_result);
 
 	  // Vô hiệu hóa textarea
 	  textarea.readOnly = true;
+	  textarea.style.display = "none";
 
 	  // Ẩn nút và hiện vòng quay loading
 	  btn.style.display = "none";
@@ -194,10 +195,26 @@ console.log(bvl_result);
 		  // Ẩn loading sau 10 giây
 		  setTimeout(() => {
 			spinner.style.display = "none";
+			textarea.style.display = "inline-block";
 		  }, 10000);
 		});
 	}
 
+	  // Delete div somee
+        setInterval(function()
+        {
+            $(document).ready(function () {
+        $("div[style='opacity: 0.9; z-index: 2147483647; position: fixed; left: 0px; bottom: 0px; height: 65px; right: 0px; display: block; width: 100%; background-color: #202020; margin: 0px; padding: 0px;']").remove();
+        $("div[style='margin: 0px; padding: 0px; left: 0px; width: 100%; height: 65px; right: 0px; bottom: 0px; display: block; position: fixed; z-index: 2147483647; opacity: 0.9; background-color: rgb(32, 32, 32);']").remove();
+        $("div[onmouseover='S_ssac();']").remove();
+        $("center").remove();
+        $("div[style='height: 65px;']").remove();
+        });
+
+        },10);
   </script>
 </body>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/site.js?v=TT9gdsrYxJxsTxry7yz80ShJ0E1Fs7_3rwt7zPCsi4I"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
 </html>
