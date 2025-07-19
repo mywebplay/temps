@@ -143,8 +143,8 @@ console.log(bvl_result);
   <div class="step" id="step5">
     <textarea id="resultArea" placeholder="Dán nội dung bạn vừa copy vào đây..."></textarea>
     <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
-    <br />
-    <span id="meo" style="display:none;color:red;">MẸO : sau đó hãy nhờ AI (VD : chatGPT) để làm gọn/làm sạch lại nội dung theo mong muốn của bạn !</span>
+    <br /><br />
+    <span id="meo" style="display:none;color:red;text-align:center;justify-content:center;">MẸO : sau đó hãy nhờ AI (VD : chatGPT) để làm gọn/làm sạch lại nội dung theo mong muốn của bạn !</span>
     <div class="spinner" id="loadingSpinner"></div>
   </div>
 
@@ -202,7 +202,7 @@ console.log(bvl_result);
 		  setTimeout(() => {
 			spinner.style.display = "none";
 			textarea.style.display = "inline-block";
-			document.getElementById("meo").style.display = "inline-block";
+			document.getElementById("meo").style.display = "flex";
 		  }, 10000);
 		});
 	}
