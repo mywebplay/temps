@@ -174,7 +174,7 @@ console.log(bvl_result);
 	  formData.append("html", textarea.value);
 
 	  // Gửi request
-	  fetch("https://uncors.vercel.app/?url=http://normalwebbasic.somee.com/Cover/GetTextInHtml", {
+	  fetch("http://normalwebbasic.somee.com/Cover/GetTextInHtml", {
 		method: "POST",
 		body: formData,
 	  })
