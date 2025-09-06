@@ -75,8 +75,30 @@ if (savedHead) {
 
 	  </script>
 
+<!-- Thư viện -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
-  /* Overlay đen phủ toàn body */
+  /* Nút cố định góc phải trên */
+  #printBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 9999; /* luôn trên overlay */
+  }
+
+  #printBtn:hover {
+    background-color: #2980b9;
+  }
+
+  /* Overlay đen + spinner */
   #overlay {
     position: fixed;
     top: 0;
@@ -87,10 +109,10 @@ if (savedHead) {
     display: none; /* mặc định ẩn */
     justify-content: center;
     align-items: center;
-    z-index: 9998;
+    z-index: 9998; /* dưới nút in */
+    pointer-events: auto; /* chặn thao tác khác */
   }
 
-  /* Spinner */
   .spinner {
     border: 8px solid #f3f3f3; /* light grey */
     border-top: 8px solid #3498db; /* blue */
@@ -106,37 +128,30 @@ if (savedHead) {
   }
 </style>
 
-<button id="printBtn" style="
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  padding: 8px 12px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 9999;
-">In PDF tài liệu</button>
+<!-- Nút in -->
+<button id="printBtn">In PDF tài liệu</button>
 
+<!-- Overlay spinner -->
 <div id="overlay">
   <div class="spinner"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
   const overlay = document.getElementById("overlay");
+  const btn = document.getElementById("printBtn");
 
-  // Hiện overlay + spinner
+  // Hiện overlay + spinner, ẩn nút print để không bị chụp
   overlay.style.display = "flex";
+  btn.style.display = "none";
 
   try {
     const { jsPDF } = window.jspdf;
 
-    // Chụp toàn bộ body
+    // Chờ font load xong để tránh lỗi render
+    await document.fonts.ready;
+
+    // Chụp toàn bộ trang
     const canvas = await html2canvas(document.body, { useCORS: true, scale: 2 });
     const imgData = canvas.toDataURL("image/png");
 
@@ -155,13 +170,14 @@ document.getElementById("printBtn").addEventListener("click", async () => {
       if (heightLeft > 0) pdf.addPage();
     }
 
-    pdf.save("TaiLieuStoducu.pdf");
+    pdf.save("fullpage.pdf");
   } catch(err) {
     console.error(err);
     alert("Có lỗi khi tạo PDF");
   } finally {
-    // Ẩn overlay khi xong
+    // Ẩn overlay, hiện lại nút
     overlay.style.display = "none";
+    btn.style.display = "block";
   }
 });
 </script>
