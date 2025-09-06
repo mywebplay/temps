@@ -74,19 +74,54 @@ if (savedHead) {
 }
 
 	  </script>
+
 <button id="printBtn">In trang này</button>
+
+<style>
+  /* Nút luôn cố định góc phải trên */
+  #printBtn {
+    position: fixed;      /* cố định trên màn hình */
+    top: 10px;            /* cách mép trên 10px */
+    right: 10px;          /* cách mép phải 10px */
+    padding: 8px 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 9999;        /* luôn nằm trên các layer khác */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  #printBtn:hover {
+    background-color: #2980b9;
+  }
+
+  /* Khi in ra, ẩn nút */
+  @media print {
+    #printBtn {
+      display: none;
+    }
+  }
+</style>
 
 <script>
 async function printRendered() {
+  // Đợi DOM render xong
   await new Promise(r => requestAnimationFrame(r));
+
+  // Đợi font load xong
   if (document.fonts && document.fonts.ready) {
     await document.fonts.ready;
   }
+
+  // In trang
   window.print();
 }
 
 document.getElementById("printBtn").addEventListener("click", printRendered);
 </script>
+
 
    <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
       <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height:1px;left:-9999px;position:absolute;width:1px"></div>
