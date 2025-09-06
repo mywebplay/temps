@@ -363,21 +363,26 @@ if (page === null) page = "1";
 
 page = parseInt(page, 10); // chuyển sang số nguyên
 
+var loaded = false;
 setInterval(function()
 {
+if (loaded) return
+
 if (document.getElementById("pagene"))
 {
 document.getElementById("pagene").style.height = (page * 1000) + "px";
-return
+loaded = true;
 }
 }, 10);
 
+var loaded1 = false;
 setInterval(function()
 {
+if (loaded1) return
 if (document.getElementById("pageday"))
 {
 document.getElementById("pageday").innerHTML = localStorage.getItem("tailieu");
-return
+loaded1 = true;
 }
 }, 10);
 
@@ -390,7 +395,7 @@ return
             }, 10);
 	  </script>
    </head>
-   <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;">
+   <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
       <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height:1px;left:-9999px;position:absolute;width:1px"></div>
       <div id="main-wrapper">
          <div id="__next">
