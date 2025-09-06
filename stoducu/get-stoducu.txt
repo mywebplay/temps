@@ -96,25 +96,6 @@ if (savedHead) {
     background-color: #2980b9;
   }
 
-  /* Overlay đen + spinner */
-  #overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-  }
-  .spinner {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-  }
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -124,59 +105,58 @@ if (savedHead) {
 <!-- Nút in -->
 <button id="printBtn">Download PDF</button>
 
-<!-- Overlay spinner -->
-<div id="overlay">
-  <div class="spinner"></div>
-</div>
-
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
-alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột hay bất cứ thao tác nào khác (kể cả khi màn hình chờ đóng lại đột ngột) cho đến khi có kết quả file tài liệu PDF được tải xuống.\n\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!");
-  const overlay = document.getElementById("overlay");
+alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuyển tab hay bất cứ thao tác nào khác cho đến khi có kết quả file tài liệu PDF được tải xuống.\n\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!");
   const btn = document.getElementById("printBtn");
 
-  overlay.style.display = "flex";
   btn.style.display = "none"; // ẩn nút in để không dính vào PDF
 
   try {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p", "mm", "a4");
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "mm", "a4");
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const pageHeightPx = 1200; // cao mỗi lần chụp
-    const totalHeight = document.body.scrollHeight;
-    let y = 0;
-    let pageAdded = false;
+  // chiều cao A4 theo px (screen dpi ~96)
+  const dpi = 96;
+  let a4HeightPx = Math.floor((pdfHeight / 25.4) * dpi);
 
-    while (y < totalHeight) {
-      const canvas = await html2canvas(document.body, {
-        useCORS: true,
-        scale: 1, // giảm scale để nhẹ hơn
-        windowWidth: document.documentElement.scrollWidth,
-        windowHeight: pageHeightPx,
-        scrollY: -y
-      });
+  // tăng lên 30%
+  const pageHeightPx = Math.floor(a4HeightPx * 1.3);
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.7);
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+  const totalHeight = document.body.scrollHeight;
+  let y = 0;
+  let firstPage = true;
 
-      if (pageAdded) pdf.addPage();
-      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+  while (y < totalHeight) {
+    const canvas = await html2canvas(document.body, {
+      useCORS: true,
+      scale: 1, // nhẹ, chữ vẫn đọc được
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: pageHeightPx,
+      y
+    });
 
-      y += pageHeightPx;
-      pageAdded = true;
-    }
+    // nén mạnh xuống ~35%
+    const imgData = canvas.toDataURL("image/jpeg", 0.35);
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    pdf.save(getFileName());
-  } catch (err) {
-    console.error(err);
-    alert("Có lỗi khi tạo PDF");
-  } finally {
-    overlay.style.display = "none";
-    btn.style.display = "block";
+    if (!firstPage) pdf.addPage();
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+
+    y += pageHeightPx;
+    firstPage = false;
   }
+
+  pdf.save(getFileName());
+} catch (err) {
+  console.error(err);
+  alert("Có lỗi khi tạo PDF");
+} finally {
+  btn.style.display = "block";
+}
 });
 
 // Hàm tạo tên file
