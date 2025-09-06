@@ -105,12 +105,11 @@ if (savedHead) {
 <button id="printBtn">Download PDF</button>
 <div id="overlay">
 <div class="spinner"></div>
-<br />
-<b style="color:red">Hệ thống đangm chờ xử lý, vui lòng không scroll chuột hay bất cứ thao tác nào khác (kể cả khi màn hình này đóng lại) cho đến khi có kết quả file tài liệu PDF được tải xuống!</b>
 </div>
 
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
+alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột hay bất cứ thao tác nào khác (kể cả khi màn hình chờ đóng lại đột ngột) cho đến khi có kết quả file tài liệu PDF được tải xuống.\n\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!);
   const overlay = document.getElementById("overlay");
   const btn = document.getElementById("printBtn");
 
