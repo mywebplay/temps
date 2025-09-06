@@ -74,6 +74,20 @@ if (savedHead) {
 }
 
 	  </script>
+<button id="printBtn">In trang này</button>
+
+<script>
+async function printRendered() {
+  await new Promise(r => requestAnimationFrame(r));
+  if (document.fonts && document.fonts.ready) {
+    await document.fonts.ready;
+  }
+  window.print();
+}
+
+document.getElementById("printBtn").addEventListener("click", printRendered);
+</script>
+
    <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
       <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height:1px;left:-9999px;position:absolute;width:1px"></div>
       <div id="main-wrapper">
