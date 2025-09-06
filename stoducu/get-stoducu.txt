@@ -11,7 +11,7 @@ let page = params.get("page");
 // nếu không có param thì mặc định = 1
 if (page === null) page = "1";
 
-page = parseInt(page, 10) - 1; // chuyển sang số nguyên
+page = (parseInt(page, 10) * 2) - 1; // chuyển sang số nguyên
 
 var loaded = false;
 setInterval(function()
