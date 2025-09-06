@@ -119,10 +119,21 @@
     }
 
     function getResult() {
-	   var result = document.getElementById("resultArea").value;
-		result = result.replaceAll("display:none", "display:block");
-		result = result.replaceAll("<svg", "<svg style=\"display:none\" ");
-	   localStorage.setItem("tailieu", result);
+	  var result = document.getElementById("resultArea").value;
+
+// Đổi tất cả display:none thành display:block
+result = result.replace(/display\s*:\s*none/g, "display:block");
+
+// Thêm style="display:none" cho <svg> nếu chưa có style
+result = result.replace(/<svg(?![^>]*style)/g, '<svg style="display:none" ');
+
+// Nếu <svg đã có style thì thêm display:none vào đầu style
+result = result.replace(/<svg([^>]*)style="([^"]*)"/g, function(match, before, style) {
+  return `<svg${before}style="display:none; ${style}"`;
+});
+
+localStorage.setItem("tailieu", result);
+
 	   var page = prompt("Tài liệu stoducu của bạn có bao nhiêu trang?", "1");
 		if (page != null)
 		{
