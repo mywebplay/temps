@@ -107,9 +107,6 @@
   <div class="step" id="step5">
     <textarea id="resultArea" placeholder="Dán nội dung bạn vừa copy vào đây..."></textarea>
     <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
-    <br /><br />
-    <span id="meo" style="display:none;color:#1a1a80;text-align:center;justify-content:center;">MẸO : sau đó hãy nhờ AI (VD : chatGPT) để làm gọn/làm sạch lại nội dung theo mong muốn của bạn !</span>
-    <div class="spinner" id="loadingSpinner"></div>
   </div>
 
   <script>
@@ -122,47 +119,13 @@
     }
 
     function getResult() {
-	  const btn = document.getElementById("getResultBtn");
-	  const spinner = document.getElementById("loadingSpinner");
-	  const textarea = document.getElementById("resultArea");
-
-	  // Vô hiệu hóa textarea
-	  textarea.readOnly = true;
-	  textarea.style.display = "none";
-
-	  // Ẩn nút và hiện vòng quay loading
-	  btn.style.display = "none";
-	  spinner.style.display = "block";
-
-	  // Chuẩn bị dữ liệu
-	  const formData = new FormData();
-	  formData.append("html", textarea.value);
-
-	  // Gửi request
-	  fetch("http://normalwebbasic.somee.com/Cover/GetTextInHtml", {
-		method: "POST",
-		body: formData,
-	  })
-		.then(response => response.json())
-		.then(data => {
-		  if (data && data.result) {
-			textarea.value = data.result;
-		  } else {
-			textarea.value = "Không nhận được kết quả hợp lệ.";
-		  }
-		})
-		.catch(error => {
-		  console.error("Lỗi: ", error);
-		  textarea.value = "Đã xảy ra lỗi khi gửi dữ liệu.";
-		})
-		.finally(() => {
-		  // Ẩn loading sau 10 giây
-		  setTimeout(() => {
-			spinner.style.display = "none";
-			textarea.style.display = "inline-block";
-			document.getElementById("meo").style.display = "flex";
-		  }, 10000);
-		});
+	   var result = document.getElementById("resultArea").value;
+	   localStorage.setItem("tailieu", result);
+	   var page = prompt("Tài liệu stoducu của bạn có bao nhiêu trang?", "1");
+		if (page != null)
+		{
+			window.location.href = "/get-stoducu-document?page="+page;
+		}
 	}
 
 	  // Delete div somee
