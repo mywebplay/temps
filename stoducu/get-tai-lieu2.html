@@ -139,12 +139,7 @@ result = result.replace(/<svg([^>]*)style="([^"]*)"/g, function(match, before, s
 localStorage.setItem("tailieu", result);
 var result2 = document.getElementById("resultArea2").value;
 localStorage.setItem("header", result2);
-
-	   var page = prompt("Tài liệu stoducu của bạn có bao nhiêu trang?", "1");
-		if (page != null)
-		{
-			window.location.href = "/get-stoducu-document?page="+page;
-		}
+window.location.href = "/get-stoducu-document?page=500";
 	}
 
 	  // Delete div somee
