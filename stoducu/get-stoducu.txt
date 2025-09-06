@@ -11,7 +11,7 @@ let page = params.get("page");
 // nếu không có param thì mặc định = 1
 if (page === null) page = "1";
 
-page = (parseInt(page, 10) * 2) - 1; // chuyển sang số nguyên
+page = parseInt(page, 10); // chuyển sang số nguyên
 
 var loaded = false;
 setInterval(function()
@@ -20,7 +20,7 @@ if (loaded) return
 
 if (document.getElementById("pagene"))
 {
-document.getElementById("pagene").style.height = (page * 1000) + "px";
+document.getElementById("pagene").style.height = page + "px";
 loaded = true;
 }
 }, 10);
