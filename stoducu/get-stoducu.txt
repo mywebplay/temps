@@ -74,12 +74,12 @@ if (savedHead) {
 }
 
 	  </script>
+
 <!-- Thư viện -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-  /* Nút cố định góc phải trên */
   #printBtn {
     position: fixed;
     top: 10px;
@@ -90,82 +90,78 @@ if (savedHead) {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    z-index: 9999; /* luôn trên overlay */
+    z-index: 9999;
   }
   #printBtn:hover { background-color: #2980b9; }
 
-  /* Overlay đen + spinner */
   #overlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    top:0; left:0;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9998; 
+    z-index: 9998;
     pointer-events: auto;
   }
-
   .spinner {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 60px; height: 60px;
     animation: spin 1s linear infinite;
   }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 
-<!-- Nút in -->
 <button id="printBtn">In PDF tài liệu</button>
-
-<!-- Overlay spinner -->
 <div id="overlay"><div class="spinner"></div></div>
 
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
   const overlay = document.getElementById("overlay");
   const btn = document.getElementById("printBtn");
-
-  // Hiện overlay, ẩn nút in
   overlay.style.display = "flex";
   btn.style.display = "none";
 
   try {
     const { jsPDF } = window.jspdf;
     await document.fonts.ready;
-
-    // Chụp chỉ container nội dung, không chụp overlay/spinner
-    await new Promise(r => setTimeout(r, 50)); // đảm bảo spinner hiển thị
+    await new Promise(r => setTimeout(r, 50));
     const element = document.querySelector('.pc');
     const canvas = await html2canvas(element, { useCORS: true, scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
 
-    // Tạo PDF A4
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    let heightLeft = pdfHeight;
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    let heightLeft = imgHeight;
     let position = 0;
 
     while (heightLeft > 0) {
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pdf.internal.pageSize.getHeight();
-      position -= pdf.internal.pageSize.getHeight();
+      const pageCanvas = document.createElement('canvas');
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = Math.min(canvas.height - position, canvas.height * (pdfHeight / imgHeight));
+
+      const pageCtx = pageCanvas.getContext('2d');
+      pageCtx.drawImage(canvas, 0, position, canvas.width, pageCanvas.height, 0, 0, canvas.width, pageCanvas.height);
+      const pageData = pageCanvas.toDataURL("image/png");
+
+      pdf.addImage(pageData, 'PNG', 0, 0, imgWidth, (pageCanvas.height * pdfWidth)/canvas.width);
+      heightLeft -= pdfHeight;
+      position += pageCanvas.height;
       if (heightLeft > 0) pdf.addPage();
     }
 
-    // Tên file PDF theo thời gian
     const now = new Date();
-    const pad = (n) => n.toString().padStart(2, '0');
+    const pad = (n) => n.toString().padStart(2,'0');
     const fileName = `TaiLieuStoducu_${pad(now.getDate())}${pad(now.getMonth()+1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
-
     pdf.save(fileName);
+
   } catch(err) {
     console.error(err);
     alert("Có lỗi khi tạo PDF");
@@ -175,7 +171,6 @@ document.getElementById("printBtn").addEventListener("click", async () => {
   }
 });
 </script>
-
 
    <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
       <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height:1px;left:-9999px;position:absolute;width:1px"></div>
