@@ -102,36 +102,34 @@ if (savedHead) {
 @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 </style>
 
-<button id="printBtn">In PDF</button>
+<button id="printBtn">Download PDF</button>
 <div id="overlay"><div class="spinner"></div></div>
 
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
   const overlay = document.getElementById("overlay");
   const btn = document.getElementById("printBtn");
-  overlay.style.display = "flex"; // spinner thật sự xuất hiện
+
+  overlay.style.display = "flex"; // Spinner thật sự hiển thị
+  btn.disabled = true; // Chặn click nút
 
   try {
     const { jsPDF } = window.jspdf;
     await document.fonts.ready;
-    await new Promise(r=>setTimeout(r,50));
+    await new Promise(r => setTimeout(r, 50));
 
-    // Tạo bản clone của body, tạm ẩn spinner trong clone
-    const clone = document.body.cloneNode(true);
-    clone.querySelectorAll('#overlay, #printBtn').forEach(el=>el.style.display='none');
+    // Tạm ẩn spinner và nút trong body để html2canvas không chụp
+    overlay.style.visibility = "hidden";
+    btn.style.visibility = "hidden";
+    await new Promise(r => requestAnimationFrame(r)); // chờ render
 
-    // Gắn clone vào DOM tạm để html2canvas chụp
-    const wrapper = document.createElement('div');
-    wrapper.style.position='absolute';
-    wrapper.style.left='-9999px';
-    wrapper.appendChild(clone);
-    document.body.appendChild(wrapper);
+    const canvas = await html2canvas(document.body, {useCORS:true, scale:2});
 
-    const canvas = await html2canvas(clone, {useCORS:true, scale:2});
+    // Hiển thị spinner lại sau khi chụp
+    overlay.style.visibility = "visible";
+    btn.style.visibility = "visible";
 
-    document.body.removeChild(wrapper); // xong, xoá clone
-
-    // Chia ra nhiều trang PDF
+    // Tạo PDF chia nhiều trang
     const pdfWidthMM = 210;
     const pdfHeightMM = 297;
     const imgHeightMM = canvas.height * pdfWidthMM / canvas.width;
@@ -161,7 +159,8 @@ document.getElementById("printBtn").addEventListener("click", async () => {
     console.error(e);
     alert("Có lỗi khi tạo PDF");
   } finally {
-    overlay.style.display = "none"; // spinner biến mất
+    overlay.style.display = "none"; // Ẩn spinner
+    btn.disabled = false;
   }
 });
 </script>
