@@ -76,6 +76,8 @@ if (savedHead) {
 	  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <button id="printBtn" style="
   position: fixed;
   top: 10px;
@@ -87,26 +89,38 @@ if (savedHead) {
   border-radius: 4px;
   cursor: pointer;
   z-index: 9999;
-">In trang này</button>
+">In tài liệu</button>
+
 <script>
-document.getElementById("printBtn").addEventListener("click", () => {
-  // Lấy element .pc (hoặc container bạn muốn in)
-  const el = document.querySelector(".pc");
+document.getElementById("printBtn").addEventListener("click", async () => {
+  const { jsPDF } = window.jspdf;
 
-  // html2canvas chụp layout hiện tại thành canvas
-  html2canvas(el, { useCORS: true }).then(canvas => {
-    // Chuyển canvas thành hình ảnh
-    const imgData = canvas.toDataURL("image/png");
+  // Chụp toàn bộ body
+  const body = document.body;
+  const canvas = await html2canvas(body, { useCORS: true, scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
 
-    // Mở cửa sổ mới và hiển thị hình ảnh
-    const w = window.open("");
-    w.document.write(`<img src="${imgData}" style="width:100%"/>`);
+  // Khởi tạo PDF A4
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    // Gọi in ra
-    w.print();
-  });
+  // Nếu content dài hơn 1 trang, phân trang tự động
+  let heightLeft = pdfHeight;
+  let position = 0;
+
+  while (heightLeft > 0) {
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+    heightLeft -= pdf.internal.pageSize.getHeight();
+    position -= pdf.internal.pageSize.getHeight();
+    if (heightLeft > 0) pdf.addPage();
+  }
+
+  // Lưu PDF hoặc mở cửa sổ in
+  pdf.save("fullpage.pdf");
 });
 </script>
+
 
 
    <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
