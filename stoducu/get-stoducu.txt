@@ -6,7 +6,7 @@
 	  <script>
       /* Thêm JS vào đây */
 	  const params = new URLSearchParams(window.location.search);
-let page = params.get("page");
+let page = params.get("height");
 
 // nếu không có param thì mặc định = 1
 if (page === null) page = "1";
