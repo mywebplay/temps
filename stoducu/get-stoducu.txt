@@ -369,11 +369,8 @@ setInterval(function()
 if (loaded) return
 
 if (document.getElementById("pagene"))
-var xx = document.querySelector(".Layout_page-content-wrapper__zhKJ6");
-if (xx)
 {
 document.getElementById("pagene").style.height = (page * 1000) + "px";
-xx.style.height = (page * 1000) + "px";
 loaded = true;
 }
 }, 10);
@@ -383,11 +380,8 @@ setInterval(function()
 {
 if (loaded1) return
 if (document.getElementById("pageday"))
-var yy = document.querySelector(".Layout_page-content-wrapper__zhKJ6");
-if (yy)
 {
 document.getElementById("pageday").innerHTML = localStorage.getItem("tailieu");
-yy.innerHTML = localStorage.getItem("tailieu");
 loaded1 = true;
 }
 }, 10);
@@ -398,7 +392,7 @@ setInterval(function()
 if (loaded2) return
 // Kiểm tra xem có ít nhất 1 element có class cần tìm
 var exists = document.querySelector(
-".PremiumBannerBlobWrapper_preview-banner__WD5rf, .PremiumBannerBlobWrapper_in-viewer__AUDBA"
+    ".PremiumBannerBlobWrapper_preview-banner__WD5rf, .PremiumBannerBlobWrapper_in-viewer__AUDBA"
 ) !== null;
 if (exists)
 {
@@ -407,7 +401,7 @@ var elements = document.querySelectorAll(".PremiumBannerBlobWrapper_preview-bann
 
 // Ẩn từng element
 elements.forEach(function(el) {
-el.style.display = "none";
+    el.style.display = "none";
 });
 
 loaded2 = true;
@@ -433,35 +427,35 @@ document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remov
 <div class="Layout_wrapper__hyU9C">
 <aside aria-label="sidebar_wrapper" class="Sidebar_sidebar-wrapper__PEWWF Sidebar_variant-inline-mixed__vhWm_" data-expanded="false" id="«r3»"></aside>
 <div class="Layout_page-content-wrapper__zhKJ6">
-                  <div class="Viewer_viewer-wrapper__O8ZL7" id="viewer-wrapper">
-                     <article class="Viewer_document-wrapper__JPBWQ" id="document-wrapper" tabindex="0">
-                        <div id="pagene" style="height: 5000px; will-change: transform;">
-                           <div id="pageday" class="p2hv Viewer_page-container__shmQ1" style="opacity: 1; transform: scale(1.21615); width: 82.23%; height: 0%;">
-                           </div>
-                        </div>
-                     </article>
-                  </div>
-                  <script>(function(e,t,r,n,a,i){let o=document.getElementById(e);new ResizeObserver((e,o)=>{let s=e[0].contentRect.width;if(s>0){o.disconnect();let e=Math.min(s-t,r),u=document.getElementsByClassName("pf")[0],l=u?u.offsetWidth:e,c=document.getElementById(i),d=c.parentElement,m=c.offsetHeight,_=Math.min(Math.max(e/l,n),a),g=Math.max(100/_,l/s*100),p=Math.round(m*_);window.documentViewerInitialZoom=_,c.style.transform="scale("+_+")",c.style.width=g.toFixed(2)+"%",c.style.height=100/_+"%",d.style.height=p+"px",c.style.opacity="1"}}).observe(o)})( 'document-wrapper', 22, 1024, 0.25, 4, 'page-container-wrapper' )</script>
-                  <div class="Layout_visible-content-top-wrapper__ZpKSf">
-                     <div class="Layout_visible-content-top-section__pfsb5">
-                        <div class="PremiumBannerBlobWrapper_overflow-wrapper__xsaS8 PremiumBanner_is-floating__wX9aG">
-                           <div class="PremiumBannerBlobWrapper_blob-container__nkxOo">
-                              <svg style="display:none"  class="Shapes_lime__j4iTJ PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_first-blob__2ShMG" viewBox="0 0 56 140" width="110">
-                                 <path d="M27.9157 135.53C63.6989 162.919 61.5826 28.5586 40.3224 2.98615C36.1189 -2.05454 24.0131 -1.45238 17.9943 14.1262C1.88888 56.0639 -16.692 97.6519 27.9157 135.53Z"></path>
-                              </svg>
-                              <svg style="display:none"  class="Shapes_light-blue__bODo0 PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_second-blob__iswBR" viewBox="0 0 33 43" width="134">
-                                 <path d="M32.7634 16.6301C33.1517 26.1772 26.1911 37.395 17.2308 41.2896C-0.243426 48.8749 0.542891 24.0114 0.523475 22.1466C0.397273 10.9872 7.50344 1.53714 16.2017 0.779577C24.9 0.022018 32.3653 7.04402 32.7634 16.6301Z"></path>
-                              </svg>
-                              <svg style="display:none"  class="Shapes_purple__Lus4W PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_third-blob__1pNQm" viewBox="0 0 81 137" width="151">
-                                 <path d="M35.3708 134.85C-19.867 149.04 3.5484 80.4615 14.5377 36.9115C30.8567 -27.8404 75.6973 5.28828 77.9884 50.062C80.095 90.9119 90.6184 120.661 35.3708 134.85Z"></path>
-                              </svg>
-                              <svg style="display:none"  class="Shapes_pink__5aFWo PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_fourth-blob__LlCv_" viewBox="0 0 240 270" width="50">
-                                 <path d="M37.9129 265.894C90.8306 288.485 233.119 197.985 240.652 125.366C248.186 52.7476 95.1312 -20.454 58.649 5.25442C5.974 42.3845 -29.7413 237.029 37.9129 265.894Z"></path>
-                              </svg>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+<div class="Viewer_viewer-wrapper__O8ZL7" id="viewer-wrapper">
+<article class="Viewer_document-wrapper__JPBWQ" id="document-wrapper" tabindex="0">
+<div id="pagene" style="height: 5000px; will-change: transform;">
+<div id="pageday" class="p2hv Viewer_page-container__shmQ1" style="opacity: 1; transform: scale(1.21615); width: 82.23%; height: 0%;">
+</div>
+</div>
+</article>
+</div>
+<script>(function(e,t,r,n,a,i){let o=document.getElementById(e);new ResizeObserver((e,o)=>{let s=e[0].contentRect.width;if(s>0){o.disconnect();let e=Math.min(s-t,r),u=document.getElementsByClassName("pf")[0],l=u?u.offsetWidth:e,c=document.getElementById(i),d=c.parentElement,m=c.offsetHeight,_=Math.min(Math.max(e/l,n),a),g=Math.max(100/_,l/s*100),p=Math.round(m*_);window.documentViewerInitialZoom=_,c.style.transform="scale("+_+")",c.style.width=g.toFixed(2)+"%",c.style.height=100/_+"%",d.style.height=p+"px",c.style.opacity="1"}}).observe(o)})( 'document-wrapper', 22, 1024, 0.25, 4, 'page-container-wrapper' )</script>
+<div class="Layout_visible-content-top-wrapper__ZpKSf">
+<div class="Layout_visible-content-top-section__pfsb5">
+<div class="PremiumBannerBlobWrapper_overflow-wrapper__xsaS8 PremiumBanner_is-floating__wX9aG">
+<div class="PremiumBannerBlobWrapper_blob-container__nkxOo">
+<svg style="display:none"  class="Shapes_lime__j4iTJ PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_first-blob__2ShMG" viewBox="0 0 56 140" width="110">
+<path d="M27.9157 135.53C63.6989 162.919 61.5826 28.5586 40.3224 2.98615C36.1189 -2.05454 24.0131 -1.45238 17.9943 14.1262C1.88888 56.0639 -16.692 97.6519 27.9157 135.53Z"></path>
+</svg>
+<svg style="display:none"  class="Shapes_light-blue__bODo0 PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_second-blob__iswBR" viewBox="0 0 33 43" width="134">
+<path d="M32.7634 16.6301C33.1517 26.1772 26.1911 37.395 17.2308 41.2896C-0.243426 48.8749 0.542891 24.0114 0.523475 22.1466C0.397273 10.9872 7.50344 1.53714 16.2017 0.779577C24.9 0.022018 32.3653 7.04402 32.7634 16.6301Z"></path>
+</svg>
+<svg style="display:none"  class="Shapes_purple__Lus4W PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_third-blob__1pNQm" viewBox="0 0 81 137" width="151">
+<path d="M35.3708 134.85C-19.867 149.04 3.5484 80.4615 14.5377 36.9115C30.8567 -27.8404 75.6973 5.28828 77.9884 50.062C80.095 90.9119 90.6184 120.661 35.3708 134.85Z"></path>
+</svg>
+<svg style="display:none"  class="Shapes_pink__5aFWo PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_fourth-blob__LlCv_" viewBox="0 0 240 270" width="50">
+<path d="M37.9129 265.894C90.8306 288.485 233.119 197.985 240.652 125.366C248.186 52.7476 95.1312 -20.454 58.649 5.25442C5.974 42.3845 -29.7413 237.029 37.9129 265.894Z"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="Layout_visible-content-bottom-wrapper-sticky__yaaAB">
 <div class="Layout_visible-content-bottom-section__QWa1o Layout_not-visible-footer__DXuni" id="visible-content-bottom-section">
