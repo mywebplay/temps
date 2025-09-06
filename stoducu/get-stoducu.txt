@@ -361,7 +361,7 @@ let page = params.get("page");
 // nếu không có param thì mặc định = 1
 if (page === null) page = "1";
 
-page = parseInt(page, 10); // chuyển sang số nguyên
+page = parseInt(page, 10) - 1; // chuyển sang số nguyên
 
 var loaded = false;
 setInterval(function()
@@ -383,6 +383,28 @@ if (document.getElementById("pageday"))
 {
 document.getElementById("pageday").innerHTML = localStorage.getItem("tailieu");
 loaded1 = true;
+}
+}, 10);
+
+var loaded2 = false;
+setInterval(function()
+{
+if (loaded2) return
+// Kiểm tra xem có ít nhất 1 element có class cần tìm
+var exists = document.querySelector(
+    ".PremiumBannerBlobWrapper_preview-banner__WD5rf, .PremiumBannerBlobWrapper_in-viewer__AUDBA"
+) !== null;
+if (exists)
+{
+// Chọn tất cả element có cả 2 class
+var elements = document.querySelectorAll(".PremiumBannerBlobWrapper_preview-banner__WD5rf.PremiumBannerBlobWrapper_in-viewer__AUDBA");
+
+// Ẩn từng element
+elements.forEach(function(el) {
+    el.style.display = "none";
+});
+
+loaded2 = true;
 }
 }, 10);
 
