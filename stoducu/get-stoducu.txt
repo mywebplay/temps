@@ -264,7 +264,6 @@ Tại thanh địa chỉ url của trình duyệt :
   closeBtn.onclick = function() {
     modal.style.display = "none";
   }
-}
 </script>
 
 <script>
