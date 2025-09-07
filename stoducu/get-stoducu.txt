@@ -94,9 +94,14 @@ if (savedHead) {
 }
 	  </script>
 
-<!-- Thư viện -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<!-- Thư viện --><!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- pdf-lib -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <style>
 .btn {
@@ -149,46 +154,30 @@ document.addEventListener("keydown", async (event) => {
   if (event.ctrlKey && event.key === "F8") {
     event.preventDefault();
 
-    const btn = document.getElementById("btn");
-    const btnText = btn.querySelector(".btn-text");
-    const spinner = btn.querySelector(".spinner");
-
-    btnText.style.display = "none";
-    btn.style.display = "flex";
-    spinner.style.display = "inline-block";
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-
-    // Lưu trạng thái cũ
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-
-    // Ẩn scrollbar tạm thời
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+    const { jsPDF } = window.jspdf;
+    const pdfWidth = 210; // A4 mm
+    const pdfHeight = 297; // A4 mm
+    const dpi = 96;
+    let pageHeightPx = Math.floor((pdfHeight / 25.4) * dpi);
 
     try {
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF("p", "mm", "a4");
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      // Chiều cao A4 theo px (screen dpi ~96)
-      const dpi = 96;
-      let pageHeightPx = Math.floor((pdfHeight / 25.4) * dpi);
-
-      // Chụp toàn bộ body một lần
-      const fullCanvas = await html2canvas(document.body, {
+      // 1. Chụp full trang
+      const fullCanvas = await html2canvas(document.documentElement, {
         useCORS: true,
-        backgroundColor: "#ffffff", // fix nền đen / trắng
-        scale: 2, // tăng DPI cho nét
-        windowWidth: document.documentElement.scrollWidth
+        backgroundColor: "#ffffff",
+        scale: 1.5,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight
       });
 
       const totalPages = Math.ceil(fullCanvas.height / pageHeightPx);
+      const pagesPerFile = 50;
+      let pdfParts = [];
+
+      let pdf = new jsPDF("p", "mm", "a4");
+      let pageCountInFile = 0;
 
       for (let page = 0; page < totalPages; page++) {
-        // canvas cho từng trang
         const pageCanvas = document.createElement("canvas");
         pageCanvas.width = fullCanvas.width;
         pageCanvas.height = pageHeightPx;
@@ -206,26 +195,49 @@ document.addEventListener("keydown", async (event) => {
           pageHeightPx
         );
 
-        const imgData = pageCanvas.toDataURL("image/jpeg", 0.9);
+        const imgData = pageCanvas.toDataURL("image/jpeg", 0.6);
         const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
 
-        if (page > 0) pdf.addPage();
+        if (pageCountInFile > 0) pdf.addPage();
         pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+
+        pageCountInFile++;
+
+        // đủ 50 trang hoặc hết → lưu 1 blob rồi reset
+        if (pageCountInFile === pagesPerFile || page === totalPages - 1) {
+          const blob = pdf.output("blob");
+          pdfParts.push(blob);
+
+          // reset nếu còn trang
+          if (page < totalPages - 1) {
+            pdf = new jsPDF("p", "mm", "a4");
+            pageCountInFile = 0;
+          }
+        }
       }
 
-      // Mở PDF trong tab mới (preview)
-      const url = pdf.output("bloburl");
-      window.open(url, "_blank");
+      // 2. Dùng pdf-lib để merge các blob PDF lại
+      const mergedPdf = await PDFLib.PDFDocument.create();
 
+      for (const blob of pdfParts) {
+        const bytes = await blob.arrayBuffer();
+        const pdfToMerge = await PDFLib.PDFDocument.load(bytes);
+        const copiedPages = await mergedPdf.copyPages(
+          pdfToMerge,
+          pdfToMerge.getPageIndices()
+        );
+        copiedPages.forEach((p) => mergedPdf.addPage(p));
+      }
+
+      const mergedBytes = await mergedPdf.save();
+      const mergedBlob = new Blob([mergedBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(mergedBlob);
+
+      // 3. Mở preview trong tab mới
+      window.open(url, "_blank");
     } catch (err) {
-      console.error(err);
+      console.error("Lỗi tạo PDF:", err);
       alert("Có lỗi khi tạo PDF");
-    } finally {
-      spinner.style.display = "none";
-      btnText.style.display = "block"; // cho hiện lại text
-      btn.style.display = "none";
-      document.body.style.overflow = originalBodyOverflow;
-      document.documentElement.style.overflow = originalHtmlOverflow;
     }
   }
 });
