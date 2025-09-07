@@ -213,7 +213,9 @@ document.addEventListener("keydown", async (event) => {
         pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
       }
 
-      pdf.save(getFileName());
+      const blob = pdf.output("blob");
+     const url = URL.createObjectURL(blob);
+     window.open(url, "_blank"); // mở tab mới để xem PDF
     } catch (err) {
       console.error(err);
       alert("Có lỗi khi tạo PDF");
