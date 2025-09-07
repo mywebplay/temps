@@ -197,8 +197,8 @@ document.documentElement.style.overflow = 'hidden';
   y
 });
 
-    // nén mạnh xuống ~35%
-    const imgData = canvas.toDataURL("image/jpeg", 0.25);
+    // nén mạnh xuống ~45%
+    const imgData = canvas.toDataURL("image/jpeg", 0.45);
     const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
     if (!firstPage) pdf.addPage();
