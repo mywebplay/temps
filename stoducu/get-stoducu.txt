@@ -43,6 +43,13 @@ var loaded4 = false;
         div.style.display = "none"; // ẩn
       }
     });
+
+      params.set("height", page);
+     params.set("from", from);
+    params.set("to", to);
+
+    const newUrl = window.location.pathname + "?" + params.toString();
+    history.replaceState(null, "", newUrl);
      loaded4 = true;
   }
 }, 10);
@@ -177,9 +184,140 @@ if (savedHead) {
   <span class="spinner" style="display: none;"></span>
 </button>
 
+<!-- Modal HTML -->
+<div id="pdfModal" class="pdf-modal">
+  <div class="pdf-modal-content">
+    <span class="pdf-close">❌</span>
+    <div class="pdf-instruction">
+Nhấn Ctrl + F8 nếu bạn muốn download PDF.
+Lưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung hiển thị
+Sau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
+    </div>
+    <div class="pdf-tips">
+* MẸO BỔ SUNG :
+Tại thanh địa chỉ url của trình duyệt :
++ Thay đổi giá trị biến height nếu bạn không muốn in PDF bị dư trang cuối (miễn sao body web vừa khít với nội dung của tài liệu)
++ Nếu height của bạn > 50000, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu không PDF có thể bị lỗi.
++ Thay đổi giá trị biến from và to để hiển thị theo đúng range các trang của tài liệu (trang bắt đầu là 1).
++ Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần để thực hiện thao tác nhiều lần nhé!
+    </div>
+  </div>
+</div>
+
+<!-- CSS -->
+<style>
+.pdf-modal {
+  display: block; /* mặc định hiện */
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  font-family: Arial, sans-serif;
+}
+
+.pdf-modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  line-height: 1.5;
+}
+
+.pdf-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pdf-close:hover {
+  color: #000;
+}
+
+.pdf-instruction {
+  background: #f9f9f9;
+  border-left: 4px solid #007bff;
+  padding: 12px;
+  margin-bottom: 12px;
+  white-space: pre-line;
+}
+
+.pdf-tips {
+  background: #eef7ff;
+  border-left: 4px solid #00aaff;
+  padding: 12px;
+  white-space: pre-line;
+}
+</style>
+
+<!-- JS -->
 <script>
-alert("Nhấn Ctrl + F8 nếu bạn muốn download PDF.\nLưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung hiển thị\nSau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!");
-alert("* MẸO BỔ SUNG :\nTại thanh địa chỉ url của trình duyệt :\n+ Thay đổi giá trị biến height nếu bạn không muốn in PDF bị dư trang cuối (miễn sao body web vừa khít với nội dung của tài liệu)\n+ Nếu height của bạn > 50000, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu không PDF có thể bị lỗi.\n+ Thay đổi giá trị biến from và to để hiển thị theo đúng range các trang của tài liệu (trang bắt đầu là 1).\n+ Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần để thực hiện thao tác nhiều lần nhé!");
+  const modal = document.getElementById("pdfModal");
+  const closeBtn = document.querySelector(".pdf-close");
+
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+
+<script>
+var loadxong1 = 0;
+setInterval(function()
+{
+if (loadxong1 == 1 || document.readyState != "complete") return;
+// Lấy phần tử modal và overlay
+const modalOverlay2 = document.getElementById("modalOverlay2");
+const closeBtn2 = document.getElementById("closeModal2");
+
+// Thêm CSS cho modal-overlay qua JavaScript
+modalOverlay2.style.position = "fixed";
+modalOverlay2.style.top = "0";
+modalOverlay2.style.left = "0";
+modalOverlay2.style.width = "100%";
+modalOverlay2.style.height = "100%";
+modalOverlay2.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+modalOverlay2.style.display = "flex"; // Đảm bảo modal sẽ hiển thị ngay
+modalOverlay2.style.justifyContent = "center";
+modalOverlay2.style.alignItems = "center";
+modalOverlay2.style.zIndex = "1000"; // Đảm bảo modal nằm trên các phần tử khác
+
+// Thêm CSS cho modal box
+const modal2 = modalOverlay2.querySelector(".modal2");
+modal2.style.backgroundColor = "white";
+modal2.style.padding = "20px";
+modal2.style.borderRadius = "8px";
+modal2.style.width = "500px"; // Kích thước modal
+modal2.style.height = "300px"; // Kích thước modal
+modal2.style.position = "relative";
+modal2.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.3)";
+modal2.style.display = "block";
+
+// Thêm CSS cho nút đóng
+const closeButton2 = modal2.querySelector(".close-btn2");
+closeButton2.style.position = "absolute";
+closeButton2.style.top = "10px";
+closeButton2.style.right = "15px";
+closeButton2.style.fontSize = "18px";
+closeButton2.style.cursor = "pointer";
+
+// Đóng modal khi bấm dấu X
+closeBtn2.onclick = function () {
+modalOverlay2.style.display = "none";
+};
+
+loadxong1 = 1;
+}, 1000);
+</script>
+
+<script>
 
 document.addEventListener("keydown", async (event) => {
   if (event.ctrlKey && event.key === "F8") {
