@@ -19,6 +19,7 @@ page = parseInt(page, 10); // chuyển sang số nguyên
 from = parseInt(from, 10);
 to = parseInt(to, 10);
 
+var loaded4 = false;
   setInterval(function()
   {
      if (loaded4) return
