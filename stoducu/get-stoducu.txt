@@ -149,72 +149,83 @@ document.addEventListener("keydown", async (event) => {
   if (event.ctrlKey && event.key === "F8") {
     event.preventDefault(); // chặn hành vi mặc định nếu có
 
-  const btn = document.getElementById("btn");
-const btnText = btn.querySelector(".btn-text");
-const spinner = btn.querySelector(".spinner");
+    const btn = document.getElementById("btn");
+    const btnText = btn.querySelector(".btn-text");
+    const spinner = btn.querySelector(".spinner");
 
-     btnText.style.display = "none";
+    btnText.style.display = "none";
     btn.style.display = "flex";
     spinner.style.display = "inline-block";
-   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-   
-// Lưu trạng thái cũ
-const originalBodyOverflow = document.body.style.overflow;
-const originalHtmlOverflow = document.documentElement.style.overflow;
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
-// Ẩn scrollbar tạm thời
-document.body.style.overflow = 'hidden';
-document.documentElement.style.overflow = 'hidden';
+    // Lưu trạng thái cũ
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
 
-  try {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
+    // Ẩn scrollbar tạm thời
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = pdf.internal.pageSize.getHeight();
+    try {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
 
-  // chiều cao A4 theo px (screen dpi ~96)
-  const dpi = 96;
-  let a4HeightPx = Math.floor((pdfHeight / 25.4) * dpi);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
 
-  const pageHeightPx = Math.floor(a4HeightPx);
+      // chiều cao A4 theo px (screen dpi ~96)
+      const dpi = 96;
+      let pageHeightPx = Math.floor((pdfHeight / 25.4) * dpi);
 
-  const totalHeight = document.body.scrollHeight;
-  let y = 0;
-  let firstPage = true;
+      // Chụp toàn bộ trang 1 lần
+      const fullCanvas = await html2canvas(document.body, {
+        useCORS: true,
+        scale: 1, // có thể tăng lên 1.2–1.5 để nét hơn
+        windowWidth: document.documentElement.scrollWidth
+      });
 
-  while (y < totalHeight) {
-    const canvas = await html2canvas(document.body, {
-  useCORS: true,
-  scale: 1, // tăng lên 1.2 hoặc 1.3 để nét hơn
-  windowWidth: document.documentElement.scrollWidth,
-  windowHeight: pageHeightPx,
-  y
-});
+      const totalPages = Math.ceil(fullCanvas.height / pageHeightPx);
 
-    // nén mạnh xuống ~40%
-    const imgData = canvas.toDataURL("image/jpeg", 0.40);
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      for (let page = 0; page < totalPages; page++) {
+        // tạo canvas con cho từng trang
+        const pageCanvas = document.createElement("canvas");
+        pageCanvas.width = fullCanvas.width;
+        pageCanvas.height = pageHeightPx;
 
-    if (!firstPage) pdf.addPage();
-    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+        const ctx = pageCanvas.getContext("2d");
+        ctx.drawImage(
+          fullCanvas,
+          0,
+          page * pageHeightPx,
+          fullCanvas.width,
+          pageHeightPx,
+          0,
+          0,
+          fullCanvas.width,
+          pageHeightPx
+        );
 
-    y += pageHeightPx;
-    firstPage = false;
+        // nén xuống ~40%
+        const imgData = pageCanvas.toDataURL("image/jpeg", 0.40);
+        const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
+
+        if (page > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+      }
+
+      pdf.save(getFileName());
+    } catch (err) {
+      console.error(err);
+      alert("Có lỗi khi tạo PDF");
+    } finally {
+      spinner.style.display = "none";
+      btnText.style.display = "none";
+      btn.style.display = "none";
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+    }
   }
-
-  pdf.save(getFileName());
-} catch (err) {
-  console.error(err);
-  alert("Có lỗi khi tạo PDF");
-} finally {
-    spinner.style.display = "none";
-    btnText.style.display = "none";
-    btn.style.display = "none";
-  document.body.style.overflow = originalBodyOverflow;
-  document.documentElement.style.overflow = originalHtmlOverflow;
-   }
-}
+ });
 });
 
 // Hàm tạo tên file
