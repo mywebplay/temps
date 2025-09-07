@@ -9,7 +9,7 @@
 let page = params.get("height");
 
 // nếu không có param thì mặc định = 1
-if (page === null) page = "1";
+if (page === null) page = "100000";
 
 page = parseInt(page, 10); // chuyển sang số nguyên
 
