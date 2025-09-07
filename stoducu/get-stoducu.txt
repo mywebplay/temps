@@ -111,6 +111,8 @@ alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuy�
   const btn = document.getElementById("printBtn");
 
   btn.style.display = "none"; // ẩn nút in để không dính vào PDF
+const originalOverflow = document.body.style.overflow;
+document.body.style.overflow = "hidden";
 
   try {
   const { jsPDF } = window.jspdf;
@@ -156,6 +158,7 @@ alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuy�
   alert("Có lỗi khi tạo PDF");
 } finally {
   btn.style.display = "block";
+  document.body.style.overflow = originalOverflow;
 }
 });
 
