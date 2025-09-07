@@ -91,15 +91,11 @@ if (savedHead) {
   border-radius: 8px;
   cursor: pointer;
   z-index: 10000;
+  min-width: 120px; /* để nút không co lại khi ẩn text */
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: opacity 0.2s;
-}
-
-.btn:hover:not([disabled]) {
-  opacity: 0.85;
+  justify-content: center;
 }
 
 .btn[disabled] {
@@ -108,8 +104,8 @@ if (savedHead) {
 }
 
 .spinner {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border: 2px solid rgba(255,255,255,0.6);
   border-top: 2px solid #fff;
   border-radius: 50%;
@@ -119,12 +115,6 @@ if (savedHead) {
 @keyframes spin {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-
-@keyframes spin {
-  0% { transform: translateY(-50%) rotate(0deg); }
-  100% { transform: translateY(-50%) rotate(360deg); }
 }
 </style>
 
@@ -140,6 +130,7 @@ const btnText = btn.querySelector(".btn-text");
 const spinner = btn.querySelector(".spinner");
 
      btn.disabled = true;
+     btnText.style.display = "none";
     spinner.style.display = "inline-block";
 // Lưu trạng thái cũ
 const originalBodyOverflow = document.body.style.overflow;
@@ -193,6 +184,7 @@ document.documentElement.style.overflow = 'hidden';
 } finally {
      btn.disabled = false;
     spinner.style.display = "none";
+    btnText.style.display = "inline";
   document.body.style.overflow = originalBodyOverflow;
   document.documentElement.style.overflow = originalHtmlOverflow;
 }
