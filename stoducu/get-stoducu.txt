@@ -138,18 +138,21 @@ if (savedHead) {
 }
 </style>
 
-<button id="btn" class="btn">
+<button id="btn" class="btn" disabled>
   <span class="btn-text">Download PDF</span>
   <span class="spinner" style="display: none;"></span>
 </button>
 
 <script>
-document.getElementById("btn").addEventListener("click", async () => {
+alert("Nhấn Ctrl + F8 nếu bạn muốn download PDF.\nLưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF");
+document.addEventListener("keydown", async (event) => {
+  if (event.ctrlKey && event.key === "F8") {
+    event.preventDefault(); // chặn hành vi mặc định nếu có
+
   const btn = document.getElementById("btn");
 const btnText = btn.querySelector(".btn-text");
 const spinner = btn.querySelector(".spinner");
 
-     btn.disabled = true;
      btnText.style.display = "none";
     spinner.style.display = "inline-block";
    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -204,7 +207,6 @@ document.documentElement.style.overflow = 'hidden';
   console.error(err);
   alert("Có lỗi khi tạo PDF");
 } finally {
-     btn.disabled = false;
     spinner.style.display = "none";
     btnText.style.display = "inline";
   document.body.style.overflow = originalBodyOverflow;
