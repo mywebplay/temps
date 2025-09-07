@@ -205,8 +205,7 @@ document.addEventListener("keydown", async (event) => {
           pageHeightPx
         );
 
-        // nén xuống ~20%
-        const imgData = pageCanvas.toDataURL("image/jpeg", 0.20);
+        const imgData = pageCanvas.toDataURL("image/png");
         const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
 
         if (page > 0) pdf.addPage();
