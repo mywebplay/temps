@@ -144,7 +144,7 @@ if (savedHead) {
 </button>
 
 <script>
-alert("Nhấn Ctrl + F8 nếu bạn muốn download PDF.\nLưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung trên trình duyệt\nSau khi nhấn Ctrl + F8, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!");
+alert("Nhấn Ctrl + F8 nếu bạn muốn download PDF.\nLưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung hiển thị\nSau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!");
 document.addEventListener("keydown", async (event) => {
   if (event.ctrlKey && event.key === "F8") {
     event.preventDefault(); // chặn hành vi mặc định nếu có
