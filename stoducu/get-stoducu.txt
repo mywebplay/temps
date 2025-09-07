@@ -205,16 +205,16 @@ document.addEventListener("keydown", async (event) => {
           pageHeightPx
         );
 
-        const imgData = pageCanvas.toDataURL("image/png");
+        const imgData = pageCanvas.toDataURL("image/jpeg", 0.20);
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
         const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
 
         if (page > 0) pdf.addPage();
         pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
       }
 
-      const blob = pdf.output("blob");
-     const url = URL.createObjectURL(blob);
-     window.open(url, "_blank"); // mở tab mới để xem PDF
+     const url = pdf.output("bloburl");
+     window.open(url, "_blank");
     } catch (err) {
       console.error(err);
       alert("Có lỗi khi tạo PDF");
