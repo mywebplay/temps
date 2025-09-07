@@ -111,8 +111,13 @@ alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuy�
   const btn = document.getElementById("printBtn");
 
   btn.style.display = "none"; // ẩn nút in để không dính vào PDF
-const originalOverflow = document.body.style.overflow;
-document.body.style.overflow = "hidden";
+// Lưu trạng thái cũ
+const originalBodyOverflow = document.body.style.overflow;
+const originalHtmlOverflow = document.documentElement.style.overflow;
+
+// Ẩn scrollbar tạm thời
+document.body.style.overflow = 'hidden';
+document.documentElement.style.overflow = 'hidden';
 
   try {
   const { jsPDF } = window.jspdf;
@@ -125,8 +130,7 @@ document.body.style.overflow = "hidden";
   const dpi = 96;
   let a4HeightPx = Math.floor((pdfHeight / 25.4) * dpi);
 
-  // tăng lên 30%
-  const pageHeightPx = Math.floor(a4HeightPx * 1.2);
+  const pageHeightPx = Math.floor(a4HeightPx);
 
   const totalHeight = document.body.scrollHeight;
   let y = 0;
@@ -158,7 +162,8 @@ document.body.style.overflow = "hidden";
   alert("Có lỗi khi tạo PDF");
 } finally {
   btn.style.display = "block";
-  document.body.style.overflow = originalOverflow;
+  document.body.style.overflow = originalBodyOverflow;
+  document.documentElement.style.overflow = originalHtmlOverflow;
 }
 });
 
