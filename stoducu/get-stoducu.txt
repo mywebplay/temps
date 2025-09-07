@@ -225,7 +225,6 @@ document.addEventListener("keydown", async (event) => {
       document.documentElement.style.overflow = originalHtmlOverflow;
     }
   }
- });
 });
 
 // Hàm tạo tên file
