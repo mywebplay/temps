@@ -97,7 +97,6 @@ if (savedHead) {
 <!-- Thư viện --><!-- html2canvas -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <style>
 .btn {
@@ -150,11 +149,17 @@ document.addEventListener("keydown", async (event) => {
   if (event.ctrlKey && event.key === "F8") {
     event.preventDefault();
 
+    // Các element spinner/loading
+    const btn = document.getElementById("btn");
+    const btnText = btn.querySelector(".btn-text");
+    const spinner = btn.querySelector(".spinner");
+
     btnText.style.display = "none";
     btn.style.display = "flex";
     spinner.style.display = "inline-block";
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
+    // Lưu trạng thái cũ
     const originalBodyOverflow = document.body.style.overflow;
     const originalHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
@@ -167,42 +172,51 @@ document.addEventListener("keydown", async (event) => {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      // chiều cao A4 theo px (screen dpi ~96)
       const dpi = 96;
       const pageHeightPx = Math.floor((pdfHeight / 25.4) * dpi);
 
-      // Chụp toàn bộ body
+      // Chụp toàn bộ body trước (1 lần)
       const fullCanvas = await html2canvas(document.body, {
         useCORS: true,
-        scale: 1.5,
+        scale: 1.2,
         windowWidth: document.documentElement.scrollWidth
       });
 
       const totalPages = Math.ceil(fullCanvas.height / pageHeightPx);
+      const batchSize = 50; // số trang mỗi batch
+      let firstPage = true;
 
-      for (let page = 0; page < totalPages; page++) {
-        const pageCanvas = document.createElement("canvas");
-        pageCanvas.width = fullCanvas.width;
-        pageCanvas.height = pageHeightPx;
+      for (let startPage = 0; startPage < totalPages; startPage += batchSize) {
+        const endPage = Math.min(startPage + batchSize, totalPages);
 
-        const ctx = pageCanvas.getContext("2d");
-        ctx.drawImage(
-          fullCanvas,
-          0,
-          page * pageHeightPx,
-          fullCanvas.width,
-          pageHeightPx,
-          0,
-          0,
-          fullCanvas.width,
-          pageHeightPx
-        );
+        for (let page = startPage; page < endPage; page++) {
+          const pageCanvas = document.createElement("canvas");
+          pageCanvas.width = fullCanvas.width;
+          pageCanvas.height = pageHeightPx;
 
-        const imgData = pageCanvas.toDataURL("image/jpeg", 0.8);
-        const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
+          const ctx = pageCanvas.getContext("2d");
+          ctx.drawImage(
+            fullCanvas,
+            0,
+            page * pageHeightPx,
+            fullCanvas.width,
+            pageHeightPx,
+            0,
+            0,
+            fullCanvas.width,
+            pageHeightPx
+          );
 
-        if (page > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+          const imgData = pageCanvas.toDataURL("image/jpeg", 0.7);
+          const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
+
+          if (!firstPage) pdf.addPage();
+          pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+          firstPage = false;
+        }
+
+        // Đợi 1 chút để giải phóng bộ nhớ giữa các batch
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
       const url = pdf.output("bloburl");
