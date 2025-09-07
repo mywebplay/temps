@@ -267,56 +267,6 @@ Tại thanh địa chỉ url của trình duyệt :
 }
 </script>
 
-
-<script>
-var loadxong1 = 0;
-setInterval(function()
-{
-if (loadxong1 == 1 || document.readyState != "complete") return;
-// Lấy phần tử modal và overlay
-const modalOverlay2 = document.getElementById("modalOverlay2");
-const closeBtn2 = document.getElementById("closeModal2");
-
-// Thêm CSS cho modal-overlay qua JavaScript
-modalOverlay2.style.position = "fixed";
-modalOverlay2.style.top = "0";
-modalOverlay2.style.left = "0";
-modalOverlay2.style.width = "100%";
-modalOverlay2.style.height = "100%";
-modalOverlay2.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-modalOverlay2.style.display = "flex"; // Đảm bảo modal sẽ hiển thị ngay
-modalOverlay2.style.justifyContent = "center";
-modalOverlay2.style.alignItems = "center";
-modalOverlay2.style.zIndex = "1000"; // Đảm bảo modal nằm trên các phần tử khác
-
-// Thêm CSS cho modal box
-const modal2 = modalOverlay2.querySelector(".modal2");
-modal2.style.backgroundColor = "white";
-modal2.style.padding = "20px";
-modal2.style.borderRadius = "8px";
-modal2.style.width = "500px"; // Kích thước modal
-modal2.style.height = "300px"; // Kích thước modal
-modal2.style.position = "relative";
-modal2.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.3)";
-modal2.style.display = "block";
-
-// Thêm CSS cho nút đóng
-const closeButton2 = modal2.querySelector(".close-btn2");
-closeButton2.style.position = "absolute";
-closeButton2.style.top = "10px";
-closeButton2.style.right = "15px";
-closeButton2.style.fontSize = "18px";
-closeButton2.style.cursor = "pointer";
-
-// Đóng modal khi bấm dấu X
-closeBtn2.onclick = function () {
-modalOverlay2.style.display = "none";
-};
-
-loadxong1 = 1;
-}, 1000);
-</script>
-
 <script>
 
 document.addEventListener("keydown", async (event) => {
