@@ -104,10 +104,10 @@ if (savedHead) {
 }
 
 .spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255,255,255,0.6);
-  border-top: 2px solid #fff;
+  width: 20px;   /* to hơn một chút */
+  height: 20px;
+  border: 2px solid #ffffff;       /* vòng tròn trắng rõ nét */
+  border-top: 2px solid #ffcc00;   /* màu nổi bật cho phần quay */
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
