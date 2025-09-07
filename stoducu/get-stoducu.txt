@@ -58,6 +58,26 @@ loaded2 = true;
 }
 }, 10);
 
+var loaded3 = false;
+setInterval(function()
+{
+if (loaded3) return
+// Kiểm tra xem có ít nhất 1 element có class cần tìm
+var exists1 = document.querySelector(
+    ".InlineBanner_inline-banner-wrapper__DAi5X banner-wrapper"
+) !== null;
+if (exists1)
+{
+
+// Lấy tất cả các phần tử có class
+const banners = document.querySelectorAll('.InlineBanner_inline-banner-wrapper__DAi5X.banner-wrapper');
+
+// Duyệt qua từng phần tử và remove
+banners.forEach(banner => banner.remove());
+
+loaded3 = true;
+}
+}, 10);
        // Delete div somee
        setInterval(function () {
                 document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
