@@ -133,6 +133,7 @@ const spinner = btn.querySelector(".spinner");
      btnText.style.display = "none";
     spinner.style.display = "inline-block";
    document.body.style.zoom = "1.5";
+   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
    
 // Lưu trạng thái cũ
 const originalBodyOverflow = document.body.style.overflow;
