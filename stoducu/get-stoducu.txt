@@ -205,13 +205,12 @@ document.addEventListener("keydown", async (event) => {
           pageHeightPx
         );
 
-        const imgData = pageCanvas.toDataURL("image/jpeg", 0.20);
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
-        const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
+       const imgData = pageCanvas.toDataURL("image/jpeg", 0.8); // chất lượng 80%
+      const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
 
-        if (page > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
-      }
+      if (page > 0) pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+    }
 
      const url = pdf.output("bloburl");
      window.open(url, "_blank");
