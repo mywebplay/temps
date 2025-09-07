@@ -180,7 +180,7 @@ document.addEventListener("keydown", async (event) => {
       // Chụp toàn bộ trang 1 lần
       const fullCanvas = await html2canvas(document.body, {
         useCORS: true,
-        scale: 1, // có thể tăng lên 1.2–1.5 để nét hơn
+        scale: 1.5, // có thể tăng lên 1.2–1.5 để nét hơn
         windowWidth: document.documentElement.scrollWidth
       });
 
@@ -205,8 +205,8 @@ document.addEventListener("keydown", async (event) => {
           pageHeightPx
         );
 
-        // nén xuống ~40%
-        const imgData = pageCanvas.toDataURL("image/jpeg", 0.40);
+        // nén xuống ~20%
+        const imgData = pageCanvas.toDataURL("image/jpeg", 0.20);
         const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
 
         if (page > 0) pdf.addPage();
