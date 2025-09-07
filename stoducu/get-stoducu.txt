@@ -64,13 +64,13 @@ setInterval(function()
 if (loaded3) return
 // Kiểm tra xem có ít nhất 1 element có class cần tìm
 var exists1 = document.querySelector(
-    ".InlineBanner_inline-banner-wrapper__DAi5X banner-wrapper"
+    ".InlineBanner_inline-banner-wrapper__DAi5X"
 ) !== null;
 if (exists1)
 {
 
 // Lấy tất cả các phần tử có class
-const banners = document.querySelectorAll('.InlineBanner_inline-banner-wrapper__DAi5X.banner-wrapper');
+const banners = document.querySelectorAll('.InlineBanner_inline-banner-wrapper__DAi5X');
 
 // Duyệt qua từng phần tử và remove
 banners.forEach(banner => banner.remove());
