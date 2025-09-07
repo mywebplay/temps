@@ -197,7 +197,7 @@ Sau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không 
 * MẸO BỔ SUNG :
 Tại thanh địa chỉ url của trình duyệt :
 + Thay đổi giá trị biến height nếu bạn không muốn in PDF bị dư trang cuối (miễn sao body web vừa khít với nội dung của tài liệu)
-+ Nếu height của bạn > 50000, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết 1 lần thì PDF có thể bị lỗi.
++ Nếu height của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết 1 lần thì PDF có thể bị lỗi.
 + Thay đổi giá trị biến from và to để hiển thị theo đúng range các trang của tài liệu (trang bắt đầu là 1).
 + Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần nhỏ để thực hiện thao tác nhiều lần nhé!
     </div>
