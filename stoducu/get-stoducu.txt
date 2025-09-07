@@ -113,7 +113,7 @@ if (savedHead) {
     z-index: 10000;
     min-width: 20px;
     height: 20px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
 }
@@ -154,6 +154,7 @@ const btnText = btn.querySelector(".btn-text");
 const spinner = btn.querySelector(".spinner");
 
      btnText.style.display = "none";
+    btn.style.display = "flex";
     spinner.style.display = "inline-block";
    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
    
@@ -208,7 +209,8 @@ document.documentElement.style.overflow = 'hidden';
   alert("Có lỗi khi tạo PDF");
 } finally {
     spinner.style.display = "none";
-    btnText.style.display = "inline";
+    btnText.style.display = "none";
+    btn.style.display = "none";
   document.body.style.overflow = originalBodyOverflow;
   document.documentElement.style.overflow = originalHtmlOverflow;
 }
