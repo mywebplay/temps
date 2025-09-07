@@ -7,11 +7,44 @@
       /* Thêm JS vào đây */
 	  const params = new URLSearchParams(window.location.search);
 let page = params.get("height");
+let from = params.get("from");
+let to = params.get("to");
 
 // nếu không có param thì mặc định = 1
-if (page === null) page = "100000";
+if (page === null || page === "") page = "100000";
+
+if (from === null || from === "") from = "1";
 
 page = parseInt(page, 10); // chuyển sang số nguyên
+from = parseInt(from, 10);
+to = parseInt(to, 10);
+
+  setInterval(function()
+  {
+     if (loaded4) return
+
+    const container = document.getElementById("page-container");
+  if (container) {
+    const children = container.querySelectorAll("[data-page-index]");
+
+    // nếu chưa khai báo to thì mặc định là số lượng div
+    to = to ? parseInt(to, 10) : children.length;
+
+    // quy đổi from/to sang index
+    let fromIndex = from - 1;
+    let toIndex   = to - 1;
+
+    children.forEach(div => {
+      const idx = parseInt(div.getAttribute("data-page-index"), 10);
+      if (idx >= fromIndex && idx <= toIndex) {
+        div.style.display = "";   // hiện
+      } else {
+        div.style.display = "none"; // ẩn
+      }
+    });
+     loaded4 = true;
+  }
+}, 10);
 
 var loaded = false;
 setInterval(function()
@@ -145,6 +178,8 @@ if (savedHead) {
 
 <script>
 alert("Nhấn Ctrl + F8 nếu bạn muốn download PDF.\nLưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung hiển thị\nSau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!");
+alert("* MẸO BỔ SUNG :\nTại thanh địa chỉ url của trình duyệt :\n+ Thay đổi giá trị biến height nếu bạn không muốn in PDF bị dư trang cuối (miễn sao body web vừa khít với nội dung của tài liệu)\n+ Nếu height của bạn > 50000, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu không PDF có thể bị lỗi.\n+ Thay đổi giá trị biến from và to để hiển thị theo đúng range các trang của tài liệu (trang bắt đầu là 1).\n+ Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần để thực hiện thao tác nhiều lần nhé!");
+
 document.addEventListener("keydown", async (event) => {
   if (event.ctrlKey && event.key === "F8") {
     event.preventDefault();
