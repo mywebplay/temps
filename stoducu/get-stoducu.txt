@@ -95,12 +95,8 @@ if (savedHead) {
 	  </script>
 
 <!-- Thư viện --><!-- html2canvas -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<!-- jsPDF -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- pdf-lib -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <style>
@@ -150,161 +146,77 @@ if (savedHead) {
 
 <script>
 alert("Nhấn Ctrl + F8 nếu bạn muốn download PDF.\nLưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung hiển thị\nSau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!");
-// ======= TÙY CHỈNH NHANH =======
-const EXPORT_SCALE = 1.5;     // 1.2–1.8 (cao thì nét hơn nhưng nặng hơn)
-const JPEG_QUALITY = 0.65;    // 0.5–0.9 (cao thì nét, file to)
-const PAGES_PER_FILE = 50;    // chia nhỏ để tránh crash/trắng
-const TARGET_SELECTOR = null; // null = chụp full trang; đặt ".main-content" nếu muốn chỉ chụp nội dung
-
-// ======= TIỆN ÍCH NHỎ =======
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-const nextTick = () => new Promise(r => setTimeout(r, 0)); // nhường CPU để GC kịp dọn
-
 document.addEventListener("keydown", async (event) => {
-  if (!(event.ctrlKey && event.key === "F8")) return;
-  event.preventDefault();
+  if (event.ctrlKey && event.key === "F8") {
+    event.preventDefault();
 
-  const btn = document.getElementById("btn");
-  const btnText = btn?.querySelector(".btn-text");
-  const spinner = btn?.querySelector(".spinner");
-
-  // UI: bật loading
-  if (btn) {
-    if (btnText) btnText.style.display = "none";
+    btnText.style.display = "none";
     btn.style.display = "flex";
-    if (spinner) spinner.style.display = "inline-block";
-  }
-  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    spinner.style.display = "inline-block";
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
-  // Lưu & ẩn scrollbar
-  const originalBodyOverflow = document.body.style.overflow;
-  const originalHtmlOverflow = document.documentElement.style.overflow;
-  document.body.style.overflow = "hidden";
-  document.documentElement.style.overflow = "hidden";
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
-  try {
-    const { jsPDF } = window.jspdf;
+    try {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
 
-    // Kích thước A4 (mm)
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    // mm -> px (96dpi)
-    const dpi = 96;
-    const pxPerMM = dpi / 25.4;
-    const pageHeightPx = Math.floor(pdfHeight * pxPerMM);
+      // chiều cao A4 theo px (screen dpi ~96)
+      const dpi = 96;
+      const pageHeightPx = Math.floor((pdfHeight / 25.4) * dpi);
 
-    // ===== 1) Chụp 1 lần =====
-    const captureEl = TARGET_SELECTOR
-      ? document.querySelector(TARGET_SELECTOR)
-      : document.documentElement;
+      // Chụp toàn bộ body
+      const fullCanvas = await html2canvas(document.body, {
+        useCORS: true,
+        scale: 1.5,
+        windowWidth: document.documentElement.scrollWidth
+      });
 
-    if (!captureEl) throw new Error("Không tìm thấy phần tử để chụp!");
+      const totalPages = Math.ceil(fullCanvas.height / pageHeightPx);
 
-    // Cho trình duyệt settle layout 1 nhịp để tránh thiếu hình
-    await nextTick();
+      for (let page = 0; page < totalPages; page++) {
+        const pageCanvas = document.createElement("canvas");
+        pageCanvas.width = fullCanvas.width;
+        pageCanvas.height = pageHeightPx;
 
-    const fullCanvas = await html2canvas(captureEl, {
-      useCORS: true,
-      backgroundColor: "#ffffff",       // tránh nền trong suốt -> đen/trắng khi in
-      scale: EXPORT_SCALE,              // DPI cao hơn, nét hơn
-      foreignObjectRendering: true,     // render CSS phức tạp ổn hơn
-      windowWidth: document.documentElement.scrollWidth,
-      windowHeight: document.documentElement.scrollHeight
-    });
+        const ctx = pageCanvas.getContext("2d");
+        ctx.drawImage(
+          fullCanvas,
+          0,
+          page * pageHeightPx,
+          fullCanvas.width,
+          pageHeightPx,
+          0,
+          0,
+          fullCanvas.width,
+          pageHeightPx
+        );
 
-    const totalPages = Math.ceil(fullCanvas.height / pageHeightPx);
+        const imgData = pageCanvas.toDataURL("image/jpeg", 0.8);
+        const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
 
-    // ===== 2) Chia nhỏ theo lô để tránh tràn bộ nhớ =====
-    const blobs = []; // chứa các blob PDF tạm
-    let currentPdf = new jsPDF("p", "mm", "a4");
-    let pageInCurrent = 0;
-
-    for (let page = 0; page < totalPages; page++) {
-      // Canvas từng trang (A4 theo px)
-      const srcY = page * pageHeightPx;
-      const sliceHeight = Math.min(pageHeightPx, fullCanvas.height - srcY);
-
-      const pageCanvas = document.createElement("canvas");
-      pageCanvas.width = fullCanvas.width;
-      pageCanvas.height = sliceHeight;
-
-      const ctx = pageCanvas.getContext("2d", { willReadFrequently: false });
-      ctx.drawImage(
-        fullCanvas,
-        0, srcY, fullCanvas.width, sliceHeight, // src
-        0, 0, fullCanvas.width, sliceHeight      // dest
-      );
-
-      // Ảnh JPEG cho nhẹ, giữ màu ổn định khi in
-      const imgData = pageCanvas.toDataURL("image/jpeg", JPEG_QUALITY);
-      const imgHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
-
-      if (pageInCurrent > 0) currentPdf.addPage();
-      currentPdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
-      pageInCurrent++;
-
-      // Giải phóng bộ nhớ tạm từng vòng
-      pageCanvas.width = 0;
-      pageCanvas.height = 0;
-
-      // Nếu đủ 1 lô hoặc là trang cuối -> kết sổ 1 blob
-      const isBatchFull = pageInCurrent === PAGES_PER_FILE;
-      const isLastPage = page === totalPages - 1;
-      if (isBatchFull || isLastPage) {
-        // Nhường 1 nhịp cho GC trước khi xuất blob
-        await nextTick();
-
-        const blob = currentPdf.output("blob");
-        blobs.push(blob);
-
-        // Chuẩn bị PDF mới nếu còn trang
-        if (!isLastPage) {
-          currentPdf = new jsPDF("p", "mm", "a4");
-          pageInCurrent = 0;
-          // Nhường nhịp để tránh nghẽn main-thread trên tập lớn
-          await sleep(0);
-        }
+        if (page > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
       }
+
+      const url = pdf.output("bloburl");
+      window.open(url, "_blank");
+    } catch (err) {
+      console.error(err);
+      alert("Có lỗi xảy ra khi in PDF!");
+    } finally {
+      spinner.style.display = "none";
+      btnText.style.display = "none";
+      btn.style.display = "none";
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
     }
-
-    // ===== 3) Ghép các phần bằng pdf-lib =====
-    const mergedPdf = await PDFLib.PDFDocument.create();
-    for (const blob of blobs) {
-      const bytes = await blob.arrayBuffer();
-      const srcPdf = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
-      const pages = await mergedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
-      pages.forEach(p => mergedPdf.addPage(p));
-      // nhẹ nhàng nhường CPU
-      await nextTick();
-    }
-
-    const mergedBytes = await mergedPdf.save();
-    const mergedBlob = new Blob([mergedBytes], { type: "application/pdf" });
-    const url = URL.createObjectURL(mergedBlob);
-
-    // ===== 4) Mở preview 1 tab duy nhất =====
-    window.open(url, "_blank");
-
-    // Tuỳ chọn: thu hồi URL sau 1 phút
-    setTimeout(() => URL.revokeObjectURL(url), 60_000);
-
-  } catch (err) {
-    console.error(err);
-    alert("Có lỗi khi tạo PDF. Hãy thử lại sau!");
-  } finally {
-    // UI: tắt loading + khôi phục scrollbar
-    const btn = document.getElementById("btn");
-    const btnText = btn?.querySelector(".btn-text");
-    const spinner = btn?.querySelector(".spinner");
-
-    if (spinner) spinner.style.display = "none";
-    if (btnText) btnText.style.display = "block";
-    if (btn) btn.style.display = "none";
-
-    document.body.style.overflow = originalBodyOverflow;
-    document.documentElement.style.overflow = originalHtmlOverflow;
   }
 });
 
