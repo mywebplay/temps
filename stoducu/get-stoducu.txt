@@ -100,22 +100,22 @@ if (savedHead) {
 
 <style>
 .btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background: linear-gradient(45deg, #007bff, #00c6ff);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  z-index: 10000;
-  min-width: 120px; /* để nút không co lại khi ẩn text */
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: fixed;
+    top: 0px;
+    right: 5px;
+    padding: 10px 5px;
+    font-size: 10px;
+    color: #fff;
+    background: linear-gradient(45deg, #007bff, #00c6ff);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10000;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn[disabled] {
