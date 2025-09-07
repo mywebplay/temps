@@ -92,7 +92,7 @@
     <h2>Bước 3</h2>
     <h4>Sau đó gán dòng lệnh bên dưới vào console đó rồi nhấn Enter
 	<br />
-	CHÚ Ý : ở đây có 2 thông tin cần copy riêng biệt (nội dung tài liệu và header). Hãy copy và hành động từng cái một nhé!
+	CHÚ Ý : ở đây có 3 thông tin cần copy riêng biệt (nội dung body, header và chiều cao của tài liệu). Hãy copy và hành động từng cái một nhé!
 	</h4>
 
     <iframe src="https://mywebplay.github.io/temps/stoducu/copyCodeJs.html" style="width:100%;height:300px;overflow: hidden;border:none;"></iframe>
@@ -110,6 +110,7 @@
   <div class="step" id="step5">
     <textarea id="resultArea" placeholder="Dán nội dung tài liệu bạn vừa copy vào đây..."></textarea>
 	<textarea id="resultArea2" placeholder="Dán nội dung header bạn vừa copy vào đây..."></textarea>
+    <input type="number" id="resultArea3" size="5" placeholder="Dán chiều cao tài liệu bạn vừa copy vào đây..." />
     <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
   </div>
 
@@ -139,7 +140,8 @@ result = result.replace(/<svg([^>]*)style="([^"]*)"/g, function(match, before, s
 localStorage.setItem("tailieu", result);
 var result2 = document.getElementById("resultArea2").value;
 localStorage.setItem("header", result2);
-window.location.href = "/get-stoducu-document?height=1000000";
+var result3 = document.getElementById("resultArea3").value;
+window.location.href = "/get-stoducu-document?height="+result3;
 	}
 
 	  // Delete div somee
