@@ -292,7 +292,7 @@ document.addEventListener("keydown", async (event) => {
 
   } catch (err) {
     console.error(err);
-    alert("Có lỗi khi tạo PDF. Chi tiết console.");
+    alert("Có lỗi khi tạo PDF. Hãy thử lại sau!");
   } finally {
     // UI: tắt loading + khôi phục scrollbar
     const btn = document.getElementById("btn");
