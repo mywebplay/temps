@@ -100,17 +100,52 @@ if (savedHead) {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+.btn {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top: 2px solid #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
 </style>
 
-<!-- Nút in -->
-<button id="printBtn">Download PDF</button>
+<button id="btn" class="btn">
+  <span class="btn-text">Download PDF</span>
+  <span class="spinner" style="display: none;"></span>
+</button>
 
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
 alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuyển tab hay bất cứ thao tác nào khác cho đến khi có kết quả file tài liệu PDF được tải xuống.\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!");
-  const btn = document.getElementById("printBtn");
+  const btn = document.getElementById("btn");
+const btnText = btn.querySelector(".btn-text");
+const spinner = btn.querySelector(".spinner");
 
-  btn.style.display = "none"; // ẩn nút in để không dính vào PDF
+     btn.disabled = true;
+    spinner.style.display = "inline-block";
 // Lưu trạng thái cũ
 const originalBodyOverflow = document.body.style.overflow;
 const originalHtmlOverflow = document.documentElement.style.overflow;
@@ -161,7 +196,8 @@ document.documentElement.style.overflow = 'hidden';
   console.error(err);
   alert("Có lỗi khi tạo PDF");
 } finally {
-  btn.style.display = "block";
+     btn.disabled = false;
+    spinner.style.display = "none";
   document.body.style.overflow = originalBodyOverflow;
   document.documentElement.style.overflow = originalHtmlOverflow;
 }
