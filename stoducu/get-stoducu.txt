@@ -213,6 +213,7 @@ document.documentElement.style.overflow = 'hidden';
     btn.style.display = "none";
   document.body.style.overflow = originalBodyOverflow;
   document.documentElement.style.overflow = originalHtmlOverflow;
+   }
 }
 });
 
