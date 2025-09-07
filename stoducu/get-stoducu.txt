@@ -102,29 +102,47 @@ if (savedHead) {
   }
 
 .btn {
-  position: relative;
+  position: fixed;
+  top: 20px;
+  right: 20px;
   padding: 10px 20px;
   font-size: 16px;
+  color: #fff;
+  background: linear-gradient(45deg, #007bff, #00c6ff);
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: opacity 0.2s;
+}
+
+.btn:hover:not([disabled]) {
+  opacity: 0.85;
 }
 
 .btn[disabled] {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .spinner {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  border: 2px solid #fff;
-  border-top: 2px solid #000;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-top: 2px solid #fff;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 @keyframes spin {
   0% { transform: translateY(-50%) rotate(0deg); }
@@ -139,7 +157,6 @@ if (savedHead) {
 
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
-alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuyển tab hay bất cứ thao tác nào khác cho đến khi có kết quả file tài liệu PDF được tải xuống.\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!");
   const btn = document.getElementById("btn");
 const btnText = btn.querySelector(".btn-text");
 const spinner = btn.querySelector(".spinner");
