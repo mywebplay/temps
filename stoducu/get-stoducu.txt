@@ -107,7 +107,7 @@ if (savedHead) {
 
 <script>
 document.getElementById("printBtn").addEventListener("click", async () => {
-alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuyển tab hay bất cứ thao tác nào khác cho đến khi có kết quả file tài liệu PDF được tải xuống.\n\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!");
+alert("Hệ thống đang chờ xử lý, vui lòng không scroll chuột, chuyển tab hay bất cứ thao tác nào khác cho đến khi có kết quả file tài liệu PDF được tải xuống.\nNgoài ra bạn hãy tự chỉnh sửa giá trị height trên param url để PDF không bị in ra các trang trắng dư thừa nhé!");
   const btn = document.getElementById("printBtn");
 
   btn.style.display = "none"; // ẩn nút in để không dính vào PDF
