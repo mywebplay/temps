@@ -132,6 +132,8 @@ const spinner = btn.querySelector(".spinner");
      btn.disabled = true;
      btnText.style.display = "none";
     spinner.style.display = "inline-block";
+   document.body.style.zoom = "1.5";
+   
 // Lưu trạng thái cũ
 const originalBodyOverflow = document.body.style.overflow;
 const originalHtmlOverflow = document.documentElement.style.overflow;
