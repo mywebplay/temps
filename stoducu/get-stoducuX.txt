@@ -301,14 +301,16 @@ document.addEventListener("keydown", async (event) => {
             backgroundColor: "#ffffff"
           });
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.8);
+         // Xuất canvas thành PNG để an toàn (tránh lỗi UNKNOWN)
+const imgData = canvas.toDataURL("image/png");
 
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const imgProps = pdf.getImageProperties(imgData);
-          const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+// Lấy kích thước PDF
+const pdfWidth = pdf.internal.pageSize.getWidth();
+const imgWidth = pdfWidth;
+const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          if (i > 0) pdf.addPage();
-          pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, imgHeight);
+if (i > 0) pdf.addPage();
+pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
