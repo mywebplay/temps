@@ -301,8 +301,8 @@ document.addEventListener("keydown", async (event) => {
             backgroundColor: "#ffffff"
           });
 
-         // Xuất canvas thành PNG để an toàn (tránh lỗi UNKNOWN)
-const imgData = canvas.toDataURL("image/png");
+// Xuất canvas thành JPEG nén nhẹ
+const imgData = canvas.toDataURL("image/jpeg", 0.7); // 70% chất lượng
 
 // Lấy kích thước PDF
 const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -310,7 +310,7 @@ const imgWidth = pdfWidth;
 const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
 if (i > 0) pdf.addPage();
-pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
