@@ -295,19 +295,34 @@ document.addEventListener("keydown", async (event) => {
         const div = divs[i];
 
         try {
+          // đảm bảo div hiển thị
+          div.style.display = "block";
+
           const canvas = await html2canvas(div, {
             scale: 1.5,
             useCORS: true,
             backgroundColor: "#ffffff"
           });
 
-const imgData = canvas.toDataURL("image/jpeg", 0.7); // 70% chất lượng
-const pdfWidth = pdf.internal.pageSize.getWidth();
-const imgWidth = pdfWidth;
-const imgHeight = (canvas.height * pdfWidth) / canvas.width; // ✅ tính trước
+          // nếu canvas fail thì bỏ qua
+          if (!canvas || canvas.width === 0 || canvas.height === 0) {
+            console.error("Canvas rỗng ở div", i, div);
+            continue;
+          }
 
-if (i > 0) pdf.addPage();
-pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+          const imgData = canvas.toDataURL("image/jpeg", 0.7);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const imgWidth = pdfWidth;
+          let imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+          // tránh NaN hoặc Infinity
+          if (!isFinite(imgHeight) || imgHeight <= 0) {
+            console.error("Kích thước ảnh không hợp lệ:", canvas.width, canvas.height);
+            continue;
+          }
+
+          if (i > 0) pdf.addPage();
+          pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
@@ -334,7 +349,7 @@ pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
   }
 });
 
-// Hàm tạo tên file (chưa dùng nhưng có sẵn)
+// Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
 function getFileName() {
   const now = new Date();
   const pad = (n) => n.toString().padStart(2, "0");
