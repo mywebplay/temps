@@ -195,10 +195,9 @@ Lưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn
 Sau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
     </div>
     <div class="pdf-tips">
-* MẸO BỔ SUNG :
-Tại thanh địa chỉ url của trình duyệt :
-+ Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý 1 lần thì PDF có thể bị lỗi.
-+ Thay đổi giá trị biến from và to để hiển thị theo đúng range số trang của tài liệu (trang bắt đầu là 1).
+* THÔNG TIN BỔ SUNG :
++ Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý một lần thì PDF có thể bị lỗi.
++ Thay đổi giá trị query biến : from và to trên thanh địa chỉ url trình duyệt để hiển thị theo đúng range số trang của tài liệu (trang bắt đầu là 1).
 + Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần nhỏ để thực hiện thao tác nhiều lần nhé (nhưng thôi bạn cứ thử dồn hết xử lý một lần trước đi, còn nếu xui thì phải chia nhỏ pdf ra làm từng bước chứ sao giờ 😁)
     </div>
   </div>
