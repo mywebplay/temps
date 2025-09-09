@@ -282,6 +282,9 @@ document.addEventListener("keydown", async (event) => {
     try {
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const pdfAspect = pdfWidth / pdfHeight;
 
       const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
 
@@ -289,37 +292,40 @@ document.addEventListener("keydown", async (event) => {
         const div = divs[i];
 
         try {
-          // đảm bảo div hiển thị
-          div.style.display = "block";
-
           const canvas = await html2canvas(div, {
             scale: 1.5,
             useCORS: true,
             backgroundColor: "#ffffff"
           });
 
-          // nếu canvas fail thì bỏ qua
-          if (!canvas || canvas.width === 0 || canvas.height === 0) {
-            console.error("Canvas rỗng ở div", i, div);
-            continue;
+          if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+
+          // --- crop để full trang ---
+          const canvasAspect = canvas.width / canvas.height;
+          let sx = 0, sy = 0, sWidth = canvas.width, sHeight = canvas.height;
+
+          if (canvasAspect > pdfAspect) {
+            // ảnh rộng hơn -> crop ngang
+            sWidth = Math.round(canvas.height * pdfAspect);
+            sx = Math.round((canvas.width - sWidth) / 2);
+          } else if (canvasAspect < pdfAspect) {
+            // ảnh cao hơn -> crop dọc
+            sHeight = Math.round(canvas.width / pdfAspect);
+            sy = Math.round((canvas.height - sHeight) / 2);
           }
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.7);
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const cropCanvas = document.createElement("canvas");
+          cropCanvas.width = sWidth;
+          cropCanvas.height = sHeight;
+          cropCanvas.getContext("2d").drawImage(canvas, sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight);
 
-          // scale để vừa khít toàn trang
-          let imgWidth = pdfWidth;
-          let imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-          if (imgHeight > pdfHeight) {
-            imgHeight = pdfHeight;
-            imgWidth = (canvas.width * pdfHeight) / canvas.height;
-          }
+          const imgData = cropCanvas.toDataURL("image/jpeg", 0.8);
 
           if (i > 0) pdf.addPage();
-          pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+          pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
+          cropCanvas.width = 0;
+          cropCanvas.height = 0;
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
           alert("Có lỗi xảy ra khi tạo PDF!");
@@ -327,7 +333,6 @@ document.addEventListener("keydown", async (event) => {
         }
       }
 
-      // Xuất PDF ra tab mới
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, "_blank");
