@@ -284,7 +284,6 @@ document.addEventListener("keydown", async (event) => {
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const pdfRatio = pdfHeight / pdfWidth;
 
       const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
 
@@ -300,29 +299,11 @@ document.addEventListener("keydown", async (event) => {
 
           if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.85);
+          const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
-          // Tính tỷ lệ khung của div
-          const divRatio = canvas.height / canvas.width;
-
-          let imgWidth, imgHeight, posX, posY;
-
-          if (divRatio > pdfRatio) {
-            // Div cao hơn => fit theo chiều cao A4
-            imgHeight = pdfHeight;
-            imgWidth = (canvas.width * pdfHeight) / canvas.height;
-            posX = (pdfWidth - imgWidth) / 2; // căn giữa ngang
-            posY = 0;
-          } else {
-            // Div rộng hơn => fit theo chiều rộng A4
-            imgWidth = pdfWidth;
-            imgHeight = (canvas.height * pdfWidth) / canvas.width;
-            posX = 0;
-            posY = (pdfHeight - imgHeight) / 2; // căn giữa dọc
-          }
-
+          // 🔥 ép full A4, không chừa lề trắng
           if (i > 0) pdf.addPage();
-          pdf.addImage(imgData, "JPEG", posX, posY, imgWidth, imgHeight);
+          pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
