@@ -342,7 +342,6 @@ document.addEventListener("keydown", async (event) => {
     }
   }
 });
-</script>
 
 // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
 function getFileName() {
