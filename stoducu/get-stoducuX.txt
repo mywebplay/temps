@@ -284,6 +284,7 @@ document.addEventListener("keydown", async (event) => {
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
+      const margin = 10; // lề đều 10mm
 
       const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
 
@@ -292,18 +293,37 @@ document.addEventListener("keydown", async (event) => {
 
         try {
           const canvas = await html2canvas(div, {
-            scale: 1.5,
+            scale: 2,             // tăng nét thêm chút
             useCORS: true,
             backgroundColor: "#ffffff"
           });
 
           if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.9);
+          const imgData = canvas.toDataURL("image/jpeg", 0.9); // chất lượng cao hơn
 
-          // 🔥 ép full A4, không chừa lề trắng
+          const usableWidth = pdfWidth - margin * 2;
+          const usableHeight = pdfHeight - margin * 2;
+          const imgRatio = canvas.width / canvas.height;
+          const pageRatio = usableWidth / usableHeight;
+
+          let imgWidth, imgHeight;
+
+          if (imgRatio > pageRatio) {
+            // fit theo chiều rộng
+            imgWidth = usableWidth;
+            imgHeight = usableWidth / imgRatio;
+          } else {
+            // fit theo chiều cao
+            imgHeight = usableHeight;
+            imgWidth = usableHeight * imgRatio;
+          }
+
+          const posX = (pdfWidth - imgWidth) / 2;
+          const posY = (pdfHeight - imgHeight) / 2;
+
           if (i > 0) pdf.addPage();
-          pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+          pdf.addImage(imgData, "JPEG", posX, posY, imgWidth, imgHeight);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
