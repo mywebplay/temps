@@ -281,10 +281,7 @@ document.addEventListener("keydown", async (event) => {
 
     try {
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const margin = 10; // lề đều 10mm
+      let pdf; // khai báo sau khi render trang đầu tiên
 
       const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
 
@@ -293,37 +290,29 @@ document.addEventListener("keydown", async (event) => {
 
         try {
           const canvas = await html2canvas(div, {
-            scale: 2,             // tăng nét thêm chút
+            scale: 2, // tăng nhẹ độ nét
             useCORS: true,
             backgroundColor: "#ffffff"
           });
 
           if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.9); // chất lượng cao hơn
+          const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
-          const usableWidth = pdfWidth - margin * 2;
-          const usableHeight = pdfHeight - margin * 2;
-          const imgRatio = canvas.width / canvas.height;
-          const pageRatio = usableWidth / usableHeight;
+          // đặt chiều rộng trang PDF = 210mm (A4 ngang chuẩn)
+          const pdfWidth = 210;
+          // tính chiều cao trang PDF theo tỉ lệ div
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-          let imgWidth, imgHeight;
-
-          if (imgRatio > pageRatio) {
-            // fit theo chiều rộng
-            imgWidth = usableWidth;
-            imgHeight = usableWidth / imgRatio;
+          if (i === 0) {
+            // khởi tạo pdf với kích thước của trang đầu tiên
+            pdf = new jsPDF("p", "mm", [pdfWidth, pdfHeight]);
           } else {
-            // fit theo chiều cao
-            imgHeight = usableHeight;
-            imgWidth = usableHeight * imgRatio;
+            // thêm page với kích thước riêng
+            pdf.addPage([pdfWidth, pdfHeight]);
           }
 
-          const posX = (pdfWidth - imgWidth) / 2;
-          const posY = (pdfHeight - imgHeight) / 2;
-
-          if (i > 0) pdf.addPage();
-          pdf.addImage(imgData, "JPEG", posX, posY, imgWidth, imgHeight);
+          pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
@@ -332,9 +321,11 @@ document.addEventListener("keydown", async (event) => {
         }
       }
 
-      const pdfBlob = pdf.output("blob");
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      window.open(pdfUrl, "_blank");
+      if (pdf) {
+        const pdfBlob = pdf.output("blob");
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        window.open(pdfUrl, "_blank");
+      }
 
     } catch (err) {
       console.error("Lỗi khi tạo PDF", err);
