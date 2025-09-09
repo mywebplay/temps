@@ -191,7 +191,7 @@ if (savedHead) {
     <span class="pdf-close">❌</span>
     <div class="pdf-instruction">
 Nhấn Ctrl + F8 nếu bạn muốn download PDF.
-Lưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF, nhưng cẩn thận tránh làm che khuất nội dung hiển thị
+Lưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF nếu bạn muốn, nhưng hãy cẩn thận tránh làm che khuất nội dung hiển thị
 Sau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
     </div>
     <div class="pdf-tips">
