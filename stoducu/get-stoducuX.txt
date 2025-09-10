@@ -185,7 +185,6 @@ if (savedHead) {
 <!-- JS -->
 <script>
   function showOverlay() {
-   function showOverlay() {
   document.getElementById("overlay").style.display = "flex";
   updateProgress(0);
 }
