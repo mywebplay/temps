@@ -139,49 +139,67 @@ if (savedHead) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- HTML -->
-<div id="pdf-overlay">
-  <div class="overlay-spinner"></div>
+<!-- Overlay + Progress bar -->
+<div id="overlay" style="display:none;">
+  <div class="progress-container">
+    <div id="progress-bar"></div>
+    <div id="progress-text">0%</div>
+  </div>
 </div>
 
-<!-- CSS -->
 <style>
-  #pdf-overlay {
-    position: fixed;
-    inset: 0;
-    display: none; /* ẩn mặc định */
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.45); /* nền mờ */
-    z-index: 9999;
-  }
-  #pdf-overlay.visible {
-    display: flex; /* hiện khi có class visible */
-  }
-  .overlay-spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid rgba(255,255,255,0.2);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: overlay-spin 1s linear infinite;
-  }
-  @keyframes overlay-spin {
-    to { transform: rotate(360deg); }
-  }
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.progress-container {
+  width: 60%;
+  max-width: 500px;
+  background: #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  text-align: center;
+}
+#progress-bar {
+  height: 20px;
+  width: 0%;
+  background: #4caf50; /* xanh lá */
+  transition: width 0.3s ease;
+}
+#progress-text {
+  margin-top: 10px;
+  color: white;
+  font-size: 16px;
+}
 </style>
 
 <!-- JS -->
 <script>
   function showOverlay() {
-    document.getElementById("pdf-overlay").classList.add("visible");
-    document.body.classList.add("pdf-overlay-active");
-  }
+   function showOverlay() {
+  document.getElementById("overlay").style.display = "flex";
+  updateProgress(0);
+}
 
-  function hideOverlay() {
-    document.getElementById("pdf-overlay").classList.remove("visible");
-    document.body.classList.remove("pdf-overlay-active");
-  }
+function hideOverlay() {
+  document.getElementById("overlay").style.display = "none";
+}
+
+function updateProgress(percent) {
+  const bar = document.getElementById("progress-bar");
+  const text = document.getElementById("progress-text");
+  bar.style.width = percent + "%";
+  text.textContent = percent + "%";
+}
 </script>
 
 
@@ -286,26 +304,25 @@ document.addEventListener("keydown", async (event) => {
       const margin = 10; // lề đều 10mm
 
       const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
+      const totalDivs = divs.filter(div => window.getComputedStyle(div).display !== "none").length;
+      let processed = 0;
 
       for (let i = 0; i < divs.length; i++) {
         const div = divs[i];
 
-        // 👉 Nếu display:none thì bỏ qua
-        if (window.getComputedStyle(div).display === "none") {
-          console.log(`Bỏ qua div ${i} vì display:none`);
-          continue;
-        }
+        // bỏ qua nếu bị ẩn
+        if (window.getComputedStyle(div).display === "none") continue;
 
         try {
           const canvas = await html2canvas(div, {
-            scale: 2, // tăng nét thêm chút
+            scale: 1.5,             // tăng nét
             useCORS: true,
             backgroundColor: "#ffffff"
           });
 
           if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.9);
+          const imgData = canvas.toDataURL("image/jpeg", 0.8);
 
           const usableWidth = pdfWidth - margin * 2;
           const usableHeight = pdfHeight - margin * 2;
@@ -313,7 +330,6 @@ document.addEventListener("keydown", async (event) => {
           const pageRatio = usableWidth / usableHeight;
 
           let imgWidth, imgHeight;
-
           if (imgRatio > pageRatio) {
             imgWidth = usableWidth;
             imgHeight = usableWidth / imgRatio;
@@ -325,8 +341,13 @@ document.addEventListener("keydown", async (event) => {
           const posX = (pdfWidth - imgWidth) / 2;
           const posY = (pdfHeight - imgHeight) / 2;
 
-          if (i > 0) pdf.addPage();
+          if (processed > 0) pdf.addPage();
           pdf.addImage(imgData, "JPEG", posX, posY, imgWidth, imgHeight);
+
+          // cập nhật progress
+          processed++;
+          const percent = Math.round((processed / totalDivs) * 100);
+          updateProgress(percent);
 
         } catch (err) {
           console.error("Lỗi khi render div " + i, err);
