@@ -290,16 +290,22 @@ document.addEventListener("keydown", async (event) => {
       for (let i = 0; i < divs.length; i++) {
         const div = divs[i];
 
+        // 👉 Nếu display:none thì bỏ qua
+        if (window.getComputedStyle(div).display === "none") {
+          console.log(`Bỏ qua div ${i} vì display:none`);
+          continue;
+        }
+
         try {
           const canvas = await html2canvas(div, {
-            scale: 2,             // tăng nét thêm chút
+            scale: 2, // tăng nét thêm chút
             useCORS: true,
             backgroundColor: "#ffffff"
           });
 
           if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.9); // chất lượng cao hơn
+          const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
           const usableWidth = pdfWidth - margin * 2;
           const usableHeight = pdfHeight - margin * 2;
@@ -309,11 +315,9 @@ document.addEventListener("keydown", async (event) => {
           let imgWidth, imgHeight;
 
           if (imgRatio > pageRatio) {
-            // fit theo chiều rộng
             imgWidth = usableWidth;
             imgHeight = usableWidth / imgRatio;
           } else {
-            // fit theo chiều cao
             imgHeight = usableHeight;
             imgWidth = usableHeight * imgRatio;
           }
