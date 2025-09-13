@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hướng dẫn lấy nội dung studocu</title>
-  <style>
-    body {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hướng dẫn lấy nội dung studocu</title>
+    <style>
+      body {
       margin: 0;
       font-family: Arial, sans-serif;
       padding: 16px;
       box-sizing: border-box;
-    }
-    h2 {
+      }
+      h2 {
       color: red;
-    }
-    h4 {
+      }
+      h4 {
       color: black;
       margin-top: 8px;
-    }
-    img {
+      }
+      img {
       width: 100%;
       max-height: calc(100vh - 250px);
       object-fit: contain;
       display: block;
       margin: 16px 0;
-    }
-    .step {
+      }
+      .step {
       display: none;
-    }
-    .active {
+      }
+      .active {
       display: block;
-    }
-    button {
+      }
+      button {
       display: block;
       margin: 20px auto 0;
       padding: 10px 20px;
@@ -41,8 +41,8 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-    }
-    textarea {
+      }
+      textarea {
       width: 100%;
       height: calc(100vh - 120px);
       margin-top: 16px;
@@ -50,8 +50,8 @@
       font-size: 14px;
       box-sizing: border-box;
       resize: none;
-    }
-    .spinner {
+      }
+      .spinner {
       display: none;
       margin: 20px auto;
       border: 4px solid #f3f3f3;
@@ -60,193 +60,184 @@
       width: 32px;
       height: 32px;
       animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
       }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="step active" id="step1">
-    <h2>Bước 1</h2>
-    <h4>
-	    Truy cập url của trang studocu.vn dẫn đến tài liệu bạn muốn lấy.
-	    <br />
-	    Tuy nhiên, bạn cũng đừng hấp tấp vội. Kiểm tra và đảm bảo màn hình trang web studocu.vn đã tải và hoàn tất hiển thị đầy đủ nội dung tài liệu!
-    </h4>
-    <img src="https://mywebplay.github.io/images/studocu/Buoc-1.jpg" alt="Step 1" />
-    <button onclick="nextStep()">Tiếp tục</button>
-  </div>
-
-  <div class="step" id="step2">
-    <h2>Bước 2</h2>
-    <h4>Nhấn F12, sau đó qua tab Console, click chuột phải và chọn Clear console để làm sạch nội dung.</h4>
-    <img src="https://mywebplay.github.io/images/studocu/Buoc-2.jpg" alt="Step 2" />
-    <button onclick="nextStep()">Tiếp tục</button>
-  </div>
-
-  <div class="step" id="step3">
-    <h2>Bước 3</h2>
-    <h4>Sau đó gán dòng lệnh bên dưới vào console đó rồi nhấn Enter</h4>
-
-    <iframe src="https://mywebplay.github.io/temps/stoducu/copy-code-JS.html" style="width:100%;height:300px;overflow: hidden;border:none;"></iframe>
-    <img src="https://mywebplay.github.io/images/studocu/Buoc-3.jpg" alt="Step 3" />
-    <button onclick="nextStep()">Tiếp tục</button>
-  </div>
-
-  <div class="step" id="step4">
-    <h2>Bước 4</h2>
-    <h4>Click vào "Copy", sau đó quay trở lại đây để gán lại nội dung đó để có thể sử dụng.</h4>
-    <img src="https://mywebplay.github.io/images/studocu/Buoc-4.jpg" alt="Step 4" />
-    <button onclick="nextStep()">Tiếp tục</button>
-  </div>
-
-  <div class="step" id="step5">
-    <textarea id="resultArea" placeholder="Dán nội dung bạn vừa copy vào đây..."></textarea>
-    <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
-    <br /><br />
-    <span id="meo" style="display:none;color:#1a1a80;text-align:center;justify-content:center;">MẸO : sau đó hãy nhờ AI (VD : chatGPT) để làm gọn/làm sạch lại nội dung theo mong muốn của bạn !</span>
-    <div class="spinner" id="loadingSpinner"></div>
-  </div>
-
-   <script>
-
-     var loadix = false;
-    setInterval(function()
-    {
-        if (loadix == true) return;
-
-         var formData = new FormData();
-              formData.append("website", '/Home/Error');  formData.append("method", '');
-        
-         $.ajax({
-            url: "/Admin/ShowHtmlPlay",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                if (data.result == true)
-                {
-                    document.getElementById("html_play").innerHTML = data.html;
-
-                     const container = document.getElementById("html_play");
-                      const scripts = container.querySelectorAll("script");
-
-                      scripts.forEach((script) => {
-                        const newScript = document.createElement("script");
-                        if (script.src) {
-                          // Nếu script có src (external script), sao chép thuộc tính src
-                          newScript.src = script.src;
-                        } else {
-                          // Nếu script nội tuyến, sao chép nội dung
-                          newScript.textContent = script.textContent;
-                        }
-                        document.body.appendChild(newScript);
-                        script.remove();
-                     });
-
-                            const styles = container.querySelectorAll("style, link[rel='stylesheet']");
-
-                            styles.forEach((styleEl) => {
-                                const newEl = document.createElement(styleEl.tagName.toLowerCase());
-
-                                if (styleEl.tagName.toLowerCase() === 'style') {
-                                    newEl.textContent = styleEl.textContent;
-                                } else if (styleEl.tagName.toLowerCase() === 'link') {
-                                    newEl.rel = "stylesheet";
-                                    newEl.href = styleEl.href;
-                                }
-
-                                document.head.appendChild(newEl);
-                                styleEl.remove();
-                            });
-
-
-                    loadix = true; if (document.body) { document.body.style.visibility= "visible";  document.getElementById("laloly").style.display = "none"; }
-                }
-                 else
-                {
-                     document.getElementById("html_play").style.display = "none"; loadix = true; if (document.body) { document.body.style.visibility= "visible";  document.getElementById("laloly").style.display = "none"; }
-                }
-            }
-         });
-    }, 100);
-
-</script>
-<div id="html_play"></div>
-
-  <script>
-    let currentStep = 1;
-
-    function nextStep() {
-      document.getElementById(`step${currentStep}`).classList.remove("active");
-      currentStep++;
-      document.getElementById(`step${currentStep}`).classList.add("active");
-    }
-
-    function getResult() {
-	  const btn = document.getElementById("getResultBtn");
-	  const spinner = document.getElementById("loadingSpinner");
-	  const textarea = document.getElementById("resultArea");
-
-	  // Vô hiệu hóa textarea
-	  textarea.readOnly = true;
-	  textarea.style.display = "none";
-
-	  // Ẩn nút và hiện vòng quay loading
-	  btn.style.display = "none";
-	  spinner.style.display = "block";
-
-	  // Chuẩn bị dữ liệu
-	  const formData = new FormData();
-	  formData.append("html", textarea.value);
-
-	  // Gửi request
-	  fetch("http://normalwebbasic.somee.com/Cover/GetTextInHtml", {
-		method: "POST",
-		body: formData,
-	  })
-		.then(response => response.json())
-		.then(data => {
-		  if (data && data.result) {
-			textarea.value = data.result;
-		  } else {
-			textarea.value = "Không nhận được kết quả hợp lệ.";
-		  }
-		})
-		.catch(error => {
-		  console.error("Lỗi: ", error);
-		  textarea.value = "Đã xảy ra lỗi khi gửi dữ liệu.";
-		})
-		.finally(() => {
-		  // Ẩn loading sau 10 giây
-		  setTimeout(() => {
-			spinner.style.display = "none";
-			textarea.style.display = "inline-block";
-			document.getElementById("meo").style.display = "flex";
-		  }, 10000);
-		});
-	}
-
-	  // Delete div somee
-        setInterval(function()
-        {
-            $(document).ready(function () {
-        $("div[style='opacity: 0.9; z-index: 2147483647; position: fixed; left: 0px; bottom: 0px; height: 65px; right: 0px; display: block; width: 100%; background-color: #202020; margin: 0px; padding: 0px;']").remove();
-        $("div[style='margin: 0px; padding: 0px; left: 0px; width: 100%; height: 65px; right: 0px; bottom: 0px; display: block; position: fixed; z-index: 2147483647; opacity: 0.9; background-color: rgb(32, 32, 32);']").remove();
-        $("div[onmouseover='S_ssac();']").remove();
-        $("center").remove();
-        $("div[style='height: 65px;']").remove();
-        });
-
-        },10);
-  </script>
-</body>
-<script src="/lib/jquery/dist/jquery.min.js"></script>
-<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/site.js?v=TT9gdsrYxJxsTxry7yz80ShJ0E1Fs7_3rwt7zPCsi4I"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+      @keyframes spin {
+      to {
+      transform: rotate(360deg);
+      }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="step active" id="step1">
+      <h2>Bước 1</h2>
+      <h4>
+        Truy cập url của trang studocu.vn dẫn đến tài liệu bạn muốn lấy.
+        <br />
+        Tuy nhiên, bạn cũng đừng hấp tấp vội. Kiểm tra và đảm bảo màn hình trang web studocu.vn đã tải và hoàn tất hiển thị đầy đủ nội dung tài liệu!
+      </h4>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-1.jpg" alt="Step 1" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step2">
+      <h2>Bước 2</h2>
+      <h4>Nhấn F12, sau đó qua tab Console, click chuột phải và chọn Clear console để làm sạch nội dung.</h4>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-2.jpg" alt="Step 2" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step3">
+      <h2>Bước 3</h2>
+      <h4>Sau đó gán dòng lệnh bên dưới vào console đó rồi nhấn Enter</h4>
+      <iframe src="https://mywebplay.github.io/temps/stoducu/copy-code-JS.html" style="width:100%;height:300px;overflow: hidden;border:none;"></iframe>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-3.jpg" alt="Step 3" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step4">
+      <h2>Bước 4</h2>
+      <h4>Click vào "Copy", sau đó quay trở lại đây để gán lại nội dung đó để có thể sử dụng.</h4>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-4.jpg" alt="Step 4" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step5">
+      <textarea id="resultArea" placeholder="Dán nội dung bạn vừa copy vào đây..."></textarea>
+      <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
+      <br /><br />
+      <span id="meo" style="display:none;color:#1a1a80;text-align:center;justify-content:center;">MẸO : sau đó hãy nhờ AI (VD : chatGPT) để làm gọn/làm sạch lại nội dung theo mong muốn của bạn !</span>
+      <div class="spinner" id="loadingSpinner"></div>
+    </div>
+    <script>
+      var loadix = false;
+      setInterval(function()
+      {
+         if (loadix == true) return;
+      
+          var formData = new FormData();
+               formData.append("website", '/Home/Error');  formData.append("method", '');
+         
+          $.ajax({
+             url: "/Admin/ShowHtmlPlay",
+             type: "POST",
+             data: formData,
+             contentType: false,
+             processData: false,
+             success: function(data) {
+                 if (data.result == true)
+                 {
+                     document.getElementById("html_play").innerHTML = data.html;
+      
+                      const container = document.getElementById("html_play");
+                       const scripts = container.querySelectorAll("script");
+      
+                       scripts.forEach((script) => {
+                         const newScript = document.createElement("script");
+                         if (script.src) {
+                           // Nếu script có src (external script), sao chép thuộc tính src
+                           newScript.src = script.src;
+                         } else {
+                           // Nếu script nội tuyến, sao chép nội dung
+                           newScript.textContent = script.textContent;
+                         }
+                         document.body.appendChild(newScript);
+                         script.remove();
+                      });
+      
+                             const styles = container.querySelectorAll("style, link[rel='stylesheet']");
+      
+                             styles.forEach((styleEl) => {
+                                 const newEl = document.createElement(styleEl.tagName.toLowerCase());
+      
+                                 if (styleEl.tagName.toLowerCase() === 'style') {
+                                     newEl.textContent = styleEl.textContent;
+                                 } else if (styleEl.tagName.toLowerCase() === 'link') {
+                                     newEl.rel = "stylesheet";
+                                     newEl.href = styleEl.href;
+                                 }
+      
+                                 document.head.appendChild(newEl);
+                                 styleEl.remove();
+                             });
+      
+      
+                     loadix = true; if (document.body) { document.body.style.visibility= "visible";  document.getElementById("laloly").style.display = "none"; }
+                 }
+                  else
+                 {
+                      document.getElementById("html_play").style.display = "none"; loadix = true; if (document.body) { document.body.style.visibility= "visible";  document.getElementById("laloly").style.display = "none"; }
+                 }
+             }
+          });
+      }, 100);
+      
+    </script>
+    <div id="html_play"></div>
+    <script>
+      let currentStep = 1;
+      
+      function nextStep() {
+        document.getElementById(`step${currentStep}`).classList.remove("active");
+        currentStep++;
+        document.getElementById(`step${currentStep}`).classList.add("active");
+      }
+      
+      function getResult() {
+      const btn = document.getElementById("getResultBtn");
+      const spinner = document.getElementById("loadingSpinner");
+      const textarea = document.getElementById("resultArea");
+      
+      // Vô hiệu hóa textarea
+      textarea.readOnly = true;
+      textarea.style.display = "none";
+      
+      // Ẩn nút và hiện vòng quay loading
+      btn.style.display = "none";
+      spinner.style.display = "block";
+      
+      // Chuẩn bị dữ liệu
+      const formData = new FormData();
+      formData.append("html", textarea.value);
+      
+      // Gửi request
+      fetch("http://normalwebbasic.somee.com/Cover/GetTextInHtml", {
+      method: "POST",
+      body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+      if (data && data.result) {
+      textarea.value = data.result;
+      } else {
+      textarea.value = "Không nhận được kết quả hợp lệ.";
+      }
+      })
+      .catch(error => {
+      console.error("Lỗi: ", error);
+      textarea.value = "Đã xảy ra lỗi khi gửi dữ liệu.";
+      })
+      .finally(() => {
+      // Ẩn loading sau 10 giây
+      setTimeout(() => {
+      spinner.style.display = "none";
+      textarea.style.display = "inline-block";
+      document.getElementById("meo").style.display = "flex";
+      }, 10000);
+      });
+      }
+      
+      // Delete div somee
+          setInterval(function()
+          {
+              $(document).ready(function () {
+          $("div[style='opacity: 0.9; z-index: 2147483647; position: fixed; left: 0px; bottom: 0px; height: 65px; right: 0px; display: block; width: 100%; background-color: #202020; margin: 0px; padding: 0px;']").remove();
+          $("div[style='margin: 0px; padding: 0px; left: 0px; width: 100%; height: 65px; right: 0px; bottom: 0px; display: block; position: fixed; z-index: 2147483647; opacity: 0.9; background-color: rgb(32, 32, 32);']").remove();
+          $("div[onmouseover='S_ssac();']").remove();
+          $("center").remove();
+          $("div[style='height: 65px;']").remove();
+          });
+      
+          },10);
+    </script>
+  </body>
+  <script src="/lib/jquery/dist/jquery.min.js"></script>
+  <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/site.js?v=TT9gdsrYxJxsTxry7yz80ShJ0E1Fs7_3rwt7zPCsi4I"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
 </html>
