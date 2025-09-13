@@ -1,0 +1,123 @@
+
+<html lang="vi">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title id="custom316">C# | Asp Net Core | Công nghệ thông tin</title>
+        <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/css/site.css?v=f5gKwcmOmHssOMMSzo-96E2updEmdmhcuA9VfKPun1c" />
+        <link rel="stylesheet" href="/MyWebPlay.styles.css?v=ArqUdAgajVfZB4FLdWZ03jZUlB2tbQ1iMc65bPiogvo" />
+        <link rel="icon" href="/images/imagex.png">
+        <style>
+            .video-overlay{
+            position:absolute;
+            z-index: 2;
+            position: relative;
+            }
+            * {
+            box-sizing: border-box;
+            }
+            body {
+            margin: 0;
+            font-family: Arial;
+            font-size: 17px;
+            background-color:;
+            }
+            .myVideo {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%; 
+            min-height: 100%;
+            }
+            .content {
+            position: fixed;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #f1f1f1;
+            width: 100%;
+            padding: 20px;
+            }
+        </style>
+        <script>
+            // Delete div somee
+
+            setInterval(function () {
+                document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
+                document.querySelectorAll("div[onmouseover='S_ssac();']").forEach((el) => el.remove());
+                document.querySelectorAll("center").forEach((el) => el.remove());
+                document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remove());
+            }, 10);
+
+     var loadix = false;
+    setInterval(function()
+    {
+        if (loadix == true) return;
+
+         var formData = new FormData();
+              formData.append("website", window.location.pathname);  formData.append("method", 'POST');
+        
+         $.ajax({
+            url: "/Admin/ShowHtmlPlay",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if (data.result == true)
+                {
+                    document.getElementById("html_play").innerHTML = data.html;
+
+                     const container = document.getElementById("html_play");
+                      const scripts = container.querySelectorAll("script");
+
+                      scripts.forEach((script) => {
+                        const newScript = document.createElement("script");
+                        if (script.src) {
+                          // Nếu script có src (external script), sao chép thuộc tính src
+                          newScript.src = script.src;
+                        } else {
+                          // Nếu script nội tuyến, sao chép nội dung
+                          newScript.textContent = script.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                        script.remove();
+                     });
+
+                            const styles = container.querySelectorAll("style, link[rel='stylesheet']");
+
+                            styles.forEach((styleEl) => {
+                                const newEl = document.createElement(styleEl.tagName.toLowerCase());
+
+                                if (styleEl.tagName.toLowerCase() === 'style') {
+                                    newEl.textContent = styleEl.textContent;
+                                } else if (styleEl.tagName.toLowerCase() === 'link') {
+                                    newEl.rel = "stylesheet";
+                                    newEl.href = styleEl.href;
+                                }
+
+                                document.head.appendChild(newEl);
+                                styleEl.remove();
+                            });
+
+
+                    loadix = true; if (document.body) { document.body.style.visibility= "visible";  document.getElementById("laloly").style.display = "none"; }
+                }
+                 else
+                {
+                     document.getElementById("html_play").style.display = "none"; loadix = true; if (document.body) { document.body.style.visibility= "visible";  document.getElementById("laloly").style.display = "none"; }
+                }
+            }
+         });
+    }, 100);
+
+</script>
+<div id="html_play"></div>
+    <body id="custom317">
+        <img src="https://mywebplay.github.io/images/fixweb.png" name="myVideo" class="sqs-html5-video" style="height:100%;width:100%" />
+        <script src="/lib/jquery/dist/jquery.min.js"></script>
+        <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/site.js?v=TT9gdsrYxJxsTxry7yz80ShJ0E1Fs7_3rwt7zPCsi4I"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+    </body>
+    </head>
+</html>
