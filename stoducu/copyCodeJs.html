@@ -1,79 +1,74 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8" />
-<title>Copy JS Code</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-padding: 30px;
-background: #f9f9f9;
-overflow: hidden;
-background-color : #272822;
-}
-.code-container {
-position: relative;
-background: #272822;
-color: #f8f8f2;
-padding: 15px 50px 15px 15px;
-border-radius: 8px;
-font-family: Consolas, monospace;
-white-space: pre-wrap;
-word-break: break-word;
-}
-.copy-btn {
-position: absolute;
-top: 10px;
-right: 10px;
-background: #4CAF50;
-color: white;
-border: none;
-padding: 6px 10px;
-border-radius: 4px;
-cursor: pointer;
-font-size: 12px;
-}
-.copy-btn:active {
-background: #45a049;
-}
-.copy-btn.copied::after {
-content: " ✓";
-}
-</style>
-</head>
-<body>
-
-<div class="code-container">
-<code>
-// Copy đoạn này để lấy nội dung tài liệu
-var bvl_result = document.getElementById("page-container").outerHTML;
-console.log(bvl_result);
-
-// Copy đoạn này để lấy nội dung header
-console.log(document.head.outerHTML);
-
-// Copy đoạn này để lấy chiều cao của tài liệu
-const el = document.querySelector(".Viewer_descaler__rUszn");
-if (el) {
-  const height = parseFloat(window.getComputedStyle(el).height);
-  console.log(height);
-}
-</code>
-</div>
-
-<script>
-function copyCode(btn) {
-const code = btn.parentElement.querySelector("code").innerText;
-navigator.clipboard.writeText(code).then(() => {
-btn.classList.add("copied");
-btn.textContent = "Copied";
-setTimeout(() => {
-btn.textContent = "Copy";
-btn.classList.remove("copied");
-}, 2000);
-});
-}
-</script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Copy JS Code</title>
+    <style>
+      body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f9f9f9;
+      overflow: hidden;
+      background-color : #272822;
+      }
+      .code-container {
+      position: relative;
+      background: #272822;
+      color: #f8f8f2;
+      padding: 15px 50px 15px 15px;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      }
+      .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      }
+      .copy-btn:active {
+      background: #45a049;
+      }
+      .copy-btn.copied::after {
+      content: " ✓";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="code-container">
+      <code>
+      // Copy đoạn này để lấy nội dung tài liệu
+      var bvl_result = document.getElementById("page-container").outerHTML;
+      console.log(bvl_result);
+      // Copy đoạn này để lấy nội dung header
+      console.log(document.head.outerHTML);
+      // Copy đoạn này để lấy chiều cao của tài liệu
+      const el = document.querySelector(".Viewer_descaler__rUszn");
+      if (el) {
+      const height = parseFloat(window.getComputedStyle(el).height);
+      console.log(height);
+      }
+      </code>
+    </div>
+    <script>
+      function copyCode(btn) {
+      const code = btn.parentElement.querySelector("code").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+      btn.classList.add("copied");
+      btn.textContent = "Copied";
+      setTimeout(() => {
+      btn.textContent = "Copy";
+      btn.classList.remove("copied");
+      }, 2000);
+      });
+      }
+    </script>
+  </body>
 </html>
