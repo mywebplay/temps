@@ -51,14 +51,14 @@
   .checkmark::after {
     content: '';
     position: absolute;
-    left: 35%;
-    top: 25%;
-    width: 30%;
-    height: 60%;
+    left: 50%;
+    top: 50%;
+    width: 40px;   /* độ dài nhánh dấu tích */
+    height: 80px;  /* độ dài nhánh dấu tích */
     border: solid white;
     border-width: 0 12px 12px 0;
-    transform: rotate(45deg);
-  }
+    transform: translate(-50%, -50%) rotate(45deg); /* căn giữa */
+}
 </style>
 </head>
 <body>
