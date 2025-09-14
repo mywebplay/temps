@@ -75,7 +75,7 @@
     document.getElementById('spinnerContainer').style.display = 'none';
     document.getElementById('checkmark').style.display = 'block';
 	localStorage.setItem("application_1","user");
-  }, 5000);
+  }, 10000);
   
          // Delete div somee
          setInterval(function () {
