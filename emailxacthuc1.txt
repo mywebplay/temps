@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác thực sử dụng dịch vụ</title>
+    <style>
+        /* Reset một số style cơ bản */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 500px;
+            max-width: 90%;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus {
+            border-color: #5563DE;
+            box-shadow: 0 0 8px rgba(85, 99, 222, 0.3);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #5563DE;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #3f4fb1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Xác thực sử dụng dịch vụ</h2>
+        <form method="post" action="/Cover/CreateClientNumber">
+            <div class="form-group" style="display:none">
+                <input type="text" id="nextURL" name="nextURL">
+            </div>
+
+            <div class="form-group" style="display:none">
+                <input type="text" id="nextNextURL" name="nextNextURL">
+            </div>
+
+            <div class="form-group">
+                <input type="email" id="txtEmail" name="txtEmail" placeholder="Nhập Email của bạn">
+            </div>
+
+            <div class="form-group" style="display:none">
+                <input type="text" id="txtPath" name="txtPath">
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>
