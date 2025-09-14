@@ -75,7 +75,8 @@ function CallSecureApi(s, replace) {
   return fetch("/Cover/SecureWithCallApi", { // <-- thêm return
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ s : s, replace : replace } )
+    body: JSON.stringify({ s : s, replace : replace } ),
+    credentials: "include"
   })
   .then(res => res.text()) // lấy raw text trước
   .then(text => {
