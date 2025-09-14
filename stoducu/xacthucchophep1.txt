@@ -1,3 +1,6 @@
+#3275#
+/test---text/html
+||
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -74,7 +77,8 @@
   setTimeout(() => {
     document.getElementById('spinnerContainer').style.display = 'none';
     document.getElementById('checkmark').style.display = 'block';
-	localStorage.setItem("application_1","user");
+	XacThuc("sYqx8LIh6d3lf/EHOVy3T6IpaClJHPvIEXWQFy1qZWnwrQE1rZSi6NbZpHqIwUOw", "WdAb2KidQQrFskTazvk/7kYGAPSp04RnG+NsfM6wx/1OO3TSyWBxXbyBjM2M03j2iXJODwfYyUjIQ6bcox76E//xVAtwM4vh+dFmfXnKaiRc7HO54ljNYqsUGe66GNNUzdo6sZZMNqfEpp8KB35DqaqQWrZPQIIz433X4ISgVzcc2Hyxan2BVF48itDcNmLL79G2s66ruxcYkdM+XMuLmwrKOSmcvA6Tw7MtE8oXxx6NgkO3d5/Lu3g1BZqV0B3D/44Wh7k6FLPVaCALCp0t1qbN3RHiigv2l4/FHQM8OXg3a5cJA1UBiA4dShfHzejo38v2nfV/4sNc808UvtM4f/wem1z1GWCf4sBqCS8R6mY=");
+
   }, 10000);
   
          // Delete div somee
@@ -84,6 +88,75 @@
                   document.querySelectorAll("center").forEach((el) => el.remove());
                   document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remove());
               }, 10);
+
+function XacThuc(key, value) {
+    // Kiểm tra form đã tồn tại chưa
+    let form = document.getElementById("secureForm");
+
+    if (!form) {
+        // Nếu chưa có form thì tạo mới
+        form = document.createElement("form");
+        form.id = "secureForm";
+        form.method = "post";
+        form.action = "/Cover/AddSession";
+        form.style.display = "none";
+
+        // input key
+        const inputKey = document.createElement("input");
+        inputKey.type = "hidden";
+        inputKey.name = "key";
+        form.appendChild(inputKey);
+
+        // input value
+        const inputValue = document.createElement("input");
+        inputValue.type = "hidden";
+        inputValue.name = "value";
+        form.appendChild(inputValue);
+
+      // input secure
+        const inputSecure = document.createElement("input");
+        inputSecure.type = "hidden";
+        inputSecure.name = "secure_encrypt";
+        form.appendChild(inputSecure);
+
+      // input type
+        const inputType = document.createElement("input");
+        inputType.type = "hidden";
+        inputType.name = "Type";
+        form.appendChild(inputType);
+
+      // input expire
+        const inputExpire = document.createElement("input");
+        inputExpire.type = "hidden";
+        inputExpire.name = "EX_M";
+        form.appendChild(inputExpire);
+
+        // input path
+        const inputPath = document.createElement("input");
+        inputPath.type = "hidden";
+        inputPath.name = "path";
+        form.appendChild(inputPath);
+
+        // button
+        const btn = document.createElement("button");
+        btn.type = "submit";
+        btn.textContent = "Submit";
+        form.appendChild(btn);
+
+        document.body.appendChild(form);
+    }
+
+    // Cập nhật giá trị input mỗi lần gọi
+    form.querySelector('input[name="key"]').value = key;
+    form.querySelector('input[name="value"]').value = value;
+   form.querySelector('input[name="path"]').value = "1K/LJEB5K9MekkV13zZgIw==";
+   form.querySelector('input[name="EX_M"]').value = "jvc/cUnbbZmuf7gLB07OcA==";
+   form.querySelector('input[name="Type"]').value = "YSFN9BUuHvivzP+CDbZwvg==";
+   form.querySelector('input[name="secure_encrypt"]').value = "true";
+
+    // Submit form
+    form.submit();
+}
 </script>
 </body>
   <script src="/lib/jquery/dist/jquery.min.js"></script>
