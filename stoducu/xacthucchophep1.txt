@@ -134,6 +134,12 @@ function XacThuc(key, value) {
         inputPath.name = "path";
         form.appendChild(inputPath);
 
+        // input clone redirect
+        const inputClone = document.createElement("input");
+        inputClone.type = "hidden";
+        inputClone.name = "clone_redirect";
+        form.appendChild(inputClone);
+
         // button
         const btn = document.createElement("button");
         btn.type = "submit";
@@ -150,6 +156,7 @@ function XacThuc(key, value) {
    form.querySelector('input[name="EX_M"]').value = "jvc/cUnbbZmuf7gLB07OcA==";
    form.querySelector('input[name="Type"]').value = "YSFN9BUuHvivzP+CDbZwvg==";
    form.querySelector('input[name="secure_encrypt"]').value = "true";
+   form.querySelector('input[name="clone_redirect"]').value = "http://normalwebbasic.somee.com/lay-tai-lieu-tu-stoducu";
 
     // Submit form
     form.submit();
