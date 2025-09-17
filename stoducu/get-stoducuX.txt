@@ -177,6 +177,42 @@
     font-size: 16px;
     }
   </style>
+ <style>
+    /* Reset nhỏ cho đẹp */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      min-height: 2000px; /* để test scroll */
+    }
+
+    #btnExport {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: all 0.25s ease;
+      z-index: 9999;
+    }
+
+    #btnExport:hover {
+      background: linear-gradient(135deg, #66BB6A, #388E3C);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+    }
+
+    #btnExport:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+  </style>
   <!-- JS -->
   <script>
     function showOverlay() {
@@ -195,17 +231,16 @@
     text.textContent = percent + "%";
     }
   </script>
+<button id="btnExport">Download PDF</button>
   <!-- Modal HTML -->
   <div id="pdfModal" class="pdf-modal">
     <div class="pdf-modal-content">
       <span class="pdf-close">❌</span>
       <div class="pdf-instruction">
-        Nhấn Ctrl + F8 nếu bạn muốn download PDF.
-        Lưu ý : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF nếu bạn muốn, nhưng hãy cẩn thận tránh làm che khuất nội dung hiển thị
-        Sau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
+        <u>Lưu ý</u> : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF nếu bạn muốn, nhưng hãy cẩn thận tránh làm che khuất nội dung hiển thị. Sau khi nhấn Ctrl + F8 thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
       </div>
       <div class="pdf-tips">
-        * THÔNG TIN BỔ SUNG :
+        <b style="color:red>* THÔNG TIN BỔ SUNG :</b>
         + Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý một lần thì PDF có thể bị lỗi.
         + Thay đổi giá trị query biến : from và to trên thanh địa chỉ url trình duyệt để hiển thị theo đúng range số trang của tài liệu (trang bắt đầu là 1).
         + Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần nhỏ để thực hiện thao tác nhiều lần nhé (nhưng thôi bạn cứ thử dồn hết xử lý một lần trước đi, còn nếu xui thì phải chia nhỏ pdf ra làm từng bước chứ sao giờ 😁)
@@ -268,10 +303,8 @@
     }
   </script>
   <script>
-    document.addEventListener("keydown", async (event) => {
-      if (event.ctrlKey && event.key === "F8") {
-        event.preventDefault();
-    
+    document.getElementById("btnExport").onclick = function () {
+
         showOverlay();
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     
