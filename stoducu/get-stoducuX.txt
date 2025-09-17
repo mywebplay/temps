@@ -312,6 +312,7 @@
         const originalHtmlOverflow = document.documentElement.style.overflow;
         document.body.style.overflow = "hidden";
         document.documentElement.style.overflow = "hidden";
+        document.getElementById("btnExport").style.display = "none";
     
         try {
           const { jsPDF } = window.jspdf;
@@ -386,6 +387,7 @@
         } finally {
           document.body.style.overflow = originalBodyOverflow;
           document.documentElement.style.overflow = originalHtmlOverflow;
+          document.getElementById("btnExport").style.display = "flex";
         }
       }
     });
