@@ -303,7 +303,7 @@
     }
   </script>
   <script>
-    document.getElementById("btnExport").onclick = function () {
+    document.getElementById("btnExport").onclick = async function () {
 
         showOverlay();
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -389,8 +389,7 @@
           document.documentElement.style.overflow = originalHtmlOverflow;
           document.getElementById("btnExport").style.display = "flex";
         }
-      }
-    });
+    }
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
