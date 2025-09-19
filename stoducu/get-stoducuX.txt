@@ -378,13 +378,15 @@
             const pdfUrl = URL.createObjectURL(pdfBlob);
             window.open(pdfUrl, "_blank");
             hideOverlay();
+            document.body.style.overflow = originalBodyOverflow;
+           document.documentElement.style.overflow = originalHtmlOverflow;
+           document.getElementById("btnExport").style.display = "flex";
           }, 3000);
     
         } catch (err) {
           console.error("Lỗi khi tạo PDF", err);
           alert("Có lỗi xảy ra khi tạo PDF!");
           hideOverlay();
-        } finally {
           document.body.style.overflow = originalBodyOverflow;
           document.documentElement.style.overflow = originalHtmlOverflow;
           document.getElementById("btnExport").style.display = "flex";
