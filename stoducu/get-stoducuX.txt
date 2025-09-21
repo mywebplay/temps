@@ -303,95 +303,86 @@
     }
   </script>
   <script>
-    document.getElementById("btnExport").onclick = async function () {
+   document.getElementById("btnExport").onclick = async function () {
+  showOverlay();
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
-        showOverlay();
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    
-        const originalBodyOverflow = document.body.style.overflow;
-        const originalHtmlOverflow = document.documentElement.style.overflow;
-        document.body.style.overflow = "hidden";
-        document.documentElement.style.overflow = "hidden";
-        document.getElementById("btnExport").style.display = "none";
-    
-        try {
-          const { jsPDF } = window.jspdf;
-          const pdf = new jsPDF("p", "mm", "a4");
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = pdf.internal.pageSize.getHeight();
-          const margin = 10;
-    
-          const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
-          const totalDivs = divs.filter(div => window.getComputedStyle(div).display !== "none").length;
-          let processed = 0;
-    
-          for (let i = 0; i < divs.length; i++) {
-            const div = divs[i];
-    
-            if (window.getComputedStyle(div).display === "none") continue;
-    
-            try {
-              const canvas = await html2canvas(div, {
-                scale: 1.5,
-                useCORS: true,
-                backgroundColor: "#ffffff"
-              });
-    
-              if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
-    
-              const imgData = canvas.toDataURL("image/jpeg", 0.8);
-    
-              const usableWidth = pdfWidth - margin * 2;
-              const usableHeight = pdfHeight - margin * 2;
-              const imgRatio = canvas.width / canvas.height;
-              const pageRatio = usableWidth / usableHeight;
-    
-              let imgWidth, imgHeight;
-              if (imgRatio > pageRatio) {
-                imgWidth = usableWidth;
-                imgHeight = usableWidth / imgRatio;
-              } else {
-                imgHeight = usableHeight;
-                imgWidth = usableHeight * imgRatio;
-              }
-    
-              const posX = (pdfWidth - imgWidth) / 2;
-              const posY = (pdfHeight - imgHeight) / 2;
-    
-              if (processed > 0) pdf.addPage();
-              pdf.addImage(imgData, "JPEG", posX, posY, imgWidth, imgHeight);
-    
-              processed++;
-              const percent = Math.round((processed / totalDivs) * 100);
-              updateProgress(percent);
-    
-            } catch (err) {
-              console.error("Lỗi khi render div " + i, err);
-              alert("Có lỗi xảy ra khi tạo PDF!");
-              return;
-            }
-          }
-    
-          // Giữ progress 100% thêm 3 giây rồi mới xuất PDF
-          setTimeout(() => {
-            const pdfBlob = pdf.output("blob");
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            window.open(pdfUrl, "_blank");
-            hideOverlay();
-            document.body.style.overflow = originalBodyOverflow;
-           document.documentElement.style.overflow = originalHtmlOverflow;
-           document.getElementById("btnExport").style.display = "flex";
-          }, 3000);
-    
-        } catch (err) {
-          console.error("Lỗi khi tạo PDF", err);
-          alert("Có lỗi xảy ra khi tạo PDF!");
-          hideOverlay();
-          document.body.style.overflow = originalBodyOverflow;
-          document.documentElement.style.overflow = originalHtmlOverflow;
-          document.getElementById("btnExport").style.display = "flex";
-        }
+  const originalBodyOverflow = document.body.style.overflow;
+  const originalHtmlOverflow = document.documentElement.style.overflow;
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
+  document.getElementById("btnExport").style.display = "none";
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+
+    const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
+    const totalDivs = divs.filter(div => window.getComputedStyle(div).display !== "none").length;
+    let processed = 0;
+
+    for (let i = 0; i < divs.length; i++) {
+      const div = divs[i];
+      if (window.getComputedStyle(div).display === "none") continue;
+
+      try {
+        // ✅ dùng scale = devicePixelRatio để giữ font/spacing chuẩn
+        const canvas = await html2canvas(div, {
+          scale: window.devicePixelRatio,
+          useCORS: true,
+          backgroundColor: "#ffffff"
+        });
+
+        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+
+        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+        // ✅ thay đổi cách addImage: fit chiều rộng PDF, không canh giữa
+        const usableWidth = pdfWidth - margin * 2;
+        const imgWidth = usableWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        if (processed > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", margin, margin, imgWidth, imgHeight);
+
+        processed++;
+        const percent = Math.round((processed / totalDivs) * 100);
+        updateProgress(percent);
+
+      } catch (err) {
+        console.error("Lỗi khi render div " + i, err);
+        alert("Có lỗi xảy ra khi tạo PDF!");
+        return;
+      }
     }
+
+    // Giữ progress 100% thêm 3 giây rồi mới xuất PDF
+    setTimeout(() => {
+      const pdfBlob = pdf.output("blob");
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl, "_blank");
+
+      // ✅ tránh memory leak
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
+
+      hideOverlay();
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      document.getElementById("btnExport").style.display = "flex";
+    }, 3000);
+
+  } catch (err) {
+    console.error("Lỗi khi tạo PDF", err);
+    alert("Có lỗi xảy ra khi tạo PDF!");
+    hideOverlay();
+    document.body.style.overflow = originalBodyOverflow;
+    document.documentElement.style.overflow = originalHtmlOverflow;
+    document.getElementById("btnExport").style.display = "flex";
+  }
+}
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
