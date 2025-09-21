@@ -212,6 +212,19 @@
       transform: translateY(1px);
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
+
+@media print {
+  body, html {
+    overflow: visible !important;
+    visibility: visible !important;
+  }
+  .pf, .page-content, .pc {
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+  }
+}
+
   </style>
   <!-- JS -->
   <script>
