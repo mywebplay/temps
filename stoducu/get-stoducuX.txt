@@ -342,60 +342,73 @@
       if (window.getComputedStyle(div).display === "none") continue;
 
       try {
-        // ✅ dùng scale = devicePixelRatio để giữ font/spacing chuẩn
+        // ✅ Render chính xác: dùng scale theo devicePixelRatio
         const canvas = await html2canvas(div, {
-          scale: window.devicePixelRatio,
+          scale: window.devicePixelRatio * 2, // tăng DPI cho nét
           useCORS: true,
-          backgroundColor: "#ffffff"
+          backgroundColor: "#ffffff",
+          logging: false
         });
 
         if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
-        // ✅ thay đổi cách addImage: fit chiều rộng PDF, không canh giữa
+        // ✅ Scale ảnh vừa chiều ngang PDF
         const usableWidth = pdfWidth - margin * 2;
         const imgWidth = usableWidth;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+        // Nếu ảnh cao hơn A4 → chia thành nhiều trang
+        let heightLeft = imgHeight;
+        let position = margin;
+
         if (processed > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", margin, margin, imgWidth, imgHeight);
+        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+        heightLeft -= (pdfHeight - margin * 2);
+
+        while (heightLeft > 0) {
+          pdf.addPage();
+          position = margin - (imgHeight - heightLeft);
+          pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+          heightLeft -= (pdfHeight - margin * 2);
+        }
 
         processed++;
         const percent = Math.round((processed / totalDivs) * 100);
         updateProgress(percent);
 
       } catch (err) {
-        console.error("Lỗi khi render div " + i, err);
+        console.error("❌ Lỗi khi render div " + i, err);
         alert("Có lỗi xảy ra khi tạo PDF!");
         return;
       }
     }
 
-    // Giữ progress 100% thêm 3 giây rồi mới xuất PDF
+    // ✅ Sau khi xong giữ progress 100% thêm 2s
     setTimeout(() => {
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, "_blank");
 
-      // ✅ tránh memory leak
+      // cleanup tránh memory leak
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
 
       hideOverlay();
       document.body.style.overflow = originalBodyOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
       document.getElementById("btnExport").style.display = "flex";
-    }, 3000);
+    }, 2000);
 
   } catch (err) {
-    console.error("Lỗi khi tạo PDF", err);
+    console.error("❌ Lỗi khi tạo PDF", err);
     alert("Có lỗi xảy ra khi tạo PDF!");
     hideOverlay();
     document.body.style.overflow = originalBodyOverflow;
     document.documentElement.style.overflow = originalHtmlOverflow;
     document.getElementById("btnExport").style.display = "flex";
   }
-}
+};
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
