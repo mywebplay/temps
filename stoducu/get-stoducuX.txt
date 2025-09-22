@@ -316,15 +316,9 @@
     }
   </script>
   <script>
-   var urlPDF = "";
-   document.getElementById("btnExport").onclick = async function () {
-   if (urlPDF != "")
-  {
-     window.open(urlPDF, "_blank");
-     return;
-  }
+  document.getElementById("btnExport").onclick = async function () {
   showOverlay();
-  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
   const originalBodyOverflow = document.body.style.overflow;
   const originalHtmlOverflow = document.documentElement.style.overflow;
@@ -337,51 +331,52 @@
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    const margin = 10;
+    const margin = 0; // cố gắng ko thêm margin để giống view nhất
 
     const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
-    const totalDivs = divs.filter(div => window.getComputedStyle(div).display !== "none").length;
+    const visibleDivs = divs.filter(div => window.getComputedStyle(div).display !== "none");
     let processed = 0;
 
-    for (let i = 0; i < divs.length; i++) {
-      const div = divs[i];
-      if (window.getComputedStyle(div).display === "none") continue;
+    for (let i = 0; i < visibleDivs.length; i++) {
+      const div = visibleDivs[i];
 
       try {
-        // ✅ Render chính xác: dùng scale theo devicePixelRatio
+        // ✅ Render với scale cao để giữ chi tiết và bố cục giống
+        const scale = 3; // scale cao hơn để tránh mờ + sai lệch layout
         const canvas = await html2canvas(div, {
-          scale: window.devicePixelRatio * 2, // tăng DPI cho nét
+          scale: window.devicePixelRatio * scale,
           useCORS: true,
           backgroundColor: "#ffffff",
-          logging: false
+          logging: false,
+          windowWidth: div.scrollWidth,   // bắt html2canvas lấy đúng width thật
+          windowHeight: div.scrollHeight, // và height thật
+          removeContainer: true
         });
 
         if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
-        // ✅ Scale ảnh vừa chiều ngang PDF
-        const usableWidth = pdfWidth - margin * 2;
-        const imgWidth = usableWidth;
+        // ✅ Scale ảnh theo chiều ngang PDF
+        const imgWidth = pdfWidth;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        // Nếu ảnh cao hơn A4 → chia thành nhiều trang
         let heightLeft = imgHeight;
-        let position = margin;
+        let position = 0;
 
         if (processed > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
-        heightLeft -= (pdfHeight - margin * 2);
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
 
         while (heightLeft > 0) {
           pdf.addPage();
-          position = margin - (imgHeight - heightLeft);
-          pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
-          heightLeft -= (pdfHeight - margin * 2);
+          position = -(imgHeight - heightLeft);
+          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pdfHeight;
         }
 
         processed++;
-        const percent = Math.round((processed / totalDivs) * 100);
+        const percent = Math.round((processed / visibleDivs.length) * 100);
         updateProgress(percent);
 
       } catch (err) {
@@ -395,10 +390,8 @@
     setTimeout(() => {
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
-      urlPDF = pdfUrl;
       window.open(pdfUrl, "_blank");
 
-      // cleanup tránh memory leak
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
 
       hideOverlay();
@@ -416,6 +409,7 @@
     document.getElementById("btnExport").style.display = "flex";
   }
 };
+
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
