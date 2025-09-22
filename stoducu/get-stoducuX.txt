@@ -316,7 +316,13 @@
     }
   </script>
   <script>
+   var urlPDF = "";
    document.getElementById("btnExport").onclick = async function () {
+   if (urlPDF != "")
+  {
+     window.open(urlPDF, "_blank");
+     return;
+  }
   showOverlay();
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
@@ -389,6 +395,7 @@
     setTimeout(() => {
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
+      urlPDF = pdfUrl;
       window.open(pdfUrl, "_blank");
 
       // cleanup tránh memory leak
