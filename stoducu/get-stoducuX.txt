@@ -39,7 +39,8 @@
     if (idx >= fromIndex && idx <= toIndex) {
       div.style.display = "";   // hiện
     } else {
-      div.style.display = "none"; // ẩn
+      // div.style.display = "none"; // ẩn
+      div.remove();
     }
     });
     
