@@ -330,6 +330,9 @@ document.getElementById("btnExport").onclick = async function () {
   try {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
 
     const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
     const visibleDivs = divs.filter(div => window.getComputedStyle(div).display !== "none");
@@ -339,22 +342,52 @@ document.getElementById("btnExport").onclick = async function () {
     for (let i = 0; i < visibleDivs.length; i++) {
       const div = visibleDivs[i];
 
-      if (i > 0) pdf.addPage();
+      try {
+        // ✅ Render scale cao + PNG để chữ mịn hơn
+        const canvas = await html2canvas(div, {
+          scale: 4,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          logging: false,
+          windowWidth: div.scrollWidth,
+          windowHeight: div.scrollHeight,
+        });
 
-      await pdf.html(div, {
-        x: 10,
-        y: 10,
-        html2canvas: {
-          scale: 1,  // không cần scale cao vì text giữ vector
-          useCORS: true
-        },
-        autoPaging: "text",
-        callback: function () {
-          processed++;
-          const percent = Math.round((processed / totalDivs) * 100);
-          updateProgress(percent);
+        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+
+        const imgData = canvas.toDataURL("image/png"); // PNG giữ chi tiết
+
+        // ✅ Scale ảnh để fit chiều cao A4 (mỗi div = 1 trang)
+        const usableWidth = pdfWidth - margin * 2;
+        const usableHeight = pdfHeight - margin * 2;
+
+        let imgWidth = usableWidth;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        if (imgHeight > usableHeight) {
+          imgHeight = usableHeight;
+          imgWidth = (canvas.width * imgHeight) / canvas.height;
         }
-      });
+
+        if (i > 0) pdf.addPage();
+        pdf.addImage(
+          imgData,
+          "PNG",
+          (pdfWidth - imgWidth) / 2, // căn giữa ngang
+          (pdfHeight - imgHeight) / 2, // căn giữa dọc
+          imgWidth,
+          imgHeight
+        );
+
+        processed++;
+        const percent = Math.round((processed / totalDivs) * 100);
+        updateProgress(percent);
+
+      } catch (err) {
+        console.error("❌ Lỗi khi render div " + i, err);
+        alert("Có lỗi xảy ra khi tạo PDF!");
+        return;
+      }
     }
 
     // ✅ Sau khi xong giữ progress 100% thêm 3s
