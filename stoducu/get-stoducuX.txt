@@ -331,56 +331,42 @@ document.getElementById("btnExport").onclick = async function () {
     const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
     const visibleDivs = divs.filter(div => window.getComputedStyle(div).display !== "none");
     const totalDivs = visibleDivs.length;
-    let processed = 0;
 
-    // Tạo PDF rỗng trước
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p", "mm", "a4");
+    // tạo container ảo để gom tất cả div
+    const container = document.createElement("div");
+    container.style.width = "100%";
+    visibleDivs.forEach(div => {
+      const clone = div.cloneNode(true);
+      clone.style.pageBreakAfter = "always"; // mỗi div = 1 trang
+      container.appendChild(clone);
+    });
 
-    for (let i = 0; i < visibleDivs.length; i++) {
-      const div = visibleDivs[i];
+    // hiển thị progress đơn giản (100% khi xong)
+    updateProgress(10);
 
-      // render bằng html2pdf cho từng div
-      const opt = {
-        margin:       0,
-        image:        { type: "jpeg", quality: 1 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
-        jsPDF:        { unit: "mm", format: "a4", orientation: "portrait" }
-      };
+    const opt = {
+      margin: 0,
+      filename: "export.pdf",
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
 
-      // render div → pdfBlob
-      const divPdf = await html2pdf().set(opt).from(div).toPdf().get("pdf");
+    // tạo PDF blob
+    const pdfBlob = await html2pdf().set(opt).from(container).toPdf().output("blob");
 
-      if (i === 0) {
-        // trang đầu tiên copy luôn
-        pdf.internal = divPdf.internal;
-      } else {
-        // thêm các trang tiếp theo
-        pdf.addPage();
-        const pages = divPdf.internal.pages;
-        const page = pages[1]; // lấy page đầu tiên trong divPdf
-        pdf.setPage(i + 1);
-        pdf.internal.pages[i + 1] = page;
-      }
+    updateProgress(100);
 
-      processed++;
-      const percent = Math.round((processed / totalDivs) * 100);
-      updateProgress(percent);
-    }
-
-    // Sau khi xong
     setTimeout(() => {
-      const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, "_blank"); // mở tab mới
-
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
 
       hideOverlay();
       document.body.style.overflow = originalBodyOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
       document.getElementById("btnExport").style.display = "flex";
-    }, 3000);
+    }, 1000);
 
   } catch (err) {
     console.error("❌ Lỗi khi tạo PDF", err);
@@ -390,7 +376,7 @@ document.getElementById("btnExport").onclick = async function () {
     document.documentElement.style.overflow = originalHtmlOverflow;
     document.getElementById("btnExport").style.display = "flex";
   }
-};
+}
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
