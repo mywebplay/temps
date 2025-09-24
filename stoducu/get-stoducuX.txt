@@ -317,7 +317,7 @@
     }
   </script>
   <script>
- document.getElementById("btnExport").onclick = async function () {
+document.getElementById("btnExport").onclick = async function () {
   showOverlay();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
@@ -332,7 +332,6 @@
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    const margin = 10;
 
     const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
     const visibleDivs = divs.filter(div => window.getComputedStyle(div).display !== "none");
@@ -343,7 +342,7 @@
       const div = visibleDivs[i];
 
       try {
-        // ✅ Render với scale cao cho giống mắt nhìn
+        // render với scale cao
         const canvas = await html2canvas(div, {
           scale: window.devicePixelRatio * 2,
           useCORS: true,
@@ -357,16 +356,15 @@
 
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
-        // ✅ Scale ảnh để fit chiều cao A4 (mỗi div = 1 trang)
-        const usableWidth = pdfWidth - margin * 2;
-        const usableHeight = pdfHeight - margin * 2;
+        // Tính toán sao cho ảnh fit A4 (giữ tỉ lệ, mỗi div = 1 trang)
+        const pageWidth = pdfWidth;
+        const pageHeight = pdfHeight;
 
-        // fit theo chiều nào bị giới hạn
-        let imgWidth = usableWidth;
+        let imgWidth = pageWidth;
         let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        if (imgHeight > usableHeight) {
-          imgHeight = usableHeight;
+        if (imgHeight > pageHeight) {
+          imgHeight = pageHeight;
           imgWidth = (canvas.width * imgHeight) / canvas.height;
         }
 
@@ -374,8 +372,8 @@
         pdf.addImage(
           imgData,
           "JPEG",
-          (pdfWidth - imgWidth) / 2, // căn giữa ngang
-          (pdfHeight - imgHeight) / 2, // căn giữa dọc
+          (pageWidth - imgWidth) / 2,  // căn giữa ngang
+          (pageHeight - imgHeight) / 2, // căn giữa dọc
           imgWidth,
           imgHeight
         );
@@ -391,11 +389,11 @@
       }
     }
 
-    // ✅ Sau khi xong giữ progress 100% thêm 3s
+    // Giữ progress 100% thêm 3s
     setTimeout(() => {
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
-      window.open(pdfUrl, "_blank");
+      window.open(pdfUrl, "_blank"); // mở tab mới
 
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
 
@@ -413,9 +411,7 @@
     document.documentElement.style.overflow = originalHtmlOverflow;
     document.getElementById("btnExport").style.display = "flex";
   }
-};
-
-
+}
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
