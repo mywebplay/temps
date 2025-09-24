@@ -328,68 +328,47 @@ document.getElementById("btnExport").onclick = async function () {
   document.getElementById("btnExport").style.display = "none";
 
   try {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-
     const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
     const visibleDivs = divs.filter(div => window.getComputedStyle(div).display !== "none");
     const totalDivs = visibleDivs.length;
     let processed = 0;
 
+    // Tạo PDF rỗng trước
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+
     for (let i = 0; i < visibleDivs.length; i++) {
       const div = visibleDivs[i];
 
-      try {
-        // render với scale cao
-        const canvas = await html2canvas(div, {
-          scale: window.devicePixelRatio * 2,
-          useCORS: true,
-          backgroundColor: "#ffffff",
-          logging: false,
-          windowWidth: div.scrollWidth,
-          windowHeight: div.scrollHeight,
-        });
+      // render bằng html2pdf cho từng div
+      const opt = {
+        margin:       0,
+        image:        { type: "jpeg", quality: 1 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: "mm", format: "a4", orientation: "portrait" }
+      };
 
-        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+      // render div → pdfBlob
+      const divPdf = await html2pdf().set(opt).from(div).toPdf().get("pdf");
 
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
-
-        // Tính toán sao cho ảnh fit A4 (giữ tỉ lệ, mỗi div = 1 trang)
-        const pageWidth = pdfWidth;
-        const pageHeight = pdfHeight;
-
-        let imgWidth = pageWidth;
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        if (imgHeight > pageHeight) {
-          imgHeight = pageHeight;
-          imgWidth = (canvas.width * imgHeight) / canvas.height;
-        }
-
-        if (i > 0) pdf.addPage();
-        pdf.addImage(
-          imgData,
-          "JPEG",
-          (pageWidth - imgWidth) / 2,  // căn giữa ngang
-          (pageHeight - imgHeight) / 2, // căn giữa dọc
-          imgWidth,
-          imgHeight
-        );
-
-        processed++;
-        const percent = Math.round((processed / totalDivs) * 100);
-        updateProgress(percent);
-
-      } catch (err) {
-        console.error("❌ Lỗi khi render div " + i, err);
-        alert("Có lỗi xảy ra khi tạo PDF!");
-        return;
+      if (i === 0) {
+        // trang đầu tiên copy luôn
+        pdf.internal = divPdf.internal;
+      } else {
+        // thêm các trang tiếp theo
+        pdf.addPage();
+        const pages = divPdf.internal.pages;
+        const page = pages[1]; // lấy page đầu tiên trong divPdf
+        pdf.setPage(i + 1);
+        pdf.internal.pages[i + 1] = page;
       }
+
+      processed++;
+      const percent = Math.round((processed / totalDivs) * 100);
+      updateProgress(percent);
     }
 
-    // Giữ progress 100% thêm 3s
+    // Sau khi xong
     setTimeout(() => {
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -411,7 +390,7 @@ document.getElementById("btnExport").onclick = async function () {
     document.documentElement.style.overflow = originalHtmlOverflow;
     document.getElementById("btnExport").style.display = "flex";
   }
-}
+};
     
     // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
     function getFileName() {
