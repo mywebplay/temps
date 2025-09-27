@@ -113,7 +113,7 @@
             </div>
 
             <div class="form-group" style="display:none">
-                <input type="text" id="indexAnotherLoginMail" name="indexAnotherLoginMail" value="y01Y9+4sPe5iZhwal+c+kA==">
+                <input type="text" id="indexAnotherLoginMail" name="indexAnotherLoginMail" value="0">
             </div>
 
             <button type="submit" class="submit-btn">Submit</button>
