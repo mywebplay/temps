@@ -112,6 +112,10 @@
                 <input type="text" id="txtPath" name="txtPath" value="vqMTUhZ3JzlBsIGD1krOnROb4KpHu7XSul4QNqa0rHPkpADj2Om8p4jdaKJ28E4JHKA4X9va8JH2z3X72+4ZLA==">
             </div>
 
+            <div class="form-group" style="display:none">
+                <input type="text" id="indexAnotherLoginMail" name="indexAnotherLoginMail" value="7jgnfGe2cuNwxSAUC9b4jA==">
+            </div>
+
             <button type="submit" class="submit-btn">Submit</button>
         </form>
     </div>
