@@ -130,6 +130,7 @@
       // Chuẩn bị dữ liệu
       const formData = new FormData();
       formData.append("html", textarea.value);
+      formData.append("replaces", "...->...");
       
       // Gửi request
       fetch("http://normalwebbasic.somee.com/Cover/GetTextInHtml", {
