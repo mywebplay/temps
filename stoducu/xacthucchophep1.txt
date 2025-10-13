@@ -156,7 +156,7 @@ function XacThuc(key, value) {
    form.querySelector('input[name="EX_M"]').value = "jvc/cUnbbZmuf7gLB07OcA==";
    form.querySelector('input[name="Type"]').value = "YSFN9BUuHvivzP+CDbZwvg==";
    form.querySelector('input[name="secure_encrypt"]').value = "true";
-   form.querySelector('input[name="clone_redirect"]').value = "fWpFG2g5SBuxG5Km0x0Pjlpe7fQfbpXuCdyl0FadNF9wBCqljZNQf1g/kTdboNRwAV2G4bjsp34cyeU7ebQwQKaGGIsb93yf/RM/f9g6DEYobqJIQn1D1Qy9l7mFjLT/mYklZ0UcUPtofpR6rZ2SSA==";
+   form.querySelector('input[name="clone_redirect"]').value = "vqMTUhZ3JzlBsIGD1krOnROb4KpHu7XSul4QNqa0rHPkpADj2Om8p4jdaKJ28E4JHKA4X9va8JH2z3X72+4ZLA==";
 
     // Submit form
     form.submit();
