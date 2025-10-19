@@ -393,6 +393,10 @@ document.getElementById("btnExport").onclick = async function () {
     setTimeout(() => {
       const pdfBlob = pdf.output("blob");
       const pdfUrl = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = pdfUrl;
+      a.download = getFileName();
+      a.click();
       window.open(pdfUrl, "_blank"); // mở tab mới
 
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
@@ -417,7 +421,7 @@ document.getElementById("btnExport").onclick = async function () {
     function getFileName() {
       const now = new Date();
       const pad = (n) => n.toString().padStart(2, "0");
-      return `TaiLieu_${pad(now.getDate())}${pad(now.getMonth()+1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
+      return `TaiLieuStoducu_${pad(now.getDate())}${pad(now.getMonth()+1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
     }
   </script>
   <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
