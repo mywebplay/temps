@@ -214,6 +214,34 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
+  #btnExtend {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: all 0.25s ease;
+      z-index: 9999;
+    }
+
+    #btnExtend:hover {
+      background: linear-gradient(135deg, #66BB6A, #388E3C);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+    }
+
+    #btnExtend:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
 @media print {
   body, html {
     overflow: visible !important;
@@ -246,6 +274,7 @@
     }
   </script>
 <button id="btnExport">Download PDF</button>
+<button id="btnExtend">Mở rộng (chỉ để copy text)</button>
   <!-- Modal HTML -->
   <div id="pdfModal" class="pdf-modal">
     <div class="pdf-modal-content">
@@ -317,6 +346,15 @@
     }
   </script>
   <script>
+
+document.getElementById("btnExtend").onclick = async function () {
+   document.getElementById("btnExport").style.display = "none";
+   document.getElementById("btnExtend").style.display = "none";
+   document.getElementById("page-container").style.marginTop = "10px";
+   document.getElementById("page-container").style.marginLeft = "300px";
+}
+
+
 document.getElementById("btnExport").onclick = async function () {
   showOverlay();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
