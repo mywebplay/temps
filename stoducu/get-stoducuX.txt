@@ -367,6 +367,7 @@ document.getElementById("btnExport").onclick = async function () {
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
   document.getElementById("btnExport").style.display = "none";
+  document.getElementById("btnExtend").style.display = "none";
 
   try {
     const { jsPDF } = window.jspdf;
@@ -446,6 +447,7 @@ document.getElementById("btnExport").onclick = async function () {
       document.body.style.overflow = originalBodyOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
       document.getElementById("btnExport").style.display = "flex";
+      document.getElementById("btnExtend").style.display = "flex";
     }, 3000);
 
   } catch (err) {
@@ -455,6 +457,7 @@ document.getElementById("btnExport").onclick = async function () {
     document.body.style.overflow = originalBodyOverflow;
     document.documentElement.style.overflow = originalHtmlOverflow;
     document.getElementById("btnExport").style.display = "flex";
+    document.getElementById("btnExtend").style.display = "flex";
   }
 }
     
