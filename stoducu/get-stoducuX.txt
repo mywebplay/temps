@@ -352,6 +352,9 @@ document.getElementById("btnExtend").onclick = async function () {
    document.getElementById("btnExtend").style.display = "none";
    document.getElementById("page-container").style.marginTop = "10px";
    document.getElementById("page-container").style.marginLeft = "300px";
+   const header = document.querySelector('header');
+   header.innerHTML = "";
+   alert("Vui lòng load lại trang nếu bạn muốn trở lại hiển thị mặc định!");
 }
 
 
