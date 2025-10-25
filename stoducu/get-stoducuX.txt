@@ -398,7 +398,7 @@ const scaleFactor = maxPxWidth / div.scrollWidth;
 div.style.transform = `scale(${scaleFactor})`;
 
 const canvas = await html2canvas(div, {
-  scale: window.devicePixelRatio * 2,
+  scale: 4,
   useCORS: true,
   backgroundColor: "#ffffff",
   logging: false,
