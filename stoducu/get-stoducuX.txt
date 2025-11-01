@@ -83,7 +83,7 @@
     if (loaded12 == 2) return
     if (loaded12 == 1 &&document.getElementById("page-container-wrapper"))
     {
-    document.getElementById("page-container-wrapper").style.height = "60%";
+    document.getElementById("page-container-wrapper").style.height = "68%";
     document.getElementById("page-container-wrapper").style.width = "60%";
     document.getElementById("page-container-wrapper").style.marginTop = "8900px";
     document.getElementById("xclose").style.display = "flex";
