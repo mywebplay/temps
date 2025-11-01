@@ -86,6 +86,7 @@
     document.getElementById("page-container-wrapper").style.height = "60%";
     document.getElementById("page-container-wrapper").style.width = "60%";
     document.getElementById("page-container-wrapper").style.marginTop = "8900px";
+    document.getElementById("xclose").style.display = "flex";
     }
     loaded12++;
     }, 5000);
@@ -313,7 +314,7 @@
   <!-- Modal HTML -->
   <div id="pdfModal" class="pdf-modal">
     <div class="pdf-modal-content">
-      <span class="pdf-close">❌</span>
+      <span class="pdf-close" id="xclose" style="display:none;">❌</span>
       <div class="pdf-instruction">
         <u>Lưu ý</u> : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF nếu bạn muốn, nhưng hãy cẩn thận tránh làm che khuất nội dung hiển thị. Sau khi nhấn button Download PDF thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
       </div>
