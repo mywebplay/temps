@@ -76,6 +76,19 @@
     loaded1 = true;
     }
     }, 10);
+
+ var loaded12 = false;
+    setInterval(function()
+    {
+    if (loaded12) return
+    if (document.getElementById("page-container-wrapper"))
+    {
+    document.getElementById("page-container-wrapper").style.height = "100%";
+    document.getElementById("page-container-wrapper").style.width = "100%";
+    document.getElementById("page-container-wrapper").style.marginTop = "8200px";
+    loaded12 = true;
+    }
+    }, 10);
     
     var loaded2 = false;
     setInterval(function()
@@ -472,7 +485,7 @@ document.getElementById("btnExport").onclick = async function () {
   </script>
   <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto;width:100%">
     <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height:1px;left:-9999px;position:absolute;width:1px"></div>
-    <div id="main-wrapper">
+    <div id="main-wrapper" style="width:2002px;">
       <div id="__next">
         <div class="CurrentAlertBar_wrapper__ZsHAO" id="current-alert-bar">
           <div class="CurrentAlertBar_animation-wrapper__uSGiV"></div>
