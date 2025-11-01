@@ -88,6 +88,7 @@
     document.getElementById("page-container-wrapper").style.marginTop = "8900px";
     document.getElementById("xclose").style.display = "flex";
     document.getElementById("xtitle").style.display = "none";
+    alert("Nếu hiển thị tài liệu vẫn còn lỗi, vui lòng thử load lại trang (F5) nhiều lần.\nXin lỗi vì sự bất tiện này!");
     }
     loaded12++;
     }, 5000);
