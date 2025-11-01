@@ -83,7 +83,7 @@
     if (loaded12) return
     if (document.getElementById("page-container-wrapper"))
     {
-    document.getElementById("page-container-wrapper").style.height = "100%";
+    document.getElementById("page-container-wrapper").style.height = "68%";
     document.getElementById("page-container-wrapper").style.width = "60%";
     document.getElementById("page-container-wrapper").style.marginTop = "8900px";
     loaded12 = true;
