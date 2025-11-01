@@ -77,18 +77,18 @@
     }
     }, 10);
 
- var loaded12 = false;
+ var loaded12 = 0;
     setInterval(function()
     {
-    if (loaded12) return
-    if (document.getElementById("page-container-wrapper"))
+    if (loaded12 == 2) return
+    if (load12 == 1 &&document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "68%";
     document.getElementById("page-container-wrapper").style.width = "60%";
     document.getElementById("page-container-wrapper").style.marginTop = "8900px";
-    loaded12 = true;
     }
-    }, 10);
+    loaded12++;
+    }, 5000);
     
     var loaded2 = false;
     setInterval(function()
