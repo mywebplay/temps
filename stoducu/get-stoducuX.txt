@@ -84,8 +84,8 @@
     if (document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "100%";
-    document.getElementById("page-container-wrapper").style.width = "100%";
-    document.getElementById("page-container-wrapper").style.marginTop = "8970px";
+    document.getElementById("page-container-wrapper").style.width = "60%";
+    document.getElementById("page-container-wrapper").style.marginTop = "8200px";
     loaded12 = true;
     }
     }, 10);
