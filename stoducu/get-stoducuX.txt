@@ -132,6 +132,28 @@
     loaded3 = true;
     }
     }, 10);
+
+ var loaded13 = false;
+    setInterval(function()
+    {
+    if (loaded13) return
+    // Kiểm tra xem có ít nhất 1 element có class cần tìm
+    var exists1 = document.querySelector(
+    ".ViewerToolbar_toolbar__l4wOx"
+    ) !== null;
+    if (exists1)
+    {
+    
+    // Lấy tất cả các phần tử có class
+    const banners = document.querySelectorAll('.ViewerToolbar_toolbar__l4wOx');
+    
+    // Duyệt qua từng phần tử và remove
+    banners.forEach(banner => banner.remove());
+    
+    loaded13 = true;
+    }
+    }, 10);
+
      // Delete div somee
      setInterval(function () {
               document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
