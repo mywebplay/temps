@@ -81,7 +81,7 @@
     setInterval(function()
     {
     if (loaded12 == 2) return
-    if (load12 == 1 &&document.getElementById("page-container-wrapper"))
+    if (loaded12 == 1 &&document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "68%";
     document.getElementById("page-container-wrapper").style.width = "60%";
