@@ -70,9 +70,9 @@
     setInterval(function()
     {
     if (loaded1) return
-    if (document.getElementById("pageday"))
+    if (document.getElementById("pagene"))
     {
-    document.getElementById("pageday").innerHTML = localStorage.getItem("tailieu");
+    document.getElementById("pagene").innerHTML = localStorage.getItem("tailieu");
     loaded1 = true;
     }
     }, 10);
@@ -483,8 +483,6 @@ document.getElementById("btnExport").onclick = async function () {
             <div class="Viewer_viewer-wrapper__O8ZL7" id="viewer-wrapper">
               <article class="Viewer_document-wrapper__JPBWQ" id="document-wrapper" tabindex="0">
                 <div id="pagene" style="height: 5000px; will-change: transform;">
-                  <div id="pageday" class="p2hv Viewer_page-container__shmQ1" style="opacity: 1; transform: scale(1.21615); width: 82.23%; height: 0%;">
-                  </div>
                 </div>
               </article>
             </div>
