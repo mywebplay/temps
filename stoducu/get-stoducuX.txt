@@ -399,6 +399,7 @@ document.getElementById("btnExtend").onclick = async function () {
    document.querySelectorAll('.ViewerToolbar_toolbar__l4wOx.ViewerToolbar_hidden__Jcd1I')
   .forEach(el => el.remove());
    alert("Vui lòng load lại trang nếu bạn muốn trở lại hiển thị mặc định!");
+    window.location.href = "#page-container";
 }
 
 
