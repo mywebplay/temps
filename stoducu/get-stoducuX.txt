@@ -320,7 +320,7 @@
         <div class="pdf-modal-content">
             <span class="pdf-close" style="display: none;" id="xclose">❌</span>
             <span class="pdf-close" style="color: red;" id="xtitle">Chờ một lát nhé...</span>
-            <div class="pdf-instruction"><u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác!</div>
+            <div class="pdf-instruction"><u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa thấy bắt đầu xử lý, vui lòng cũng không rê chuột hay bất cứ thao tác nào khác trên trang hiện tại. Và bạn cũng có thể xoá thêm phần "Cached images and files" trong lịch sử trình duyệt. </div>
             <div class="pdf-tips">
                 <b style="color: red;">* THÔNG TIN BỔ SUNG :</b>
 + Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý một lần thì PDF có thể bị lỗi.
