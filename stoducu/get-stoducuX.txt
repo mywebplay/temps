@@ -93,6 +93,14 @@
     // document.documentElement.style.overflow = "hidden";
      document.getElementById("page-container-wrapper").style.transform = "";
 
+      // Lấy tất cả các phần tử có attribute data-page-index
+   const elements1 = document.querySelectorAll('[data-page-index]');
+
+   // Gán style width = 500px cho từng phần tử
+   elements1.forEach(el => {
+  el.style.width = '500px';
+});
+
    const banners1 = document.querySelectorAll('.Layout_visible-content-top-wrapper__ZpKSf');
     
     // Duyệt qua từng phần tử và remove
