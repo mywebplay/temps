@@ -61,6 +61,7 @@
     
     if (document.getElementById("pagene"))
     {
+alert(page);
     document.getElementById("pagene").style.height = page + "px";
     loaded = true;
     }
