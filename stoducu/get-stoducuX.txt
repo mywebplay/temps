@@ -91,7 +91,7 @@
     // document.querySelectorAll("body img").forEach(img => img.remove());
     // document.body.style.overflow = "hidden";
     // document.documentElement.style.overflow = "hidden";
-   document.getElementById("page-container-wrapper").style.transform = "";
+  // document.getElementById("page-container-wrapper").style.transform = "";
 
    const banners1 = document.querySelectorAll('.Layout_visible-content-top-wrapper__ZpKSf');
     
