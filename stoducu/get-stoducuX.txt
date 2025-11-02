@@ -84,7 +84,7 @@
     if (document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "0%";
-    document.querySelectorAll("body img").forEach(img => img.remove());
+    // document.querySelectorAll("body img").forEach(img => img.remove());
     // document.body.style.overflow = "hidden";
     // document.documentElement.style.overflow = "hidden";
    document.getElementById("page-container-wrapper").style.transform = "";
