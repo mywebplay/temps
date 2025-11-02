@@ -437,7 +437,7 @@ document.getElementById("btnExport").onclick = async function () {
   try {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = 5000;
+    const pdfWidth = 500;
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
     const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
