@@ -402,8 +402,8 @@ document.getElementById("btnExtend").onclick = async function () {
   .forEach(el => el.remove());
    alert("Vui lòng load lại trang nếu bạn muốn trở lại hiển thị mặc định!");
     window.location.href = "#page-container";
-    document.getElementById("btnExport").style.display = "";
-   document.getElementById("btnExtend").style.display = "";
+    document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
 }
 
 
@@ -415,8 +415,6 @@ document.getElementById("btnExport").onclick = async function () {
   const originalHtmlOverflow = document.documentElement.style.overflow;
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
-  document.getElementById("btnExport").style.display = "none";
-  document.getElementById("btnExtend").style.display = "none";
 
   try {
     const { jsPDF } = window.jspdf;
