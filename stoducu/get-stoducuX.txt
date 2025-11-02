@@ -84,7 +84,7 @@
    {
         return;
    }
-    if (load12 == 1 && document.getElementById("page-container-wrapper"))
+    if (loaded12 == 1 && document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "0%";
     // document.querySelectorAll("body img").forEach(img => img.remove());
@@ -101,7 +101,7 @@
        document.getElementById("xclose").style.display = "flex";
        document.getElementById("xtitle").style.display = "none";
     }
-     load12++;
+     loaded12++;
     }, 5000);
     
     var loaded2 = false;
