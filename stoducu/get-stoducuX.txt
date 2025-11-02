@@ -320,7 +320,9 @@
         <div class="pdf-modal-content">
             <span class="pdf-close" style="display: none;" id="xclose">❌</span>
             <span class="pdf-close" style="color: red;" id="xtitle">Chờ một lát nhé...</span>
-            <div class="pdf-instruction"><u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa thấy bắt đầu xử lý, vui lòng cũng không rê chuột hay bất cứ thao tác nào khác trên trang hiện tại. Và bạn cũng có thể xoá thêm phần "Cached images and files" trong lịch sử trình duyệt trước khi thực hiện.</div>
+            <div class="pdf-instruction">
+                <u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa thấy bắt đầu xử lý, vui lòng cũng không rê chuột hay bất cứ thao tác nào khác trên trang hiện tại. Và bạn cũng có thể xoá thêm phần "Cached images and files" trong lịch sử trình duyệt trước khi thực hiện.
+            </div>
             <div class="pdf-tips">
                 <b style="color: red;">* THÔNG TIN BỔ SUNG :</b>
 + Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý một lần thì PDF có thể bị lỗi.
@@ -440,26 +442,32 @@
 
                         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
-                        // Tính toán để ảnh chiếm gần hết trang (phóng to hơn, ít khoảng trắng)
-                        const margin = 2; // mm - viền nhỏ quanh trang
-                        const scaleFactor = 1.15; // tăng kích thước ảnh ~15%
+                        // Fit nội dung phủ kín toàn bộ trang PDF (full page, không viền trắng)
+                        const pageWidth = pdf.internal.pageSize.getWidth();
+                        const pageHeight = pdf.internal.pageSize.getHeight();
 
-                        const usableWidth = (pdfWidth - margin * 2) * scaleFactor;
-                        const usableHeight = (pdfHeight - margin * 2) * scaleFactor;
+                        // Tính tỉ lệ giữa ảnh và trang PDF
+                        const imgRatio = canvas.width / canvas.height;
+                        const pageRatio = pageWidth / pageHeight;
 
-                        let imgWidth = usableWidth;
-                        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+                        let imgWidth, imgHeight;
 
-                        // Nếu ảnh cao hơn khổ giấy thì scale lại theo chiều cao
-                        if (imgHeight > usableHeight) {
-                            imgHeight = usableHeight;
-                            imgWidth = (canvas.width * imgHeight) / canvas.height;
+                        // "COVER" - phóng để lấp kín toàn bộ trang (có thể cắt nhẹ mép)
+                        if (imgRatio > pageRatio) {
+                            // ảnh rộng hơn => scale theo chiều cao, sẽ bị crop ngang một chút
+                            imgHeight = pageHeight;
+                            imgWidth = pageHeight * imgRatio;
+                        } else {
+                            // ảnh cao hơn => scale theo chiều rộng, sẽ bị crop dọc một chút
+                            imgWidth = pageWidth;
+                            imgHeight = pageWidth / imgRatio;
                         }
 
-                        // Căn giữa ngang, đặt sát trên (không căn giữa dọc để tránh trắng)
-                        const x = (pdfWidth - imgWidth) / 2;
-                        const y = margin;
+                        // Căn giữa để hình phủ kín mà không bị lệch
+                        const x = (pageWidth - imgWidth) / 2;
+                        const y = (pageHeight - imgHeight) / 2;
 
+                        // Thêm trang PDF
                         if (i > 0) pdf.addPage();
                         pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight);
 
