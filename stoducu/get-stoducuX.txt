@@ -339,7 +339,7 @@
       <span class="pdf-close" style="display:none;" id="xclose">❌</span>
       <span class="pdf-close" style="color:red;" id="xtitle">Chờ một lát nhé...</span>
       <div class="pdf-instruction">
-        <u>Lưu ý</u> : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF nếu bạn muốn, nhưng hãy cẩn thận tránh làm che khuất nội dung hiển thị. Sau khi nhấn button Download PDF thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
+        <u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
       </div>
       <div class="pdf-tips">
         <b style="color:red">* THÔNG TIN BỔ SUNG :</b>
