@@ -77,10 +77,15 @@
     }
     }, 10);
 
-  var loaded12 = false;
+  var loaded12 = 0;
     setInterval(function()
     {
-    if (loaded12) return
+    if (loaded12 == 2)
+   {
+        document.getElementById("xclose").style.display = "flex";
+        document.getElementById("xtitle").style.display = "none";
+        return;
+   }
     if (document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "0%";
@@ -89,10 +94,15 @@
     // document.documentElement.style.overflow = "hidden";
    document.getElementById("page-container-wrapper").style.transform = "";
 
+   const banners1 = document.querySelectorAll('.Layout_visible-content-top-wrapper__ZpKSf');
+    
+    // Duyệt qua từng phần tử và remove
+    banners1.forEach(banner => banner.remove());
+
      window.location.href = "#page-container";
-    loaded12 = true;
     }
-    }, 10);
+     load12++;
+    }, 5000);
     
     var loaded2 = false;
     setInterval(function()
@@ -317,7 +327,8 @@
   <!-- Modal HTML -->
   <div id="pdfModal" class="pdf-modal">
     <div class="pdf-modal-content">
-      <span class="pdf-close" id="xclose">❌</span>
+      <span class="pdf-close" style="display:none;" id="xclose">❌</span>
+      <span class="pdf-close" style="color:red;" id="xtitle">Chờ một lát nhé...</span>
       <div class="pdf-instruction">
         <u>Lưu ý</u> : Bấm Ctrl + (dấu cộng) để phóng to trình duyệt của bạn trước khi in PDF nếu bạn muốn, nhưng hãy cẩn thận tránh làm che khuất nội dung hiển thị. Sau khi nhấn button Download PDF thì dù chưa bắt đầu xử lý, vui lòng không rê chuột hay bất cứ thao tác nào khác nhé!
       </div>
