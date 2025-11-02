@@ -91,6 +91,7 @@
     alert("Tiện ích đang tạm thời còn nhiều lỗi chưa được sửa. Nếu hiển thị tài liệu vẫn còn lỗi, vui lòng thử load lại trang (F5) nhiều lần.");
     window.location.href = "#page-container";
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     }
     loaded12++;
     }, 5000);
