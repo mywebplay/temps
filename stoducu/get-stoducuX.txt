@@ -516,7 +516,6 @@ document.getElementById("btnExport").onclick = async function () {
           <div class="CurrentAlertBar_animation-wrapper__uSGiV"></div>
         </div>
         <div class="Layout_wrapper__hyU9C">
-          <aside aria-label="sidebar_wrapper" class="Sidebar_sidebar-wrapper__PEWWF Sidebar_variant-inline-mixed__vhWm_" data-expanded="false" id="«r3»"></aside>
           <div class="Layout_page-content-wrapper__zhKJ6">
             <div class="Viewer_viewer-wrapper__O8ZL7" id="viewer-wrapper">
               <article class="Viewer_document-wrapper__JPBWQ" id="document-wrapper" tabindex="0">
