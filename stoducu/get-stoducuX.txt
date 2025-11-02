@@ -82,11 +82,9 @@
     {
     if (loaded12 == 2)
    {
-        document.getElementById("xclose").style.display = "flex";
-        document.getElementById("xtitle").style.display = "none";
         return;
    }
-    if (document.getElementById("page-container-wrapper"))
+    if (load12 == 1 && document.getElementById("page-container-wrapper"))
     {
     document.getElementById("page-container-wrapper").style.height = "0%";
     // document.querySelectorAll("body img").forEach(img => img.remove());
@@ -100,6 +98,8 @@
     banners1.forEach(banner => banner.remove());
 
      window.location.href = "#page-container";
+       document.getElementById("xclose").style.display = "flex";
+       document.getElementById("xtitle").style.display = "none";
     }
      load12++;
     }, 5000);
