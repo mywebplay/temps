@@ -1,6 +1,9 @@
 <html lang="en" class=" cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions" style="overflow: auto; box-sizing: border-box; padding-right: 15px;">
   <style>
     /* Thêm css vào đây */
+    body {
+  overflow: hidden;
+}
   </style>
   <script>
     /* Thêm JS vào đây */
