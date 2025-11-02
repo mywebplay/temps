@@ -76,6 +76,18 @@
     loaded1 = true;
     }
     }, 10);
+
+  var loaded12 = false;
+    setInterval(function()
+    {
+    if (loaded12) return
+    if (document.getElementById("page-container-wrapper"))
+    {
+    document.getElementById("page-container-wrapper").style.height = "0
+    document.querySelectorAll("body img").forEach(img => img.remove());
+    loaded12 = true;
+    }
+    }, 10);
     
     var loaded2 = false;
     setInterval(function()
