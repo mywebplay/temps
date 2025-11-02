@@ -99,9 +99,6 @@
    // Gán style width = 500px cho từng phần tử
    elements1.forEach(el => {
   el.style.width = '1000px';
-  el.style.position = 'fixed';
-  el.style.top = "0";
-  el.style.left = "0";
 });
 
    const banners1 = document.querySelectorAll('.Layout_visible-content-top-wrapper__ZpKSf');
