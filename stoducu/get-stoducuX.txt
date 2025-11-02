@@ -402,6 +402,8 @@ document.getElementById("btnExtend").onclick = async function () {
   .forEach(el => el.remove());
    alert("Vui lòng load lại trang nếu bạn muốn trở lại hiển thị mặc định!");
     window.location.href = "#page-container";
+    document.getElementById("btnExport").style.display = "";
+   document.getElementById("btnExtend").style.display = "";
 }
 
 
