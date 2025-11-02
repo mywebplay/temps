@@ -410,6 +410,8 @@ document.getElementById("btnExport").onclick = async function () {
   const originalHtmlOverflow = document.documentElement.style.overflow;
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
+  document.getElementById("btnExport").style.display = "none";
+   document.getElementById("btnExtend").style.display = "none";
 
   try {
     const { jsPDF } = window.jspdf;
