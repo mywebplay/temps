@@ -373,9 +373,8 @@ document.getElementById("btnExtend").onclick = async function () {
    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
    document.getElementById("btnExport").style.display = "none";
    document.getElementById("btnExtend").style.display = "none";
-   document.getElementById("page-container").style.marginTop = "6000px";
-   document.getElementById("page-container-wrapper").style.marginTop = "9700px";
    document.getElementById("page-container").style.marginLeft = "300px";
+   document.getElementById("page-container-wrapper").style.height = "0%";
    document.head.innerHTML = "";
    document.querySelectorAll('#page-container img').forEach(img => img.remove());
    document.querySelectorAll('.ViewerToolbar_toolbar__l4wOx.ViewerToolbar_hidden__Jcd1I')
