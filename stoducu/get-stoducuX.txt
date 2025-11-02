@@ -1,9 +1,6 @@
 <html lang="en" class=" cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions" style="overflow: auto; box-sizing: border-box; padding-right: 15px;">
   <style>
     /* Thêm css vào đây */
-    body {
-  overflow: hidden;
-}
   </style>
   <script>
     /* Thêm JS vào đây */
@@ -93,6 +90,7 @@
     document.getElementById("xtitle").style.display = "none";
     alert("Tiện ích đang tạm thời còn nhiều lỗi chưa được sửa. Nếu hiển thị tài liệu vẫn còn lỗi, vui lòng thử load lại trang (F5) nhiều lần.");
     window.location.href = "#page-container";
+    document.body.style.overflow = "hidden";
     }
     loaded12++;
     }, 5000);
