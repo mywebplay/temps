@@ -254,24 +254,7 @@
 
         #btnExtend {
             position: fixed;
-            top: 70px;
-            right: 20px;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #4caf50, #2e7d32);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.25s ease;
-            z-index: 9999;
-        }
-
-        #khoin {
-            position: fixed;
-            top: 70px;
+            top: 128px;
             right: 20px;
             padding: 12px 20px;
             background: linear-gradient(135deg, #4caf50, #2e7d32);
@@ -293,6 +276,34 @@
         }
 
         #btnExtend:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #khoin {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
+       #khoin:hover {
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        #khoin:active {
             transform: translateY(1px);
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
@@ -331,9 +342,7 @@
         }
     </script>
     <button id="btnExport">Download PDF</button>
-    <br />
-    <span id="khoin"><input id="khogiay" type="checkbox" checked onchange="doikhogiay()" />&nbsp;<b>Khổ giấy PDF: <span id="kho" style="color:red">DỌC</span></b></span>
-    <br />
+    <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
     <!-- Modal HTML -->
     <div id="pdfModal" class="pdf-modal">
@@ -408,15 +417,18 @@
         };
     </script>
     <script>
+       var khogiay = "p";
        function doikhogiay()
        {
-          if (document.getElementById("khogiay").checked)
+          if (khogiay == "l")
          {
            document.getElementById("kho").innerText = "DỌC";
+           khogiay = "p";
          }
          else
          {
            document.getElementById("kho").innerText = "NGANG";
+           khogiay = "l";
          }
        }
 
@@ -449,7 +461,6 @@
             document.getElementById("khoin").style.display = "none";
 
             try {
-                var khogiay = document.getElementById("khogiay").checked ? "p" : "l";
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF(khogiay, "mm", "a4");
                 const pdfWidth = pdf.internal.pageSize.getWidth();
