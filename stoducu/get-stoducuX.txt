@@ -269,24 +269,7 @@
             z-index: 9999;
         }
 
-        #khogiay {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #4caf50, #2e7d32);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.25s ease;
-            z-index: 9999;
-        }
-
-        #kho {
+        #khoin {
             position: fixed;
             top: 70px;
             right: 20px;
@@ -349,7 +332,7 @@
     </script>
     <button id="btnExport">Download PDF</button>
     <br />
-    <input id="khogiay" type="checkbox" checked onchange="doikhogiay()" />&nbsp;<b>Khổ giấy PDF: <span id="kho" style="color:red">DỌC</span></b>
+    <span id="khoin"><input id="khogiay" type="checkbox" checked onchange="doikhogiay()" />&nbsp;<b>Khổ giấy PDF: <span id="kho" style="color:red">DỌC</span></b></span>
     <br />
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
     <!-- Modal HTML -->
@@ -441,7 +424,7 @@
             window.scrollTo({ top: 0, left: 0, behavior: "instant" });
             document.getElementById("btnExport").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
-            document.getElementById("khogiay").style.display = "none";
+            document.getElementById("khoin").style.display = "none";
             document.getElementById("page-container").style.marginLeft = "300px";
             document.getElementById("page-container-wrapper").style.height = "0%";
             document.head.innerHTML = "";
@@ -463,7 +446,7 @@
             document.documentElement.style.overflow = "hidden";
             document.getElementById("btnExport").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
-            document.getElementById("khogiay").style.display = "none";
+            document.getElementById("khoin").style.display = "none";
 
             try {
                 var khogiay = document.getElementById("khogiay").checked ? "p" : "l";
@@ -550,7 +533,7 @@
                     document.documentElement.style.overflow = originalHtmlOverflow;
                     document.getElementById("btnExport").style.display = "flex";
                     document.getElementById("btnExtend").style.display = "flex";
-                    document.getElementById("khogiay").style.display = "flex";
+                    document.getElementById("khoin").style.display = "flex";
                 }, 3000);
             } catch (err) {
                 console.error("❌ Lỗi khi tạo PDF", err);
@@ -560,7 +543,7 @@
                 document.documentElement.style.overflow = originalHtmlOverflow;
                 document.getElementById("btnExport").style.display = "flex";
                 document.getElementById("btnExtend").style.display = "flex";
-                document.getElementById("khogiay").style.display = "flex";
+                document.getElementById("khoin").style.display = "flex";
             }
         };
 
