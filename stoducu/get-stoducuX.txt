@@ -314,6 +314,9 @@
         }
     </script>
     <button id="btnExport">Download PDF</button>
+    <br />
+    <input id="khogiay" type="checkbox" checked onchange="doikhogiay()" />&nbsp;<b>Khổ giấy PDF: <span id="kho" style="color:red">DỌC</span></b>
+    <br />
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
     <!-- Modal HTML -->
     <div id="pdfModal" class="pdf-modal">
@@ -388,10 +391,23 @@
         };
     </script>
     <script>
+       function doikhogiay()
+       {
+          if (document.getElementById("khogiay").checked)
+         {
+           document.getElementById("kho").innerText = "DỌC";
+         }
+         else
+         {
+           document.getElementById("kho").innerText = "NGANG";
+         }
+       }
+
         document.getElementById("btnExtend").onclick = async function () {
             window.scrollTo({ top: 0, left: 0, behavior: "instant" });
             document.getElementById("btnExport").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
+            document.getElementById("khogiay").style.display = "none";
             document.getElementById("page-container").style.marginLeft = "300px";
             document.getElementById("page-container-wrapper").style.height = "0%";
             document.head.innerHTML = "";
@@ -413,10 +429,12 @@
             document.documentElement.style.overflow = "hidden";
             document.getElementById("btnExport").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
+            document.getElementById("khogiay").style.display = "none";
 
             try {
+                var khogiay = document.getElementById("khogiay").checked ? "p" : "l";
                 const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF("p", "mm", "a4");
+                const pdf = new jsPDF(khogiay, "mm", "a4");
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = pdf.internal.pageSize.getHeight();
 
@@ -498,6 +516,7 @@
                     document.documentElement.style.overflow = originalHtmlOverflow;
                     document.getElementById("btnExport").style.display = "flex";
                     document.getElementById("btnExtend").style.display = "flex";
+                    document.getElementById("khogiay").style.display = "flex";
                 }, 3000);
             } catch (err) {
                 console.error("❌ Lỗi khi tạo PDF", err);
@@ -507,6 +526,7 @@
                 document.documentElement.style.overflow = originalHtmlOverflow;
                 document.getElementById("btnExport").style.display = "flex";
                 document.getElementById("btnExtend").style.display = "flex";
+                document.getElementById("khogiay").style.display = "flex";
             }
         };
 
