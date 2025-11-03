@@ -269,6 +269,40 @@
             z-index: 9999;
         }
 
+        #khogiay {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
+        #kho {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
         #btnExtend:hover {
             background: linear-gradient(135deg, #66bb6a, #388e3c);
             transform: translateY(-2px);
