@@ -2986,7 +2986,7 @@
             })(window, document, "5KQA14ylBlV7lAjT", "delighted");
             delighted.survey({
                 email: "buivanluat2025@gmail.com",
-                name: "Bùi Văn Luật null",
+                name: "Bùi Văn Luật",
                 createdAt: "undefined",
                 properties: { universityCountryName: "undefined", premium: "No", locale: "vn", gender: "unknown", questionProductName: "Studocu", userId: "57217231" },
             });
