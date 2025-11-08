@@ -107,7 +107,7 @@
             <div class="form-group">
                 <input type="email" id="txtEmail" name="txtEmail" placeholder="Nhập Email của bạn">
                 <br />
-                <span style="color:red;>Nếu bạn vẫn không xác minh thành công dù đã thực hiện đúng và đủ các thao tác, đừng lo lắng. Email của bạn vẫn được hệ thống ghi nhận, bạn có thể thử lại email này vào lần sau. Hoặc bạn cũng có thể chủ động contact qua email : mywebplay.website@gmail.com</span>
+                <span style="color:red;">Nếu bạn vẫn không xác minh thành công dù đã thực hiện đúng và đủ các thao tác, đừng lo lắng. Email của bạn vẫn được hệ thống ghi nhận, bạn có thể thử lại email này vào lần sau. Hoặc bạn cũng có thể chủ động contact qua email : mywebplay.website@gmail.com</span>
             </div>
 
             <div class="form-group" style="display:none">
