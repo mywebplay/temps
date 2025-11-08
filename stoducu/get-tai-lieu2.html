@@ -123,8 +123,11 @@
     </div>
     <div class="step" id="step5">
       <textarea id="resultArea" placeholder="Dán nội dung tài liệu bạn vừa copy vào đây..."></textarea>
+      <br />
+      <br />
       <textarea id="resultArea2" placeholder="Dán nội dung header bạn vừa copy vào đây..."></textarea>
-      <input type="number" id="resultArea3" style="width:50%" placeholder="Dán chiều cao tài liệu bạn vừa copy vào đây..." />
+      <br />
+      <br />
       <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
     </div>
     <script>
@@ -153,7 +156,7 @@
       localStorage.setItem("tailieu", result);
       var result2 = document.getElementById("resultArea2").value;
       localStorage.setItem("header", result2);
-      var result3 = document.getElementById("resultArea3").value;
+      var result3 = "999999999";
       window.location.href = "/get-stoducu-document?height="+result3+"&from=&to=";
       }
       
