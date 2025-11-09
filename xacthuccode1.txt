@@ -241,8 +241,22 @@
         });
     }
 
+    let codeArr = Array(8).fill('*'); // giữ trạng thái nhập
+
     function updateDisplay() {
-        otpDisplay.textContent = codeArr.map((v,i)=> i<currentIndex?v:'*').join(' ');
+        otpDisplay.textContent = codeArr.map((v, i) => i < currentIndex ? v : '*').join(' ');
+    }
+
+    // khi resize hoặc chuyển sang SP
+    window.addEventListener('resize', () => {
+        updateCodeArrFromInputs();
+        updateDisplay();
+    });
+
+    function updateCodeArrFromInputs() {
+        inputs.forEach((i, idx) => {
+            codeArr[idx] = i.value || '*';
+        });
     }
 
     function processDone(){
