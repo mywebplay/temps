@@ -227,7 +227,7 @@
         #btnExport {
             position: fixed;
             top: 15px;
-            right: 238px;
+            right: 270px;
             padding: 12px 20px;
             background: linear-gradient(135deg, #4caf50, #2e7d32);
             color: white;
@@ -255,7 +255,7 @@
         #btnExtend {
             position: fixed;
             top: 78px;
-            right: 145px;
+            right: 180px;
             padding: 12px 20px;
             background: linear-gradient(135deg, #4caf50, #2e7d32);
             color: white;
@@ -283,7 +283,8 @@
         #khoin {
             position: fixed;
             top: 15px;
-            right: 20px;
+            width: 215px;
+            right: 48px;
             padding: 12px 20px;
             background: yellow;
             color: red;
