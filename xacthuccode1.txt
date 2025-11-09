@@ -18,13 +18,14 @@
     .container {
         text-align: center;
         background: #fff;
-        padding: 40px 20px;
+        padding: 40px 20px;  /* padding trên-dưới 40px, trái-phải 20px */
         border-radius: 15px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        width: 500px;
-        max-width: 95%;
+        width: 100%;        /* co dãn 100% */
+        max-width: 500px;   /* nhưng không vượt quá 500px */
+        box-sizing: border-box; /* tính padding vào width */
     }
-
+    
     .message {
         font-size: 20px;
         font-weight: bold;
@@ -32,16 +33,17 @@
         color: red;
         line-height: 1.4;
         word-break: break-word;
+        text-align: center;
     }
     
     @media (max-width: 768px) {
         .message {
-            font-size: 16px;        /* chữ nhỏ hơn trên SP */
-            margin-bottom: 20px;    /* khoảng cách hợp lý */
-            padding: 0 10px;        /* tránh sát mép màn hình */
-            word-break: break-word;  /* tự xuống dòng */
-            text-align: center;     /* căn giữa */
-            line-height: 1.5;       /* dễ đọc hơn */
+            font-size: 16px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            line-height: 1.5;
+            word-break: break-word;
+            text-align: center;
         }
     }
 
