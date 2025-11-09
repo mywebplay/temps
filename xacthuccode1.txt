@@ -26,13 +26,24 @@
     }
 
     .message {
-        font-size: 20px;
+        font-size: 20px; /* PC */
         font-weight: bold;
         margin-bottom: 30px;
         color: red;
+        line-height: 1.4;
     }
 
-    /* PC version */
+    /* Mobile message */
+    @media (max-width: 768px) {
+        .message {
+            font-size: 16px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            word-break: break-word;
+        }
+    }
+
+    /* PC version OTP */
     .otp-container {
         display: flex;
         justify-content: space-between;
@@ -107,6 +118,9 @@
     @media (max-width: 768px) {
         .otp-container { display: none; }
         .mobile-keypad { display: flex; }
+        .otp-display { font-size: 28px; letter-spacing: 6px; }
+        .keypad-grid { grid-template-columns: repeat(3, 60px); gap: 8px; }
+        .keypad-grid button { height: 50px; font-size: 20px; }
     }
 </style>
 </head>
@@ -177,7 +191,7 @@
         inputs.forEach(i => i.disabled = true);
     }
 
-    // PC version
+    // PC version input logic
     inputs.forEach((input, index) => {
         input.addEventListener('mousedown', e => {
             if (index !== currentIndex) {
@@ -193,12 +207,18 @@
 
     document.addEventListener('keydown', function(e) {
         if (e.key >= '0' && e.key <= '9') {
-            if (window.innerWidth <= 768) return; // bỏ qua mobile
+            if (window.innerWidth <= 768) return;
             inputs[currentIndex].value = e.key;
             currentIndex++;
-            if (currentIndex < inputs.length) {
+            if (currentIndex < inputs.length) focusCurrent();
+            else processDone();
+            e.preventDefault();
+        } else if (e.key === 'Backspace') {
+            if (currentIndex > 0) {
+                currentIndex--;
+                inputs[currentIndex].value = '';
                 focusCurrent();
-            } else processDone();
+            }
             e.preventDefault();
         } else if (e.key !== "Tab") e.preventDefault();
     });
