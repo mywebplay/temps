@@ -241,8 +241,6 @@
         });
     }
 
-    let codeArr = Array(8).fill('*'); // giữ trạng thái nhập
-
     function updateDisplay() {
         otpDisplay.textContent = codeArr.map((v, i) => i < currentIndex ? v : '*').join(' ');
     }
