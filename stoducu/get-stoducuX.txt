@@ -179,11 +179,21 @@
     <div id="overlay" style="display: none;">
         <div class="progress-container">
             <div id="progress-bar"></div>
-            <div style="color: black;">Đã xử lý : <b id="progress-text" style="color: red;">0%</b></div>
+            <div style="color: black;">
+			Đã xử lý : <b id="progress-text" style="color: red;">0%</b>
+			</div>
+        </div>
+    </div>
+    <div id="overlay2" style="display: none;">
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+            <div style="color: black;">
+			<span style="color:red;" id="notice">Hệ thống đang chuẩn bị nên có thể hơi lâu một chút!</span>
+			</div>
         </div>
     </div>
     <style>
-        #overlay {
+        #overlay, #overlay2 {
             position: fixed;
             top: 0;
             left: 0;
@@ -450,7 +460,7 @@
         };
 
         document.getElementById("btnExport").onclick = async function () {
-            showOverlay();
+            document.getElementById("overlay2").style.display = "flex";
             window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
             const originalBodyOverflow = document.body.style.overflow;
@@ -484,6 +494,9 @@
                             windowWidth: div.scrollWidth,
                             windowHeight: div.scrollHeight,
                         });
+						
+						document.getElementById("overlay").style.display = "flex";
+						document.getElementById("overlay2").style.display = "none";
 
                         if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
 
