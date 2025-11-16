@@ -1,0 +1,246 @@
+// --- Load external scripts bằng Promise ---
+function loadExternalScripts() {
+    return new Promise((resolve, reject) => {
+        let loadedCount = 0;
+
+        // html2canvas
+        var script1 = document.createElement('script');
+        script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        script1.onload = () => {
+            console.log('html2canvas loaded');
+            loadedCount++;
+            if (loadedCount === 2) resolve();
+        };
+        script1.onerror = reject;
+        document.head.appendChild(script1);
+
+        // jsPDF
+        var script2 = document.createElement('script');
+        script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        script2.onload = () => {
+            console.log('jsPDF loaded');
+            loadedCount++;
+            if (loadedCount === 2) resolve();
+        };
+        script2.onerror = reject;
+        document.head.appendChild(script2);
+    });
+}
+
+// --- Overlay + progress ---
+function createOverlayWithProgress() {
+    document.body.style.overflow = 'hidden';
+
+    // --- Overlay 1 ---
+    var overlay1 = document.createElement('div');
+    overlay1.id = 'overlay1';
+    overlay1.style.position = 'fixed';
+    overlay1.style.top = '0';
+    overlay1.style.left = '0';
+    overlay1.style.width = '100%';
+    overlay1.style.height = '100%';
+    overlay1.style.background = 'rgba(0,0,0,0.6)';
+    overlay1.style.display = 'flex';
+    overlay1.style.alignItems = 'center';
+    overlay1.style.justifyContent = 'center';
+    overlay1.style.zIndex = '9999';
+    overlay1.style.display = 'none';
+
+    var container1 = document.createElement('div');
+    container1.style.width = '60%';
+    container1.style.maxWidth = '500px';
+    container1.style.background = '#ddd';
+    container1.style.borderRadius = '12px';
+    container1.style.overflow = 'hidden';
+    container1.style.boxShadow = '0 0 15px rgba(0,0,0,0.3)';
+    container1.style.textAlign = 'center';
+    container1.style.padding = '20px';
+
+    var progressBar1 = document.createElement('div');
+    progressBar1.id = 'progress-bar1';
+    progressBar1.style.height = '20px';
+    progressBar1.style.width = '0%';
+    progressBar1.style.background = '#4caf50';
+    progressBar1.style.transition = 'width 0.3s ease';
+
+    var progressText1 = document.createElement('div');
+    progressText1.style.color = 'black';
+    progressText1.style.marginTop = '10px';
+    progressText1.innerHTML = 'Đã xử lý: <b id="progress-text1" style="color:red;">0%</b>';
+
+    container1.appendChild(progressBar1);
+    container1.appendChild(progressText1);
+    overlay1.appendChild(container1);
+    document.body.appendChild(overlay1);
+
+    // --- Overlay 2 ---
+    var overlay2 = document.createElement('div');
+    overlay2.id = 'overlay2';
+    overlay2.style.position = 'fixed';
+    overlay2.style.top = '0';
+    overlay2.style.left = '0';
+    overlay2.style.width = '100%';
+    overlay2.style.height = '100%';
+    overlay2.style.background = 'rgba(0,0,0,0.6)';
+    overlay2.style.display = 'flex';
+    overlay2.style.alignItems = 'center';
+    overlay2.style.justifyContent = 'center';
+    overlay2.style.zIndex = '9999';
+    overlay2.style.display = 'none';
+
+    var container2 = document.createElement('div');
+    container2.style.width = '60%';
+    container2.style.maxWidth = '500px';
+    container2.style.background = '#ddd';
+    container2.style.borderRadius = '12px';
+    container2.style.overflow = 'hidden';
+    container2.style.boxShadow = '0 0 15px rgba(0,0,0,0.3)';
+    container2.style.textAlign = 'center';
+    container2.style.padding = '20px';
+
+    var progressBar2 = document.createElement('div');
+    progressBar2.id = 'progress-bar2';
+    progressBar2.style.height = '20px';
+    progressBar2.style.width = '0%';
+    progressBar2.style.background = '#4caf50';
+    progressBar2.style.transition = 'width 0.3s ease';
+
+    var noticeText = document.createElement('div');
+    noticeText.style.color = 'black';
+    noticeText.style.marginTop = '10px';
+    var noticeSpan = document.createElement('span');
+    noticeSpan.id = 'notice';
+    noticeSpan.style.color = 'red';
+    noticeSpan.innerText = 'Hệ thống đang chuẩn bị nên có thể hơi lâu một chút!';
+    noticeText.appendChild(noticeSpan);
+
+    container2.appendChild(progressBar2);
+    container2.appendChild(noticeText);
+    overlay2.appendChild(container2);
+    document.body.appendChild(overlay2);
+
+    overlay1.style.display = 'flex';
+}
+
+// --- Cập nhật progress ---
+function updateProgress(percent) {
+    const bar = document.getElementById('progress-bar1');
+    const text = document.getElementById('progress-text1');
+    if (bar) bar.style.width = percent + '%';
+    if (text) text.innerText = percent + '%';
+}
+
+function hideOverlay() {
+    const overlay1 = document.getElementById('overlay1');
+    const overlay2 = document.getElementById('overlay2');
+    if (overlay1) overlay1.style.display = 'none';
+    if (overlay2) overlay2.style.display = 'none';
+}
+
+// --- Tạo tên file ---
+function getFileName() {
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, "0");
+    return `TaiLieuStudocu_${pad(now.getDate())}${pad(now.getMonth() + 1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
+}
+
+// --- Export PDF ---
+async function exportPDF(khogiay) {
+    await loadExternalScripts(); // chắc chắn load xong 2 thư viện
+    khogiay = khogiay == "doc" ? "p" : "l";
+    createOverlayWithProgress();
+    document.getElementById("overlay2").style.display = "flex";
+
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF(khogiay, "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
+        const visibleDivs = divs.filter(div => window.getComputedStyle(div).display !== "none");
+        const totalDivs = visibleDivs.length;
+        let processed = 0;
+
+        for (let i = 0; i < visibleDivs.length; i++) {
+            const div = visibleDivs[i];
+            try {
+                const canvas = await html2canvas(div, {
+                    scale: window.devicePixelRatio * 2,
+                    useCORS: true,
+                    backgroundColor: "#ffffff",
+                    logging: false,
+                    windowWidth: div.scrollWidth,
+                    windowHeight: div.scrollHeight,
+                });
+
+                document.getElementById("overlay1").style.display = "flex";
+                document.getElementById("overlay2").style.display = "none";
+
+                if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+
+                const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+
+                const imgRatio = canvas.width / canvas.height;
+                const pageRatio = pageWidth / pageHeight;
+
+                let imgWidth, imgHeight;
+
+                if (imgRatio > pageRatio) {
+                    imgHeight = pageHeight;
+                    imgWidth = pageHeight * imgRatio;
+                } else {
+                    imgWidth = pageWidth;
+                    imgHeight = pageWidth / imgRatio;
+                }
+
+                const x = (pageWidth - imgWidth) / 2;
+                const y = (pageHeight - imgHeight) / 2;
+
+                if (i > 0) pdf.addPage();
+                pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight);
+
+                processed++;
+                const percent = Math.round((processed / totalDivs) * 100);
+                updateProgress(percent);
+            } catch (err) {
+                console.error("❌ Lỗi khi render div " + i, err);
+                alert("Có lỗi xảy ra khi tạo PDF!");
+                return;
+            }
+        }
+
+        setTimeout(() => {
+            const pdfBlob = pdf.output("blob");
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+            const a = document.createElement("a");
+            a.href = pdfUrl;
+            a.download = getFileName();
+            a.click();
+            window.open(pdfUrl, "_blank");
+            setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
+
+            hideOverlay();
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+        }, 3000);
+
+    } catch (err) {
+        console.error("❌ Lỗi khi tạo PDF", err);
+        alert("Có lỗi xảy ra khi tạo PDF!");
+        hideOverlay();
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+    }
+}
+
+// --- Gọi exportPDF ---
+exportPDF("doc");
