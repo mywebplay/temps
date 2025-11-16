@@ -14,7 +14,7 @@
         let to = params.get("to");
 
         // nếu không có param thì mặc định = 1
-        if (page === null || page === "") page = "100000";
+        if (page === null || page === "") page = "9999999";
 
         if (from === null || from === "") from = "1";
 
@@ -366,7 +366,7 @@
             <div class="pdf-tips">
                 <b style="color: red;">* THÔNG TIN BỔ SUNG :</b>
 + Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý một lần thì PDF có thể bị lỗi.
-+ Thay đổi giá trị các biến query : from và to trên thanh địa chỉ url trình duyệt để hiển thị theo đúng range số trang của tài liệu (trang bắt đầu là 1).
++ Thay đổi giá trị các biến query : from và to trên thanh địa chỉ url trình duyệt để hiển thị theo đúng range số trang của tài liệu để hiển thị/download PDF(trang bắt đầu là 1); còn biến heigth thì bạn có thể tự tăng/giảm giá trị chiều cao cho sự hiển thị PDF trên giao diện (tuỳ bạn).
 + Lâu lâu nội dung PDF trên giao diện có thể bị lỗi không/chưa hiện ra, nhưng mà bạn cứ thực hiện download PDF hoặc lấy text như bình thường, thì cứ thử cho biết thôi😎.
 + Lưu ý: đôi khi PDF download (một số tài liệu) sẽ bị lỗi format, không giống hoặc sẽ khác đi so với bản gốc. Bạn có thể tải PDF với lựa chọn thủ công về khổ trang giấy: ngang/dọc - tuỳ mong muốn của bạn.
 + Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần nhỏ để thực hiện thao tác nhiều lần nhé (nhưng mà thôi, bạn cứ thử dồn hết một lần để tải PDF trước đi, còn nếu xui thì phải chia nhỏ pdf ra tải từng phần nhỏ chứ sao giờ 😁). Chúc bạn thực hiện thành công❤
