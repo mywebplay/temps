@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hướng dẫn lấy nội dung studocu</title>
+    <style>
+      body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      box-sizing: border-box;
+      }
+      h2 {
+      color: red;
+      }
+      h4 {
+      color: black;
+      margin-top: 8px;
+      }
+      img {
+      width: 100%;
+      max-height: calc(100vh - 250px);
+      object-fit: contain;
+      display: block;
+      margin: 16px 0;
+      }
+      .step {
+      display: none;
+      }
+      .active {
+      display: block;
+      }
+      button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      }
+      textarea {
+      width: 100%;
+      height: 800px;
+      margin-top: 16px;
+      padding: 12px;
+      font-size: 14px;
+      box-sizing: border-box;
+      resize: none;
+      }
+      .spinner {
+      display: none;
+      margin: 20px auto;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #555;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+      to {
+      transform: rotate(360deg);
+      }
+      }
+    </style>
+  </head>
+  <body>
+      <div class="step active" id="step0">
+      <h2>Bước 0 (<span style="color:red">MẸO BỔ SUNG</span>)</h2>
+      <h4>
+        1 url tài liệu của stoducu lần đầu bạn truy cập thì thường sẽ được mở và show ra hết tất cả nội dung các trang của tài liệu.
+        <br />
+        Nhưng khi load lại trang hay từ lần thứ hai trở đi, tài liệu trở thành dạng "Premium - trả phí" và một số trang của tài liệu bị làm mờ, ẩn giấu (xem hình dưới).
+      </h4>
+      <img src="https://mywebplay.github.io/images/studocu/buoc0_1.png" alt="Step 0_1" />
+      <br />
+      <br />
+      <h4>
+       <u>MẸO</u>: hãy nhấn F12 và sang tab Application, chọn mục Cookies và chuột phải vào từng mục con của nó và nhấn <span style="color:blue">Clear</span> (ví dụ hình dưới mình có 3 mục cookies thì xoá hết 3 cái luôn cho chắc 😀)
+       <br />
+       <span style="color:deeppink">CHÚ Ý</span>: chỉ làm cách này nếu bạn không có dữ liệu hay điều gì quan trọng lưu trữ trên stoducu (cái này mình không biết đâu à nha, cho nên cẩn thận vào nhé 😎)
+       <br />
+       Sau đó, thử load lại trang và kiểm tra lại!
+      </h4>
+      <img src="https://mywebplay.github.io/images/studocu/buoc0_2.png" alt="Step 0_2" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step1">
+      <h2>Bước 1</h2>
+      <h4>
+        Truy cập url của trang studocu.vn dẫn đến tài liệu bạn muốn lấy.
+        <br />
+        Tuy nhiên, bạn cũng đừng hấp tấp vội. Kiểm tra và đảm bảo màn hình trang web studocu.vn đã tải và hoàn tất hiển thị đầy đủ nội dung tài liệu!
+      </h4>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-1.jpg" alt="Step 1" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step2">
+      <h2>Bước 2</h2>
+      <h4>Nhấn F12, sau đó qua tab Console, click chuột phải và chọn Clear console để làm sạch nội dung.</h4>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-2.jpg" alt="Step 2" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step3">
+      <h2>Bước 3</h2>
+      <h4>Sau đó gán dòng lệnh bên dưới vào console đó rồi nhấn Enter
+        <br />
+        CHÚ Ý : ở đây có 2 thông tin cần copy riêng biệt (nội dung body/content và header của tài liệu). Hãy copy và hành động từng cái một nhé!
+      </h4>
+      <iframe src="https://mywebplay.github.io/temps/stoducu/copyCodeJs.html" style="width:100%;height:300px;overflow: hidden;border:none;"></iframe>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-3.jpg" alt="Step 3" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step4">
+      <h2>Bước 4</h2>
+      <h4>Click vào "Copy", sau đó quay trở lại đây để gán lại nội dung đó để có thể sử dụng.</h4>
+      <img src="https://mywebplay.github.io/images/studocu/Buoc-4.jpg" alt="Step 4" />
+      <button onclick="nextStep()">Tiếp tục</button>
+    </div>
+    <div class="step" id="step5">
+      <textarea id="resultArea" placeholder="Dán nội dung tài liệu bạn vừa copy vào đây..."></textarea>
+      <br />
+      <br />
+      <textarea id="resultArea2" placeholder="Dán nội dung header bạn vừa copy vào đây..."></textarea>
+      <br />
+      <br />
+      <button id="getResultBtn" onclick="getResult()">GET RESULT</button>
+    </div>
+    <script>
+      let currentStep = 0;
+      
+      function nextStep() {
+        document.getElementById(`step${currentStep}`).classList.remove("active");
+        currentStep++;
+        document.getElementById(`step${currentStep}`).classList.add("active");
+      }
+      
+      function getResult() {
+      var result = document.getElementById("resultArea").value;
+      
+      // Đổi tất cả display:none thành display:block
+      result = result.replace(/display\s*:\s*none/g, "display:block");
+      
+      // Thêm style="display:none" cho <svg> nếu chưa có style
+      result = result.replace(/<svg(?![^>]*style)/g, '<svg style="display:none" ');
+      
+      // Nếu <svg đã có style thì thêm display:none vào đầu style
+      result = result.replace(/<svg([^>]*)style="([^"]*)"/g, function(match, before, style) {
+      return `<svg${before}style="display:none; ${style}"`;
+      });
+      
+      localStorage.setItem("tailieu", result);
+      var result2 = document.getElementById("resultArea2").value;
+      localStorage.setItem("header", result2);
+      var result3 = "999999999";
+      window.location.href = "/get-stoducu-document?height="+result3+"&from=&to=";
+      }
+      
+      // Delete div somee
+         setInterval(function () {
+                  document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
+                  document.querySelectorAll("div[onmouseover='S_ssac();']").forEach((el) => el.remove());
+                  document.querySelectorAll("center").forEach((el) => el.remove());
+                  document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remove());
+              }, 10);
+    </script>
+  </body>
+  <script src="/lib/jquery/dist/jquery.min.js"></script>
+  <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/site.js?v=TT9gdsrYxJxsTxry7yz80ShJ0E1Fs7_3rwt7zPCsi4I"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+</html>
