@@ -1,0 +1,967 @@
+<html
+    lang="en"
+    class="cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions no-cookies cors json queryselector websockets supports no-touchevents cssanimations csstransforms3d csstransitions"
+    style="overflow: auto; box-sizing: border-box; padding-right: 15px;"
+>
+    <style>
+        /* Thêm css vào đây */
+    </style>
+    <script>
+        /* Thêm JS vào đây */
+        const params = new URLSearchParams(window.location.search);
+        let page = params.get("height");
+        let from = params.get("from");
+        let to = params.get("to");
+
+        // nếu không có param thì mặc định = 1
+        if (page === null || page === "") page = "9999999";
+
+        if (from === null || from === "") from = "1";
+
+        page = parseInt(page, 10); // chuyển sang số nguyên
+        from = parseInt(from, 10);
+        to = parseInt(to, 10);
+
+        var loaded4 = false;
+        setInterval(function () {
+            if (loaded4) return;
+
+            const container = document.getElementById("page-container");
+            if (container) {
+                const children = container.querySelectorAll("[data-page-index]");
+
+                // nếu chưa khai báo to thì mặc định là số lượng div
+                to = to ? parseInt(to, 10) : children.length;
+
+                // quy đổi from/to sang index
+                let fromIndex = from - 1;
+                let toIndex = to - 1;
+
+                children.forEach((div) => {
+                    const idx = parseInt(div.getAttribute("data-page-index"), 10);
+                    if (idx >= fromIndex && idx <= toIndex) {
+                        div.style.display = ""; // hiện
+                    } else {
+                        // div.style.display = "none"; // ẩn
+                        div.remove();
+                    }
+                });
+
+                params.set("height", page);
+                params.set("from", from);
+                params.set("to", to);
+
+                const newUrl = window.location.pathname + "?" + params.toString();
+                history.replaceState(null, "", newUrl);
+                loaded4 = true;
+            }
+        }, 10);
+
+        var loaded = false;
+        setInterval(function () {
+            if (loaded) return;
+
+            if (document.getElementById("pagene")) {
+                document.getElementById("pagene").style.height = page + "px";
+                loaded = true;
+            }
+        }, 10);
+
+        var loaded1 = false;
+        setInterval(function () {
+            if (loaded1) return;
+            if (document.getElementById("pagene")) {
+                document.getElementById("pagene").innerHTML = localStorage.getItem("tailieu");
+                loaded1 = true;
+            }
+        }, 10);
+
+        var loaded12 = 0;
+        setInterval(function () {
+            if (loaded12 == 2) {
+                return;
+            }
+            if (loaded12 == 1 && document.getElementById("page-container-wrapper")) {
+                // document.getElementById("page-container-wrapper").style.height = "0%";
+                document.getElementById("page-container").style.position = "absolute";
+                // document.querySelectorAll("body img").forEach(img => img.remove());
+                // document.body.style.overflow = "hidden";
+                // document.documentElement.style.overflow = "hidden";
+                document.getElementById("page-container-wrapper").style.transform = "";
+
+                // Lấy tất cả các phần tử có attribute data-page-index
+                const elements1 = document.querySelectorAll("[data-page-index]");
+
+                // Gán style width = 500px cho từng phần tử
+                elements1.forEach((el) => {
+                    el.style.width = "1000px";
+                });
+
+                const banners1 = document.querySelectorAll(".Layout_visible-content-top-wrapper__ZpKSf");
+
+                // Duyệt qua từng phần tử và remove
+                banners1.forEach((banner) => banner.remove());
+
+                window.location.href = "#page-container";
+                document.getElementById("xclose").style.display = "flex";
+                document.getElementById("xtitle").style.display = "none";
+            }
+            loaded12++;
+        }, 5000);
+
+        var loaded2 = false;
+        setInterval(function () {
+            if (loaded2) return;
+            // Kiểm tra xem có ít nhất 1 element có class cần tìm
+            var exists = document.querySelector(".PremiumBannerBlobWrapper_preview-banner__WD5rf, .PremiumBannerBlobWrapper_in-viewer__AUDBA") !== null;
+            if (exists) {
+                // Chọn tất cả element có cả 2 class
+                var elements = document.querySelectorAll(".PremiumBannerBlobWrapper_preview-banner__WD5rf.PremiumBannerBlobWrapper_in-viewer__AUDBA");
+
+                // Ẩn từng element
+                elements.forEach(function (el) {
+                    el.style.display = "none";
+                });
+
+                loaded2 = true;
+            }
+        }, 10);
+
+        var loaded3 = false;
+        setInterval(function () {
+            if (loaded3) return;
+            // Kiểm tra xem có ít nhất 1 element có class cần tìm
+            var exists1 = document.querySelector(".InlineBanner_inline-banner-wrapper__DAi5X") !== null;
+            if (exists1) {
+                // Lấy tất cả các phần tử có class
+                const banners = document.querySelectorAll(".InlineBanner_inline-banner-wrapper__DAi5X");
+
+                // Duyệt qua từng phần tử và remove
+                banners.forEach((banner) => banner.remove());
+
+                loaded3 = true;
+            }
+        }, 10);
+
+        var loaded13 = false;
+        setInterval(function () {
+            if (loaded13) return;
+            // Kiểm tra xem có ít nhất 1 element có class cần tìm
+            var exists1 = document.querySelector(".ViewerToolbar_toolbar__l4wOx") !== null;
+            if (exists1) {
+                // Lấy tất cả các phần tử có class
+                const banners = document.querySelectorAll(".ViewerToolbar_toolbar__l4wOx");
+
+                // Duyệt qua từng phần tử và remove
+                banners.forEach((banner) => banner.remove());
+
+                loaded13 = true;
+            }
+        }, 10);
+
+        // Delete div somee
+        setInterval(function () {
+            document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
+            document.querySelectorAll("div[onmouseover='S_ssac();']").forEach((el) => el.remove());
+            document.querySelectorAll("center").forEach((el) => el.remove());
+            document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remove());
+        }, 10);
+
+        const savedHead = localStorage.getItem("header");
+        if (savedHead) {
+            document.head.innerHTML = new DOMParser().parseFromString(savedHead, "text/html").head.innerHTML;
+        }
+    </script>
+    <!-- Thư viện --><!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Overlay + Progress bar -->
+    <div id="overlay" style="display: none;">
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+            <div style="color: black;">
+			Đã xử lý : <b id="progress-text" style="color: red;">0%</b>
+			</div>
+        </div>
+    </div>
+    <div id="overlay2" style="display: none;">
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+            <div style="color: black;">
+			<span style="color:red;" id="notice">Hệ thống đang chuẩn bị nên có thể hơi lâu một chút!</span>
+			</div>
+        </div>
+    </div>
+    <style>
+        #overlay, #overlay2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .progress-container {
+            width: 60%;
+            max-width: 500px;
+            background: #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        #progress-bar {
+            height: 20px;
+            width: 0%;
+            background: #4caf50; /* xanh lá */
+            transition: width 0.3s ease;
+        }
+        #progress-text {
+            margin-top: 10px;
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+    <style>
+        /* Reset nhỏ cho đẹp */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 2000px; /* để test scroll */
+        }
+
+        #btnExport {
+            position: fixed;
+            top: 15px;
+            right: 270px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
+        #btnExport:hover {
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        #btnExport:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #btnExtend {
+            position: fixed;
+            top: 78px;
+            right: 180px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
+        #btnExtend:hover {
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        #btnExtend:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #khoin {
+            position: fixed;
+            top: 15px;
+            width: 215px;
+            right: 48px;
+            padding: 12px 20px;
+            background: yellow;
+            color: red;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
+       #khoin:hover {
+            background: yellow;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        #khoin:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        @media print {
+            body,
+            html {
+                overflow: visible !important;
+                visibility: visible !important;
+            }
+            .pf,
+            .page-content,
+            .pc {
+                display: block !important;
+                visibility: visible !important;
+                position: relative !important;
+            }
+        }
+    </style>
+    <!-- JS -->
+    <script>
+        function showOverlay() {
+            document.getElementById("overlay").style.display = "flex";
+            updateProgress(0);
+        }
+
+        function hideOverlay() {
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function updateProgress(percent) {
+            const bar = document.getElementById("progress-bar");
+            const text = document.getElementById("progress-text");
+            bar.style.width = percent + "%";
+            text.textContent = percent + "%";
+        }
+    </script>
+    <button id="btnExport">Download PDF</button>
+    <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
+    <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
+    <!-- Modal HTML -->
+    <div id="pdfModal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <span class="pdf-close" style="display: none;" id="xclose">❌</span>
+            <span class="pdf-close" style="color: red;" id="xtitle">Chờ một lát nhé...</span>
+            <div class="pdf-instruction">
+                <u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa thấy bắt đầu xử lý, vui lòng cũng không rê chuột hay bất cứ thao tác nào khác trên trang hiện tại. Và bạn cũng có thể xoá thêm phần "Cached images and files" trong lịch sử trình duyệt trước khi thực hiện.
+            </div>
+            <div class="pdf-tips">
+                <b style="color: red;">* THÔNG TIN BỔ SUNG :</b>
++ Nếu số trang PDF của bạn quá lớn hoặc PDF in ra bị lỗi, vui lòng giảm bớt và chỉnh lại số page cần in PDF (ví dụ : PDF có 100 trang. Lần 1 : in từ trang 1 đến trang 50, lần 2 : in từ trang 51 đến trang 100), nếu dồn hết xử lý một lần thì PDF có thể bị lỗi.
++ Thay đổi giá trị các biến query : from và to trên thanh địa chỉ url trình duyệt để hiển thị theo đúng range số trang của tài liệu để hiển thị/download PDF(trang bắt đầu là 1); còn biến heigth thì bạn có thể tự tăng/giảm giá trị chiều cao cho sự hiển thị PDF trên giao diện (tuỳ bạn).
++ Lâu lâu nội dung PDF trên giao diện có thể bị lỗi không/chưa hiện ra, nhưng mà bạn cứ thực hiện download PDF hoặc lấy text như bình thường, thì cứ thử cho biết thôi😎.
++ Lưu ý: đôi khi PDF download (một số tài liệu) sẽ bị lỗi format, không giống hoặc sẽ khác đi so với bản gốc. Bạn có thể tải PDF với lựa chọn thủ công về khổ trang giấy: ngang/dọc - tuỳ mong muốn của bạn.
++ Mong bạn thông cảm nếu phải chia nhỏ PDF dung lượng lớn ra thành từng phần nhỏ để thực hiện thao tác nhiều lần nhé (nhưng mà thôi, bạn cứ thử dồn hết một lần để tải PDF trước đi, còn nếu xui thì phải chia nhỏ pdf ra tải từng phần nhỏ chứ sao giờ 😁). Chúc bạn thực hiện thành công❤
+            </div>
+        </div>
+    </div>
+    <!-- CSS -->
+    <style>
+        .pdf-modal {
+            display: block; /* mặc định hiện */
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            font-family: Arial, sans-serif;
+        }
+        .pdf-modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            line-height: 1.5;
+        }
+        .pdf-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .pdf-close:hover {
+            color: #000;
+        }
+        .pdf-instruction {
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+            padding: 12px;
+            margin-bottom: 12px;
+            white-space: pre-line;
+			color: black;
+        }
+        .pdf-tips {
+            background: #eef7ff;
+            border-left: 4px solid #00aaff;
+            padding: 12px;
+            white-space: pre-line;
+			color: black;
+        }
+    </style>
+    <!-- JS -->
+    <script>
+        const modal = document.getElementById("pdfModal");
+        const closeBtn = document.querySelector(".pdf-close");
+
+        closeBtn.onclick = function () {
+            modal.style.display = "none";
+        };
+    </script>
+    <script>
+       var khogiay = "p";
+       function doikhogiay()
+       {
+          if (khogiay == "l")
+         {
+           document.getElementById("kho").innerText = "DỌC";
+           khogiay = "p";
+         }
+         else
+         {
+           document.getElementById("kho").innerText = "NGANG";
+           khogiay = "l";
+         }
+       }
+
+        document.getElementById("btnExtend").onclick = async function () {
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+            document.getElementById("btnExport").style.display = "none";
+            document.getElementById("btnExtend").style.display = "none";
+            document.getElementById("khoin").style.display = "none";
+            document.getElementById("page-container").style.marginLeft = "300px";
+            document.getElementById("page-container-wrapper").style.height = "0%";
+            document.head.innerHTML = "";
+            document.querySelectorAll("#page-container img").forEach((img) => img.remove());
+            document.querySelectorAll(".ViewerToolbar_toolbar__l4wOx.ViewerToolbar_hidden__Jcd1I").forEach((el) => el.remove());
+            alert("Vui lòng load lại trang nếu bạn muốn trở lại hiển thị mặc định!");
+            window.location.href = "#page-container";
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+        };
+
+        document.getElementById("btnExport").onclick = async function () {
+            document.getElementById("overlay2").style.display = "flex";
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+            const originalBodyOverflow = document.body.style.overflow;
+            const originalHtmlOverflow = document.documentElement.style.overflow;
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
+            document.getElementById("btnExport").style.display = "none";
+            document.getElementById("btnExtend").style.display = "none";
+            document.getElementById("khoin").style.display = "none";
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF(khogiay, "mm", "a4");
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
+                const visibleDivs = divs.filter((div) => window.getComputedStyle(div).display !== "none");
+                const totalDivs = visibleDivs.length;
+                let processed = 0;
+
+                for (let i = 0; i < visibleDivs.length; i++) {
+                    const div = visibleDivs[i];
+
+                    try {
+                        const canvas = await html2canvas(div, {
+                            scale: window.devicePixelRatio * 2,
+                            useCORS: true,
+                            backgroundColor: "#ffffff",
+                            logging: false,
+                            windowWidth: div.scrollWidth,
+                            windowHeight: div.scrollHeight,
+                        });
+						
+						document.getElementById("overlay").style.display = "flex";
+						document.getElementById("overlay2").style.display = "none";
+
+                        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+
+                        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+                        // Fit nội dung phủ kín toàn bộ trang PDF (full page, không viền trắng)
+                        const pageWidth = pdf.internal.pageSize.getWidth();
+                        const pageHeight = pdf.internal.pageSize.getHeight();
+
+                        // Tính tỉ lệ giữa ảnh và trang PDF
+                        const imgRatio = canvas.width / canvas.height;
+                        const pageRatio = pageWidth / pageHeight;
+
+                        let imgWidth, imgHeight;
+
+                        // "COVER" - phóng để lấp kín toàn bộ trang (có thể cắt nhẹ mép)
+                        if (imgRatio > pageRatio) {
+                            // ảnh rộng hơn => scale theo chiều cao, sẽ bị crop ngang một chút
+                            imgHeight = pageHeight;
+                            imgWidth = pageHeight * imgRatio;
+                        } else {
+                            // ảnh cao hơn => scale theo chiều rộng, sẽ bị crop dọc một chút
+                            imgWidth = pageWidth;
+                            imgHeight = pageWidth / imgRatio;
+                        }
+
+                        // Căn giữa để hình phủ kín mà không bị lệch
+                        const x = (pageWidth - imgWidth) / 2;
+                        const y = (pageHeight - imgHeight) / 2;
+
+                        // Thêm trang PDF
+                        if (i > 0) pdf.addPage();
+                        pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight);
+
+                        processed++;
+                        const percent = Math.round((processed / totalDivs) * 100);
+                        updateProgress(percent);
+                    } catch (err) {
+                        console.error("❌ Lỗi khi render div " + i, err);
+                        alert("Có lỗi xảy ra khi tạo PDF!");
+                        return;
+                    }
+                }
+
+                // Giữ progress 100% thêm 3s
+                setTimeout(() => {
+                    const pdfBlob = pdf.output("blob");
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement("a");
+                    a.href = pdfUrl;
+                    a.download = getFileName();
+                    a.click();
+                    window.open(pdfUrl, "_blank"); // mở tab mới
+
+                    setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
+
+                    hideOverlay();
+                    document.body.style.overflow = originalBodyOverflow;
+                    document.documentElement.style.overflow = originalHtmlOverflow;
+                    document.getElementById("btnExport").style.display = "flex";
+                    document.getElementById("btnExtend").style.display = "flex";
+                    document.getElementById("khoin").style.display = "flex";
+                }, 3000);
+            } catch (err) {
+                console.error("❌ Lỗi khi tạo PDF", err);
+                alert("Có lỗi xảy ra khi tạo PDF!");
+                hideOverlay();
+                document.body.style.overflow = originalBodyOverflow;
+                document.documentElement.style.overflow = originalHtmlOverflow;
+                document.getElementById("btnExport").style.display = "flex";
+                document.getElementById("btnExtend").style.display = "flex";
+                document.getElementById("khoin").style.display = "flex";
+            }
+        };
+
+        // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
+        function getFileName() {
+            const now = new Date();
+            const pad = (n) => n.toString().padStart(2, "0");
+            return `TaiLieuStudocu_${pad(now.getDate())}${pad(now.getMonth() + 1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
+        }
+    </script>
+    <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto; width: 100%;">
+        <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height: 1px; left: -9999px; position: absolute; width: 1px;"></div>
+        <div id="main-wrapper" style="width: 2002px;">
+            <div id="__next">
+                <div class="CurrentAlertBar_wrapper__ZsHAO" id="current-alert-bar">
+                    <div class="CurrentAlertBar_animation-wrapper__uSGiV"></div>
+                </div>
+                <div class="Layout_wrapper__hyU9C">
+                    <div class="Layout_page-content-wrapper__zhKJ6">
+                        <div class="Viewer_viewer-wrapper__O8ZL7" id="viewer-wrapper">
+                            <article class="Viewer_document-wrapper__JPBWQ" id="document-wrapper" tabindex="0">
+                                <div id="pagene" style="height: 5000px; will-change: transform;"></div>
+                            </article>
+                        </div>
+                        <script>
+                            (function (e, t, r, n, a, i) {
+                                let o = document.getElementById(e);
+                                new ResizeObserver((e, o) => {
+                                    let s = e[0].contentRect.width;
+                                    if (s > 0) {
+                                        o.disconnect();
+                                        let e = Math.min(s - t, r),
+                                            u = document.getElementsByClassName("pf")[0],
+                                            l = u ? u.offsetWidth : e,
+                                            c = document.getElementById(i),
+                                            d = c.parentElement,
+                                            m = c.offsetHeight,
+                                            _ = Math.min(Math.max(e / l, n), a),
+                                            g = Math.max(100 / _, (l / s) * 100),
+                                            p = Math.round(m * _);
+                                        (window.documentViewerInitialZoom = _),
+                                            (c.style.transform = "scale(" + _ + ")"),
+                                            (c.style.width = g.toFixed(2) + "%"),
+                                            (c.style.height = 100 / _ + "%"),
+                                            (d.style.height = p + "px"),
+                                            (c.style.opacity = "1");
+                                    }
+                                }).observe(o);
+                            })("document-wrapper", 22, 1024, 0.25, 4, "page-container-wrapper");
+                        </script>
+                        <div class="Layout_visible-content-top-wrapper__ZpKSf">
+                            <div class="Layout_visible-content-top-section__pfsb5">
+                                <div class="PremiumBannerBlobWrapper_overflow-wrapper__xsaS8 PremiumBanner_is-floating__wX9aG">
+                                    <div class="PremiumBannerBlobWrapper_blob-container__nkxOo">
+                                        <svg style="display: none;" class="Shapes_lime__j4iTJ PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_first-blob__2ShMG" viewBox="0 0 56 140" width="110">
+                                            <path d="M27.9157 135.53C63.6989 162.919 61.5826 28.5586 40.3224 2.98615C36.1189 -2.05454 24.0131 -1.45238 17.9943 14.1262C1.88888 56.0639 -16.692 97.6519 27.9157 135.53Z"></path>
+                                        </svg>
+                                        <svg style="display: none;" class="Shapes_light-blue__bODo0 PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_second-blob__iswBR" viewBox="0 0 33 43" width="134">
+                                            <path
+                                                d="M32.7634 16.6301C33.1517 26.1772 26.1911 37.395 17.2308 41.2896C-0.243426 48.8749 0.542891 24.0114 0.523475 22.1466C0.397273 10.9872 7.50344 1.53714 16.2017 0.779577C24.9 0.022018 32.3653 7.04402 32.7634 16.6301Z"
+                                            ></path>
+                                        </svg>
+                                        <svg style="display: none;" class="Shapes_purple__Lus4W PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_third-blob__1pNQm" viewBox="0 0 81 137" width="151">
+                                            <path d="M35.3708 134.85C-19.867 149.04 3.5484 80.4615 14.5377 36.9115C30.8567 -27.8404 75.6973 5.28828 77.9884 50.062C80.095 90.9119 90.6184 120.661 35.3708 134.85Z"></path>
+                                        </svg>
+                                        <svg style="display: none;" class="Shapes_pink__5aFWo PremiumBannerBlobWrapper_blob-outside__2GSSo PremiumBannerBlobWrapper_fourth-blob__LlCv_" viewBox="0 0 240 270" width="50">
+                                            <path d="M37.9129 265.894C90.8306 288.485 233.119 197.985 240.652 125.366C248.186 52.7476 95.1312 -20.454 58.649 5.25442C5.974 42.3845 -29.7413 237.029 37.9129 265.894Z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Layout_visible-content-bottom-wrapper-sticky__yaaAB">
+                        <div class="Layout_visible-content-bottom-section__QWa1o Layout_not-visible-footer__DXuni" id="visible-content-bottom-section">
+                            <div class="ViewerToolbar_toolbar__l4wOx ViewerToolbar_hidden__Jcd1I" role="presentation">
+                                <div class="hidden-from-desktop">
+                                    <button
+                                        aria-label="Document Sidebar"
+                                        type="button"
+                                        class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ"
+                                        data-focus-visible="false"
+                                    >
+                                        <span class="Button_text__Pv_HU" data-content="true">
+                                            <svg style="display: none;" display="block" fill="none" height="24" width="24">
+                                                <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM9 3v18" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="ViewerToolbar_change-page-buttons-wrapper__R0qim hidden-on-mobile">
+                                    <button
+                                        aria-label="Previous Page"
+                                        type="button"
+                                        class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ"
+                                        data-focus-visible="false"
+                                        disabled=""
+                                    >
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="arrow-up"
+                                                class="svg-inline--fa fa-arrow-up Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 384 512"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2 160 448c0 17.7 14.3 32 32 32s32-14.3 32-32l0-306.7L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                    <button aria-label="Next Page" type="button" class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ" data-focus-visible="false">
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="arrow-down"
+                                                class="svg-inline--fa fa-arrow-down Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 384 512"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                <input aria-label="page input" class="ViewerToolbar_page-input__WLZKW hidden-on-mobile" max="5" min="1" type="number" value="1" />
+                                <div class="ViewerToolbar_page-number-wrapper__4yR2F"><span class="hidden-from-tablet">1</span> out of <span class="">5</span></div>
+                                <div class="ViewerToolbar_zoom-buttons-wrapper__NsdED hidden-on-mobile">
+                                    <button
+                                        aria-label="zoom-out button"
+                                        type="button"
+                                        class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ"
+                                        data-focus-visible="false"
+                                    >
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="magnifying-glass-minus"
+                                                class="svg-inline--fa fa-magnifying-glass-minus Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM136 184c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                    <button
+                                        aria-label="zoom-in button"
+                                        type="button"
+                                        class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ"
+                                        data-focus-visible="false"
+                                    >
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="magnifying-glass-plus"
+                                                class="svg-inline--fa fa-magnifying-glass-plus Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM184 296c0 13.3 10.7 24 24 24s24-10.7 24-24l0-64 64 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-64 0 0-64c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 64-64 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l64 0 0 64z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="ViewerToolbar_fit-buttons-wrapper__W8Gqs hidden-on-mobile hidden-on-tablet">
+                                    <button
+                                        aria-label="fit-height button"
+                                        type="button"
+                                        class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ"
+                                        data-focus-visible="false"
+                                    >
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="arrows-up-down"
+                                                class="svg-inline--fa fa-arrows-up-down Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 320 512"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M182.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L128 109.3l0 293.5L86.6 361.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7l0-293.5 41.4 41.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-96-96z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                    <button
+                                        aria-label="fit-width button"
+                                        type="button"
+                                        class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_plain-white__UN_hz ButtonSizes_medium__llgmY ButtonSizes_plain__e16oQ"
+                                        data-focus-visible="false"
+                                    >
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="arrows-left-right"
+                                                class="svg-inline--fa fa-arrows-left-right Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M406.6 374.6l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224l-293.5 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288l293.5 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="hidden-from-desktop">
+                                    <button type="button" class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_primary-white__mHPZ7 ButtonSizes_medium__llgmY" data-focus-visible="false">
+                                        <span class="Button_addon__LEr4y" data-addon="true">
+                                            <svg
+                                                style="display: none;"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="share"
+                                                class="svg-inline--fa fa-share Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-medium___wjS_ SmartShareIcon_smart-share-icon__qufZe SmartShareIcon_dark-gray__EKfxd"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512"
+                                                height="18"
+                                                width="18"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M307 34.8c-11.5 5.1-19 16.6-19 29.2l0 64-112 0C78.8 128 0 206.8 0 304C0 417.3 81.5 467.9 100.2 478.1c2.5 1.4 5.3 1.9 8.1 1.9c10.9 0 19.7-8.9 19.7-19.7c0-7.5-4.3-14.4-9.8-19.5C108.8 431.9 96 414.4 96 384c0-53 43-96 96-96l96 0 0 64c0 12.6 7.4 24.1 19 29.2s25 3 34.4-5.4l160-144c6.7-6.1 10.6-14.7 10.6-23.8s-3.8-17.7-10.6-23.8l-160-144c-9.4-8.5-22.9-10.6-34.4-5.4z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                        <span class="Button_text__Pv_HU" data-content="true">Share</span>
+                                    </button>
+                                </div>
+                                <div class="hidden-on-mobile hidden-on-tablet">
+                                    <div>
+                                        <div class="hidden-on-mobile">
+                                            <button aria-label="Download" type="button" class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_primary-green__EthB4 ButtonSizes_medium__llgmY" data-focus-visible="false">
+                                                <span class="Button_addon__LEr4y" data-addon="true">
+                                                    <svg
+                                                        style="display: none;"
+                                                        aria-hidden="true"
+                                                        focusable="false"
+                                                        data-prefix="fas"
+                                                        data-icon="cloud-arrow-down"
+                                                        class="svg-inline--fa fa-cloud-arrow-down Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-small__wVR1x"
+                                                        role="img"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 640 512"
+                                                    >
+                                                        <path
+                                                            fill="currentColor"
+                                                            d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39L344 184c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 134.1-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z"
+                                                        ></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="Button_text__Pv_HU" data-content="true">Download</span>
+                                            </button>
+                                        </div>
+                                        <div class="hidden-from-tablet">
+                                            <button aria-label="Download" type="button" class="Button_button__88E9y Button_pill__9vfK_ ButtonColors_primary-green__EthB4 ButtonSizes_medium__llgmY" data-focus-visible="false">
+                                                <span class="Button_addon__LEr4y" data-addon="true">
+                                                    <svg
+                                                        style="display: none;"
+                                                        aria-hidden="true"
+                                                        focusable="false"
+                                                        data-prefix="fas"
+                                                        data-icon="cloud-arrow-down"
+                                                        class="svg-inline--fa fa-cloud-arrow-down Icon_icon__Rm_O3 Icon_scale-1-25x__nGB2_ Icon_padding-small__wVR1x"
+                                                        role="img"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 640 512"
+                                                    >
+                                                        <path
+                                                            fill="currentColor"
+                                                            d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39L344 184c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 134.1-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z"
+                                                        ></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="Button_text__Pv_HU" data-content="true">Download</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Layout_footer-wrapper__bheJQ">
+                        <div class="Footer_footer-wrapper__ljdae"></div>
+                    </div>
+                </div>
+                <script id="OptanonWrapperScript">
+                    function OptanonWrapper() {}
+                </script>
+            </div>
+            <div></div>
+            <div></div>
+        </div>
+        <script id="GlobalVariablesScript">
+            var currentUrl = window.location.href;
+            var environment = "production";
+            var isCrawler = false;
+        </script>
+        <script defer="" id="scroll-restoration" type="text/javascript" data-nscript="afterInteractive">
+            if ("scrollRestoration" in window.history) {
+                window.history.scrollRestoration = "manual";
+            }
+        </script>
+        <next-route-announcer>
+            <p
+                aria-live="assertive"
+                id="__next-route-announcer__"
+                role="alert"
+                style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; top: 0px; width: 1px; white-space: nowrap; overflow-wrap: normal;"
+            ></p>
+        </next-route-announcer>
+        <textarea id="BFI_DATA" style="width: 1px; height: 1px; display: none;"></textarea>
+        <title> </title>
+        <div id="onetrust-consent-sdk" data-nosnippet="true">
+            <div class="onetrust-pc-dark-filter ot-hide ot-fade-in"></div>
+        </div>
+        <iframe height="0" width="0" style="display: none; visibility: hidden;" src="./???_files/saved_resource.html"></iframe>
+        <iframe
+            id="_hjSafeContext_40185474"
+            title="_hjSafeContext"
+            tabindex="-1"
+            aria-hidden="true"
+            src="./???_files/saved_resource(1).html"
+            style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"
+        ></iframe>
+        <script src="./???_files/tp.widget.bootstrap.min.js.download" type="text/javascript" data-nscript="lazyOnload"></script>
+        <script defer="" id="scroll-restoration" type="text/javascript" data-nscript="afterInteractive">
+            if ("scrollRestoration" in window.history) {
+                window.history.scrollRestoration = "manual";
+            }
+        </script>
+        <next-route-announcer>
+            <p
+                aria-live="assertive"
+                id="__next-route-announcer__"
+                role="alert"
+                style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; top: 0px; width: 1px; white-space: nowrap; overflow-wrap: normal;"
+            ></p>
+        </next-route-announcer>
+        <iframe height="0" width="0" style="display: none; visibility: hidden;"></iframe>
+        <iframe
+            id="_hjSafeContext_98105906"
+            title="_hjSafeContext"
+            tabindex="-1"
+            aria-hidden="true"
+            src="about:blank"
+            style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"
+        ></iframe>
+        <script src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" type="text/javascript" data-nscript="lazyOnload"></script>
+    </body>
+</html>
