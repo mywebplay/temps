@@ -254,7 +254,7 @@
 		    background-size: 14px;
 			position: fixed;
 			z-index:999;
-			top: 76px;
+			top: 75px;
 			right: 142px;
 		}
 		
