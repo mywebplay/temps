@@ -255,7 +255,7 @@
 			position: fixed;
 			z-index:999;
 			top: 76px;
-			right:142 px;
+			right: 142px;
 		}
 		
 		.custom-select:hover {
