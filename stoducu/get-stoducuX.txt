@@ -175,7 +175,6 @@
     <!-- Thư viện --><!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/plugins/html2pdf.min.js"></script>
     <!-- Overlay + Progress bar -->
     <div id="overlay" style="display: none;">
         <div class="progress-container">
@@ -235,40 +234,6 @@
             min-height: 2000px; /* để test scroll */
         }
 
-		.custom-select {
-		    appearance: none;
-		    -webkit-appearance: none;
-		    -moz-appearance: none;
-		
-		    width: 280px;
-		    padding: 12px 16px;
-		    padding-right: 40px; /* chừa chỗ icon */
-		    font-size: 15px;
-		    border: 1px solid #ccc;
-		    border-radius: 12px;
-		    background: #fff;
-		    transition: 0.2s;
-		
-		    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='14' width='14' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><polygon points='0,0 20,0 10,10'/></svg>");
-		    background-repeat: no-repeat;
-		    background-position: right 12px center;
-		    background-size: 14px;
-			position: fixed;
-			z-index:999;
-			top: 75px;
-			right: 142px;
-		}
-		
-		.custom-select:hover {
-		    border-color: #777;
-		}
-		
-		.custom-select:focus {
-		    border-color: #3b82f6; /* xanh google */
-		    box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
-		    outline: none;
-		}
-
         #btnExport {
             position: fixed;
             top: 15px;
@@ -299,7 +264,7 @@
 
         #btnExtend {
             position: fixed;
-            top: 132px;
+            top: 78px;
             right: 180px;
             padding: 12px 20px;
             background: linear-gradient(135deg, #4caf50, #2e7d32);
@@ -389,10 +354,6 @@
     </script>
     <button id="btnExport">Download PDF</button>
     <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
-    <select id="chonloai" class="custom-select">
-		<option>Xử lý chính thường</option>
-		<option>Xử lý nghiệp dư</option>
-	</select>
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
     <!-- Modal HTML -->
     <div id="pdfModal" class="pdf-modal">
@@ -490,7 +451,6 @@
         document.getElementById("btnExtend").onclick = async function () {
             window.scrollTo({ top: 0, left: 0, behavior: "instant" });
             document.getElementById("btnExport").style.display = "none";
-			document.getElementById("chonloai").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
             document.getElementById("khoin").style.display = "none";
             document.getElementById("page-container").style.marginLeft = "300px";
@@ -513,7 +473,6 @@
             document.body.style.overflow = "hidden";
             document.documentElement.style.overflow = "hidden";
             document.getElementById("btnExport").style.display = "none";
-			document.getElementById("chonloai").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
             document.getElementById("khoin").style.display = "none";
 
@@ -528,98 +487,64 @@
                 const totalDivs = visibleDivs.length;
                 let processed = 0;
 
-                if (document.getElementById("chonloai").selectedIndex == 0)
-				{
-	                for (let i = 0; i < visibleDivs.length; i++) {
-	                    const div = visibleDivs[i];
-	
-	                    try {
-	                        const canvas = await html2canvas(div, {
-	                            scale: window.devicePixelRatio * 2,
-	                            useCORS: true,
-	                            backgroundColor: "#ffffff",
-	                            logging: false,
-	                            windowWidth: div.scrollWidth,
-	                            windowHeight: div.scrollHeight,
-	                        });
-							
-							document.getElementById("overlay").style.display = "flex";
-							document.getElementById("overlay2").style.display = "none";
-	
-	                        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
-	
-	                        const imgData = canvas.toDataURL("image/jpeg", 1.0);
-	
-	                        // Fit nội dung phủ kín toàn bộ trang PDF (full page, không viền trắng)
-	                        const pageWidth = pdf.internal.pageSize.getWidth();
-	                        const pageHeight = pdf.internal.pageSize.getHeight();
-	
-	                        // Tính tỉ lệ giữa ảnh và trang PDF
-	                        const imgRatio = canvas.width / canvas.height;
-	                        const pageRatio = pageWidth / pageHeight;
-	
-	                        let imgWidth, imgHeight;
-	
-	                        // "COVER" - phóng để lấp kín toàn bộ trang (có thể cắt nhẹ mép)
-	                        if (imgRatio > pageRatio) {
-	                            // ảnh rộng hơn => scale theo chiều cao, sẽ bị crop ngang một chút
-	                            imgHeight = pageHeight;
-	                            imgWidth = pageHeight * imgRatio;
-	                        } else {
-	                            // ảnh cao hơn => scale theo chiều rộng, sẽ bị crop dọc một chút
-	                            imgWidth = pageWidth;
-	                            imgHeight = pageWidth / imgRatio;
-	                        }
-	
-	                        // Căn giữa để hình phủ kín mà không bị lệch
-	                        const x = (pageWidth - imgWidth) / 2;
-	                        const y = (pageHeight - imgHeight) / 2;
-	
-	                        // Thêm trang PDF
-	                        if (i > 0) pdf.addPage();
-	                        pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight);
-	
-	                        processed++;
-	                        const percent = Math.round((processed / totalDivs) * 100);
-	                        updateProgress(percent);
-	                    } catch (err) {
-	                        console.error("❌ Lỗi khi render div " + i, err);
-	                        alert("Có lỗi xảy ra khi tạo PDF!");
-	                        return;
-	                    }
-	                }
-				}
-			else {
-			    // chia div quá cao ra container nhỏ nếu cần
-			    const containers = visibleDivs; // hoặc custom split
-			    for (let i = 0; i < containers.length; i++) {
-			        const container = containers[i];
-			
-			        if (i > 0) pdf.addPage();
-			
-			        container.style.position = "static";
-			        container.style.overflow = "visible";
-			        container.style.height = "auto";
-			        container.style.transform = "none";
-			        container.style.whiteSpace = "normal";
-			        container.style.display = "block";
-			
-			        await pdf.html(container, {
-			            x: 0,
-			            y: 0,
-			            width: pdf.internal.pageSize.getWidth(),
-			            html2canvas: { scale: 1, useCORS: true },
-			            autoPaging: 'text',
-			            margin: [0,0,0,0]
-			        });
-			
-			        processed++;
-			        updateProgress(Math.round(processed / totalDivs * 100));
-			    }
-			
-			    // Lưu file và mở save dialog
-			    pdf.save(getFileName());
-			}
+                for (let i = 0; i < visibleDivs.length; i++) {
+                    const div = visibleDivs[i];
+
+                    try {
+                        const canvas = await html2canvas(div, {
+                            scale: window.devicePixelRatio * 2,
+                            useCORS: true,
+                            backgroundColor: "#ffffff",
+                            logging: false,
+                            windowWidth: div.scrollWidth,
+                            windowHeight: div.scrollHeight,
+                        });
+						
+						document.getElementById("overlay").style.display = "flex";
+						document.getElementById("overlay2").style.display = "none";
+
+                        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+
+                        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+                        // Fit nội dung phủ kín toàn bộ trang PDF (full page, không viền trắng)
+                        const pageWidth = pdf.internal.pageSize.getWidth();
+                        const pageHeight = pdf.internal.pageSize.getHeight();
+
+                        // Tính tỉ lệ giữa ảnh và trang PDF
+                        const imgRatio = canvas.width / canvas.height;
+                        const pageRatio = pageWidth / pageHeight;
+
+                        let imgWidth, imgHeight;
+
+                        // "COVER" - phóng để lấp kín toàn bộ trang (có thể cắt nhẹ mép)
+                        if (imgRatio > pageRatio) {
+                            // ảnh rộng hơn => scale theo chiều cao, sẽ bị crop ngang một chút
+                            imgHeight = pageHeight;
+                            imgWidth = pageHeight * imgRatio;
+                        } else {
+                            // ảnh cao hơn => scale theo chiều rộng, sẽ bị crop dọc một chút
+                            imgWidth = pageWidth;
+                            imgHeight = pageWidth / imgRatio;
+                        }
+
+                        // Căn giữa để hình phủ kín mà không bị lệch
+                        const x = (pageWidth - imgWidth) / 2;
+                        const y = (pageHeight - imgHeight) / 2;
+
+                        // Thêm trang PDF
+                        if (i > 0) pdf.addPage();
+                        pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight);
+
+                        processed++;
+                        const percent = Math.round((processed / totalDivs) * 100);
+                        updateProgress(percent);
+                    } catch (err) {
+                        console.error("❌ Lỗi khi render div " + i, err);
+                        alert("Có lỗi xảy ra khi tạo PDF!");
+                        return;
+                    }
+                }
 
                 // Giữ progress 100% thêm 3s
                 setTimeout(() => {
@@ -637,7 +562,6 @@
                     document.body.style.overflow = originalBodyOverflow;
                     document.documentElement.style.overflow = originalHtmlOverflow;
                     document.getElementById("btnExport").style.display = "flex";
-					document.getElementById("chonloai").style.display = "flex";
                     document.getElementById("btnExtend").style.display = "flex";
                     document.getElementById("khoin").style.display = "flex";
                 }, 3000);
@@ -648,7 +572,6 @@
                 document.body.style.overflow = originalBodyOverflow;
                 document.documentElement.style.overflow = originalHtmlOverflow;
                 document.getElementById("btnExport").style.display = "flex";
-				 document.getElementById("chonloai").style.display = "flex";
                 document.getElementById("btnExtend").style.display = "flex";
                 document.getElementById("khoin").style.display = "flex";
             }
