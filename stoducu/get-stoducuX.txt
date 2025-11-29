@@ -175,6 +175,7 @@
     <!-- Thư viện --><!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/plugins/html2pdf.min.js"></script>
     <!-- Overlay + Progress bar -->
     <div id="overlay" style="display: none;">
         <div class="progress-container">
