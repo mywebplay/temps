@@ -589,54 +589,37 @@
 	                    }
 	                }
 				}
-				else
-				{
-				    for (let i = 0; i < visibleDivs.length; i++) {
-				        const div = visibleDivs[i];
-				
-				        try {
-				            // CHỈ addPage nếu không phải div đầu tiên
-				            if (i > 0) pdf.addPage();
-				
-				            // ------ TUY CHỌN: nếu muốn custom font tiếng Việt ------
-				            // pdf.addFileToVFS("Roboto-Regular.ttf", fontBase64);
-				           // pdf.addFont("Roboto-Regular.ttf", "Roboto", "normal");
-				           // pdf.setFont("Roboto");
-				            // ------------------------------------------------------
-				
-				            // reset style để jsPDF.html() render chính xác
-				            div.style.position = "static";
-				            div.style.overflow = "visible";
-				            div.style.height = "auto";
-				            div.style.transform = "none";
-				            div.style.whiteSpace = "normal";
-				            div.style.display = "block";
-				
-				            // render div vào PDF
-				            await pdf.html(div, {
-				                x: 0,
-				                y: 0,
-				                width: pdf.internal.pageSize.getWidth(), // fit trang
-				                html2canvas: {
-				                    scale: 1,
-				                    useCORS: true
-				                },
-				                autoPaging: 'text', // tránh trang trắng thừa
-				                margin: [0,0,0,0]
-				            });
-				
-				            // cập nhật progress
-				            processed++;
-				            const percent = Math.round((processed / totalDivs) * 100);
-				            updateProgress(percent);
-				
-				        } catch (err) {
-				            console.error("❌ Lỗi khi render div " + i, err);
-				            alert("Có lỗi xảy ra khi tạo PDF!");
-				            return;
-				        }
-				    }
-				}
+			else {
+			    // chia div quá cao ra container nhỏ nếu cần
+			    const containers = visibleDivs; // hoặc custom split
+			    for (let i = 0; i < containers.length; i++) {
+			        const container = containers[i];
+			
+			        if (i > 0) pdf.addPage();
+			
+			        container.style.position = "static";
+			        container.style.overflow = "visible";
+			        container.style.height = "auto";
+			        container.style.transform = "none";
+			        container.style.whiteSpace = "normal";
+			        container.style.display = "block";
+			
+			        await pdf.html(container, {
+			            x: 0,
+			            y: 0,
+			            width: pdf.internal.pageSize.getWidth(),
+			            html2canvas: { scale: 1, useCORS: true },
+			            autoPaging: 'text',
+			            margin: [0,0,0,0]
+			        });
+			
+			        processed++;
+			        updateProgress(Math.round(processed / totalDivs * 100));
+			    }
+			
+			    // Lưu file và mở save dialog
+			    pdf.save(getFileName());
+			}
 
                 // Giữ progress 100% thêm 3s
                 setTimeout(() => {
