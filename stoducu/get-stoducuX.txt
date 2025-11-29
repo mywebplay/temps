@@ -234,6 +234,36 @@
             min-height: 2000px; /* để test scroll */
         }
 
+		.custom-select {
+		    appearance: none;
+		    -webkit-appearance: none;
+		    -moz-appearance: none;
+		
+		    width: 280px;
+		    padding: 12px 16px;
+		    padding-right: 40px; /* chừa chỗ icon */
+		    font-size: 15px;
+		    border: 1px solid #ccc;
+		    border-radius: 12px;
+		    background: #fff;
+		    transition: 0.2s;
+		
+		    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='14' width='14' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><polygon points='0,0 20,0 10,10'/></svg>");
+		    background-repeat: no-repeat;
+		    background-position: right 12px center;
+		    background-size: 14px;
+		}
+		
+		.custom-select:hover {
+		    border-color: #777;
+		}
+		
+		.custom-select:focus {
+		    border-color: #3b82f6; /* xanh google */
+		    box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+		    outline: none;
+		}
+
         #btnExport {
             position: fixed;
             top: 15px;
@@ -354,7 +384,7 @@
     </script>
     <button id="btnExport">Download PDF</button>
     <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
-    <select id="chonloai">
+    <select id="chonloai" class="custom-select">
 		<option>Xử lý chính thường</option>
 		<option>Xử lý nghiệp dư</option>
 	</select>
