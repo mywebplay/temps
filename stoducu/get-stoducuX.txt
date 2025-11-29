@@ -600,8 +600,8 @@
 				
 				            // ------ TUY CHỌN: nếu muốn custom font tiếng Việt ------
 				            // pdf.addFileToVFS("Roboto-Regular.ttf", fontBase64);
-				            pdf.addFont("Roboto-Regular.ttf", "Roboto", "normal");
-				            pdf.setFont("Roboto");
+				           // pdf.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+				           // pdf.setFont("Roboto");
 				            // ------------------------------------------------------
 				
 				            // reset style để jsPDF.html() render chính xác
