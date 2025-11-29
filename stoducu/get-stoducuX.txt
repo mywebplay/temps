@@ -591,33 +591,41 @@
 				}
 				else
 				{
-					for (let i = 0; i < visibleDivs.length; i++) {
-					    const div = visibleDivs[i];
-					
-					    try {
-					        // ❌ BỎ html2canvas (vì tạo ảnh -> không copy text)
-					        // ❌ BỎ canvas.toDataURL, addImage
-					
-					        // ✅ DÙNG jsPDF.html() để xuất text thật
-					        if (i > 0) pdf.addPage();
-					
-					        await pdf.html(div, {
-					            x: 0,
-					            y: 0,
-					            width: pdf.internal.pageSize.getWidth(), // fit trang
-					            windowWidth: div.scrollWidth              // đảm bảo đúng layout
-					        });
-					
-					        processed++;
-					        const percent = Math.round((processed / totalDivs) * 100);
-					        updateProgress(percent);
-					
-					    } catch (err) {
-					        console.error("❌ Lỗi khi render div " + i, err);
-					        alert("Có lỗi xảy ra khi tạo PDF!");
-					        return;
-					    }
-					}
+				    for (let i = 0; i < visibleDivs.length; i++) {
+				        const div = visibleDivs[i];
+				
+				        try {
+				
+				            // CHỈ addPage() nếu KHÔNG phải trang đầu
+				            if (i > 0) pdf.addPage();
+				
+				            // Set font tiếng Việt
+				            pdf.addFileToVFS("Roboto-Regular.ttf", fontBase64);
+				            pdf.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+				            pdf.setFont("Roboto");
+				
+				            await pdf.html(div, {
+				                x: 0,
+				                y: 0,
+				                width: pdf.internal.pageSize.getWidth(),
+				                html2canvas: {
+				                    scale: 1,
+				                    useCORS: true
+				                },
+				                autoPaging: 'text', // tránh trang trắng
+				                margin: [0, 0, 0, 0]
+				            });
+				
+				            // Cập nhật progress
+				            processed++;
+				            updateProgress(Math.round((processed / totalDivs) * 100));
+				
+				        } catch (err) {
+				            console.error("❌ Lỗi khi render div " + i, err);
+				            alert("Có lỗi xảy ra khi tạo PDF!");
+				            return;
+				        }
+				    }
 				}
 
                 // Giữ progress 100% thêm 3s
