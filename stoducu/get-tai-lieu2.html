@@ -5,70 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hướng dẫn lấy nội dung studocu</title>
     <style>
-      body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      padding: 16px;
-      box-sizing: border-box;
-      }
-      h2 {
-      color: red;
-      }
-      h4 {
-      color: black;
-      margin-top: 8px;
-      }
-      img {
-      width: 100%;
-      max-height: calc(100vh - 250px);
-      object-fit: contain;
-      display: block;
-      margin: 16px 0;
-      }
-      .step {
-      display: none;
-      }
-      .active {
-      display: block;
-      }
-      button {
-      display: block;
-      margin: 20px auto 0;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      }
-      textarea {
-      width: 100%;
-      height: 800px;
-      margin-top: 16px;
-      padding: 12px;
-      font-size: 14px;
-      box-sizing: border-box;
-      resize: none;
-      }
-      .spinner {
-      display: none;
-      margin: 20px auto;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #555;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      animation: spin 1s linear infinite;
-      }
-      @keyframes spin {
-      to {
-      transform: rotate(360deg);
-      }
-      }
+     /* ===== GLOBAL ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: #f4f6f9;
+  color: #2c3e50;
+}
+
+/* ===== WRAPPER ===== */
+.wizard-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.wizard-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 950px;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== STEPS ===== */
+.step {
+  margin-bottom: 40px;
+}
+
+.step h2,
+.step h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* ===== TEXT ===== */
+p {
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* ===== IMAGE ===== */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* ===== BUTTON ===== */
+button {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ===== INPUT / TEXTAREA ===== */
+input,
+textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #dcdfe6;
+  font-size: 14px;
+  transition: 0.2s ease;
+  margin-bottom: 15px;
+}
+
+textarea {
+  min-height: 250px;
+  resize: vertical;
+  font-family: Consolas, monospace;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
+}
+
+/* ===== STEP5 SPECIAL AREA ===== */
+#step5 {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid #e6ecf3;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .wizard-card {
+    padding: 25px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  img {
+    margin: 15px 0;
+  }
+}
     </style>
   </head>
   <body>
+     <div class="wizard-container">
+    <div class="wizard-card">
       <div class="step active" id="step0">
       <h2>Bước 0 (<span style="color:red">MẸO BỔ SUNG</span>)</h2>
       <h4>
@@ -233,6 +298,8 @@
 
 </script>
 <div id="html_play"></div>
+      </div>
+  </div>
   </body>
   <script src="/lib/jquery/dist/jquery.min.js"></script>
   <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
