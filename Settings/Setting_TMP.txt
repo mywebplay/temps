@@ -5,3 +5,4 @@ SEND_ERROR_LOG_TO_SUB_WEB=ON
 GET_JSON_REQUEST_SESSION=OFF
 SHORT_LINK_SHARE_KARAOKE_EXTERNAL=ON
 <@@url_clear_bin_DX:http://submywebplay.somee.com/Cover/SeeQueryDX?code=delete-all-temp-bin&keyX=Lxq0CVTe90IdNousVKwn5Xn/8R/eWBj/a4b+T7rlAegKzcoPDVZVczjDIEaMdvVm@@>
+AUTO_SEND_DATA_TO_SUB_WEB_2=OFF
