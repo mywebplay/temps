@@ -47,6 +47,7 @@
                     }
                 });
 
+				page = (to - from + 2) * 1000;
                 params.set("height", page);
                 params.set("from", from);
                 params.set("to", to);
