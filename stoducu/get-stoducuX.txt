@@ -55,6 +55,12 @@
                 const newUrl = window.location.pathname + "?" + params.toString();
                 history.replaceState(null, "", newUrl);
                 loaded4 = true;
+
+				if (localStorage.getItem("reload-studocu") == null)
+				{
+					localStorage.setItem("reload-studocu", "true");
+					window.location.reload();
+				}
             }
         }, 10);
 
