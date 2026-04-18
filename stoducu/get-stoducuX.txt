@@ -437,6 +437,7 @@
 
         closeBtn.onclick = function () {
             modal.style.display = "none";
+            window.stop();
         };
     </script>
     <script>
