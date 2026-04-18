@@ -223,6 +223,7 @@ textarea:focus {
       var result2 = document.getElementById("resultArea2").value;
       localStorage.setItem("header", result2);
       var result3 = "999999999";
+      localStorage.removeItem("reload-studocu");
       window.location.href = "/get-stoducu-document?height="+result3+"&from=&to=";
       }
       
