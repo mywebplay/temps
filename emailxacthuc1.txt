@@ -118,7 +118,7 @@
                 <input type="text" id="indexAnotherLoginMail" name="indexAnotherLoginMail" value="0">
             </div>
 
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit" class="submit-btn">Nhận mã code xác thực</button>
         </form>
     </div>
 
