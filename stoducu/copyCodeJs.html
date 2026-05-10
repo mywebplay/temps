@@ -98,18 +98,45 @@
           background: #059669;
       }
       </style>
+      <style>
+    .copy-btn
+    {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border: none;
+        border-radius: 999px;
+        background: transparent;
+        cursor: pointer;
+        transition: 0.2s;
+        color: #444;
+    }
+    
+    .copy-btn:hover
+    {
+        background: rgba(0,0,0,0.08);
+    }
+    
+    .copy-btn svg
+    {
+        width: 25px;
+        height: 25px;
+    }
+    </style>
   </head>
   <body>
     <div class="code-container">
       <div class="code-label">Lấy nội dung body của tài liệu</div>
   
       <div class="code-box">
-          <button type="button"
-                  class="copy-btn"
-                  onclick="copyTextExec(`var bvl_result = document.getElementById(&quot;page-container-wrapper&quot;).outerHTML;
-console.log(bvl_result);`)">
-              Copy
-          </button>
+        <button class="copy-btn" onclick="copyTextExec(`var bvl_result = document.getElementById(&quot;page-container-wrapper&quot;).outerHTML;
+console.log(bvl_result);`)" title="Copy">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M216,32H88A16,16,0,0,0,72,48V72H40A16,16,0,0,0,24,88V216a16,16,0,0,0,16,16H168a16,16,0,0,0,16-16V192h32a16,16,0,0,0,16-16V48A16,16,0,0,0,216,32ZM160,208H48V96H160Zm48-40H184V88a16,16,0,0,0-16-16H96V48H208Z"/>
+          </svg>
+      </button>
   
           <code>
   var bvl_result = document.getElementById("page-container-wrapper").outerHTML;
@@ -122,11 +149,11 @@ console.log(bvl_result);`)">
       <div class="code-label">Lấy nội dung của header trang web</div>
   
       <div class="code-box">
-          <button type="button"
-                  class="copy-btn"
-                  onclick="copyTextExec(`console.log(document.head.outerHTML);`)">
-              Copy
-          </button>
+        <button class="copy-btn" onclick="copyTextExec(`console.log(document.head.outerHTML);`)" title="Copy">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,32H88A16,16,0,0,0,72,48V72H40A16,16,0,0,0,24,88V216a16,16,0,0,0,16,16H168a16,16,0,0,0,16-16V192h32a16,16,0,0,0,16-16V48A16,16,0,0,0,216,32ZM160,208H48V96H160Zm48-40H184V88a16,16,0,0,0-16-16H96V48H208Z"/>
+            </svg>
+        </button>
   
           <code>
   console.log(document.head.outerHTML);
