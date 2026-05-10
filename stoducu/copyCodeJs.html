@@ -132,7 +132,7 @@
   
       <div class="code-box">
         <button class="copy-btn" onclick="copyTextExec(`var bvl_result = document.getElementById(&quot;page-container-wrapper&quot;).outerHTML;
-console.log(bvl_result);`)" title="Copy">
+console.log(bvl_result);`, this)" title="Copy">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
               <path d="M216,32H88A16,16,0,0,0,72,48V72H40A16,16,0,0,0,24,88V216a16,16,0,0,0,16,16H168a16,16,0,0,0,16-16V192h32a16,16,0,0,0,16-16V48A16,16,0,0,0,216,32ZM160,208H48V96H160Zm48-40H184V88a16,16,0,0,0-16-16H96V48H208Z"/>
           </svg>
@@ -149,7 +149,7 @@ console.log(bvl_result);`)" title="Copy">
       <div class="code-label">Lấy nội dung của header trang web</div>
   
       <div class="code-box">
-        <button class="copy-btn" onclick="copyTextExec(`console.log(document.head.outerHTML);`)" title="Copy">
+        <button class="copy-btn" onclick="copyTextExec(`console.log(document.head.outerHTML);`, this)" title="Copy">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
                 <path d="M216,32H88A16,16,0,0,0,72,48V72H40A16,16,0,0,0,24,88V216a16,16,0,0,0,16,16H168a16,16,0,0,0,16-16V192h32a16,16,0,0,0,16-16V48A16,16,0,0,0,216,32ZM160,208H48V96H160Zm48-40H184V88a16,16,0,0,0-16-16H96V48H208Z"/>
             </svg>
@@ -161,15 +161,29 @@ console.log(bvl_result);`)" title="Copy">
       </div>
   </div>
    <script>
-    function copyTextExec(s) {
+    function copyTextExec(s, btn) {
         const ta = document.createElement("textarea");
         ta.value = s;
         document.body.appendChild(ta);
         ta.select();
         document.execCommand("copy");
         document.body.removeChild(ta);
-        alert("Đã copy câu lệnh vào clipboard của bạn!");
+
+        const oldHtml = btn.innerHTML;
+
+        btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+        </svg>
+        `;
+
+        btn.disabled = true;
+
+        setTimeout(() => {
+            btn.innerHTML = oldHtml;
+            btn.disabled = false;
+        }, 3000);
     }
-    </script>
+</script>
   </body>
 </html>
