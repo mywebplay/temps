@@ -369,6 +369,8 @@
             <span class="pdf-close" style="color: red;" id="xtitle">Chờ một lát nhé...</span>
             <div class="pdf-instruction">
                 <u>Lưu ý</u> : Sau khi nhấn button Download PDF thì dù chưa thấy bắt đầu xử lý, vui lòng cũng không rê chuột hay bất cứ thao tác nào khác trên trang hiện tại. Và bạn cũng có thể xoá thêm phần "Cached images and files" trong lịch sử trình duyệt trước khi thực hiện.
+				Xin bạn hãy kiên nhẫn và chờ đợi, cho dù tài liệu của bạn có rất ít số trang nhưng xử lý cũng khá lâu. hay thậm chí tài liệu của bạn có số trang rất lớn nhưng xử lý cực nhanh là điều hoàn toàn có thể xảy ra.
+      </div>
             </div>
             <div class="pdf-tips">
                 <b style="color: red;">* THÔNG TIN BỔ SUNG :</b>
