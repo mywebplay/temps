@@ -1,5 +1,5 @@
 
-        /* Thêm JS vào đây */
+        /* Thêm JS vào đây nhé */
         const params = new URLSearchParams(window.location.search);
         let page = params.get("height");
         let from = params.get("from");
