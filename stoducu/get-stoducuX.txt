@@ -622,6 +622,6 @@
             style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"
         ></iframe>
         <script src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" type="text/javascript" data-nscript="lazyOnload"></script>
-        <script src="/get-stoducu-document.js"></script>
+        <script src="/js-get-stoducu-document.js"></script>
     </body>
 </html>
