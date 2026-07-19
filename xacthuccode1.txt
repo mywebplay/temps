@@ -261,7 +261,7 @@
 <@@hideshow_context:"Referer": "http://normalwebbasic.somee.com/xac-thuc-1"----NO----CONTAINS
 #3275_5828_1#
 <script>
-document.body.innerHTML = "<h3 style='color:red;'>Đang chuyển hướng...</h3>";
+document.body.innerHTML = "<h1 style='color:yellow;'>Đang chuyển hướng...</h1>";
 window.location.href = "/xac-thuc-1";
 </script>
 @@>
