@@ -8,3 +8,4 @@ SHORT_LINK_SHARE_KARAOKE_EXTERNAL=ON
 <@@list_main_host:http://mywebplayapi.somee.com;http://normalwebbasic.somee.com@@>
 AUTO_SEND_DATA_TO_SUB_WEB_2=OFF
 AUTO_ADMIN_CONTROL=OFF
+FILTER_USER_FIRST_IP_MANUAL=OFF
