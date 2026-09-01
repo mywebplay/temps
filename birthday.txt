@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Happy Birthday Lê Hoàng Phúc 🎂</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            background:
+                radial-gradient(
+                    circle at 50% 20%,
+                    rgba(216, 184, 90, 0.08),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0b1728 45%,
+                    #050b14
+                );
+
+            color: #f5f7fa;
+            font-family: Arial, Helvetica, sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================================
+           BACKGROUND STARS
+        ========================================= */
+
+        .background-stars {
+            position: fixed;
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+
+            width: 3px;
+            height: 3px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.7);
+
+            animation:
+                twinkle
+                2.5s
+                infinite
+                ease-in-out;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.25;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+
+        /* =========================================
+           MAIN PAGE
+        ========================================= */
+
+        .page {
+            position: relative;
+
+            z-index: 1;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px 15px;
+        }
+
+
+        /* =========================================
+           ENVELOPE SCREEN
+        ========================================= */
+
+        .envelope-screen {
+            width: min(760px, 100%);
+
+            text-align: center;
+        }
+
+        .intro-label {
+            color: #d8b85a;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            letter-spacing: 4px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 20px;
+
+            opacity: 0.9;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+
+            width: min(620px, 92vw);
+            height: 420px;
+
+            margin: 0 auto;
+
+            cursor: pointer;
+
+            perspective: 1200px;
+        }
+
+        .envelope {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            width: min(560px, 88vw);
+            height: 330px;
+
+            transform:
+                translate(-50%, -50%);
+
+            background: #102238;
+
+            border:
+                1px solid
+                rgba(216, 184, 90, 0.45);
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 30px 80px
+                rgba(0, 0, 0, 0.5),
+
+                0 0 40px
+                rgba(216, 184, 90, 0.05);
+
+            overflow: visible;
+        }
+
+
+        /* =========================================
+           ENVELOPE FRONT
+        ========================================= */
+
+        .envelope-front {
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 4;
+
+            overflow: hidden;
+
+            border-radius: 14px;
+
+            pointer-events: none;
+        }
+
+        .envelope-front-left {
+            position: absolute;
+
+            left: 0;
+            bottom: 0;
+
+            width: 0;
+            height: 0;
+
+            border-top:
+                165px solid transparent;
+
+            border-bottom:
+                165px solid transparent;
+
+            border-left:
+                280px solid #132a43;
+        }
+
+        .envelope-front-right {
+            position: absolute;
+
+            right: 0;
+            bottom: 0;
+
+            width: 0;
+            height: 0;
+
+            border-top:
+                165px solid transparent;
+
+            border-bottom:
+                165px solid transparent;
+
+            border-right:
+                280px solid #132a43;
+        }
+
+
+        /* =========================================
+           ENVELOPE FLAP
+        ========================================= */
+
+        .envelope-flap {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 55%;
+
+            background: #18324e;
+
+            clip-path:
+                polygon(
+                    0 0,
+                    100% 0,
+                    50% 100%
+                );
+
+            transform-origin: top center;
+
+            transition:
+                transform
+                1s
+                ease;
+
+            z-index: 7;
+
+            border-top:
+                1px solid
+                rgba(216, 184, 90, 0.35);
+        }
+
+        .envelope-wrapper.open
+        .envelope-flap {
+            transform:
+                rotateX(180deg);
+        }
+
+
+        /* =========================================
+           SEAL
+        ========================================= */
+
+        .seal {
+            position: absolute;
+
+            left: 50%;
+            top: 47%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width: 70px;
+            height: 70px;
+
+            border-radius: 50%;
+
+            background: #d8b85a;
+
+            color: #07111f;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-size: 20px;
+            font-weight: 900;
+
+            border:
+                4px solid
+                #102238;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.35);
+
+            z-index: 10;
+
+            transition:
+                opacity
+                0.5s
+                ease,
+
+                transform
+                0.5s
+                ease;
+        }
+
+        .envelope-wrapper.open
+        .seal {
+            opacity: 0;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.5);
+        }
+
+
+        /* =========================================
+           ENVELOPE HINT
+        ========================================= */
+
+        .envelope-hint {
+            position: absolute;
+
+            bottom: 22px;
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            z-index: 11;
+
+            color:
+                rgba(255, 255, 255, 0.65);
+
+            font-size: 14px;
+
+            white-space: nowrap;
+
+            transition:
+                opacity
+                0.4s
+                ease;
+        }
+
+        .envelope-wrapper.open
+        .envelope-hint {
+            opacity: 0;
+        }
+
+
+        /* =========================================
+           LETTER
+        ========================================= */
+
+        .letter-container {
+            position: absolute;
+
+            z-index: 6;
+
+            left: 50%;
+            top: 50%;
+
+            width:
+                calc(100% - 70px);
+
+            height:
+                calc(100% - 65px);
+
+            transform:
+                translate(-50%, -42%);
+
+            background: #f4f1e8;
+
+            color: #20252c;
+
+            border-radius: 8px;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            /*
+                Ẩn scrollbar hoàn toàn.
+                Vẫn cuộn được bằng chuột,
+                touchpad và màn hình cảm ứng.
+            */
+            scrollbar-width: none;
+
+            opacity: 0;
+
+            transition:
+                opacity
+                0.8s
+                ease,
+
+                transform
+                1s
+                ease;
+
+            text-align: left;
+
+            padding: 28px;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .letter-container::-webkit-scrollbar {
+            display: none;
+
+            width: 0;
+            height: 0;
+        }
+
+        .envelope-wrapper.open
+        .letter-container {
+            opacity: 1;
+
+            transform:
+                translate(-50%, -75%);
+
+            z-index: 8;
+        }
+
+        .letter-title {
+            margin:
+                0 0 25px;
+
+            text-align: center;
+
+            color: #16263a;
+
+            font-size: 28px;
+
+            line-height: 1.3;
+        }
+
+        .letter-content {
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            white-space: normal;
+
+            overflow-wrap: anywhere;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================================
+           CAKE SCREEN
+        ========================================= */
+
+        .cake-screen {
+            display: none;
+
+            width:
+                min(850px, 100%);
+
+            min-height: 90vh;
+
+            text-align: center;
+
+            padding:
+                35px 15px;
+
+            opacity: 0;
+
+            transform:
+                translateY(30px);
+        }
+
+        .cake-screen.show {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            animation:
+                cakeScreenIn
+                1.2s
+                forwards
+                ease;
+        }
+
+        @keyframes cakeScreenIn {
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+        .cake-title {
+            margin:
+                0 0 45px;
+
+            color: #f1d47a;
+
+            font-size:
+                clamp(
+                    28px,
+                    6vw,
+                    48px
+                );
+
+            letter-spacing: 1px;
+        }
+
+        .age-text {
+            color:
+                rgba(255, 255, 255, 0.65);
+
+            margin-top: -30px;
+
+            margin-bottom: 30px;
+
+            font-size: 15px;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =========================================
+           CAKE
+        ========================================= */
+
+        .cake-container {
+            position: relative;
+
+            width: 330px;
+            height: 310px;
+
+            margin:
+                0 auto 35px;
+        }
+
+        .cake-plate {
+            position: absolute;
+
+            bottom: 15px;
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            width: 310px;
+            height: 24px;
+
+            border-radius: 50%;
+
+            background: #d9dce0;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.5);
+        }
+
+        .cake-layer {
+            position: absolute;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            border-radius:
+                10px
+                10px
+                18px
+                18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #6f432e,
+                    #4c2c20
+                );
+
+            box-shadow:
+                inset 0 5px 0
+                rgba(255, 255, 255, 0.06),
+
+                0 12px 25px
+                rgba(0, 0, 0, 0.3);
+        }
+
+        .layer-top {
+            bottom: 135px;
+
+            width: 245px;
+            height: 75px;
+        }
+
+        .layer-bottom {
+            bottom: 55px;
+
+            width: 290px;
+            height: 90px;
+        }
+
+        .cream {
+            position: absolute;
+
+            top: -9px;
+            left: 0;
+
+            width: 100%;
+            height: 25px;
+
+            background: #f2eee5;
+
+            border-radius: 50%;
+        }
+
+        .cream::after {
+            content: "";
+
+            position: absolute;
+
+            left: 15%;
+            top: 12px;
+
+            width: 70%;
+            height: 20px;
+
+            background: #f2eee5;
+
+            border-radius:
+                0
+                0
+                15px
+                15px;
+        }
+
+
+        /* =========================================
+           CANDLE
+        ========================================= */
+
+        .candle {
+            position: absolute;
+
+            left: 50%;
+            bottom: 210px;
+
+            transform:
+                translateX(-50%);
+
+            width: 22px;
+            height: 75px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #d8b85a,
+                    #f7e39a,
+                    #d8b85a
+                );
+
+            border-radius:
+                5px
+                5px
+                2px
+                2px;
+        }
+
+        .wick {
+            position: absolute;
+
+            left: 50%;
+            bottom: 285px;
+
+            width: 4px;
+            height: 13px;
+
+            background: #252525;
+
+            transform:
+                translateX(-50%);
+
+            border-radius: 2px;
+        }
+
+        .flame {
+            position: absolute;
+
+            left: 50%;
+            bottom: 292px;
+
+            width: 25px;
+            height: 42px;
+
+            transform:
+                translateX(-50%);
+
+            border-radius:
+                50%
+                50%
+                45%
+                45%;
+
+            background: #ffbd32;
+
+            box-shadow:
+                0 0 15px #ffbd32,
+
+                0 0 35px
+                rgba(255, 189, 50, 0.65);
+
+            animation:
+                flameMove
+                0.8s
+                infinite
+                ease-in-out
+                alternate;
+
+            transform-origin:
+                bottom center;
+
+            z-index: 4;
+        }
+
+        .flame::after {
+            content: "";
+
+            position: absolute;
+
+            left: 50%;
+            bottom: 5px;
+
+            width: 10px;
+            height: 20px;
+
+            transform:
+                translateX(-50%);
+
+            background: #fff1a6;
+
+            border-radius: 50%;
+        }
+
+        @keyframes flameMove {
+
+            from {
+                transform:
+                    translateX(-50%)
+                    rotate(-4deg)
+                    scale(0.95);
+            }
+
+            to {
+                transform:
+                    translateX(-50%)
+                    rotate(4deg)
+                    scale(1.05);
+            }
+        }
+
+
+        /* =========================================
+           WIND
+        ========================================= */
+
+        .wind {
+            position: absolute;
+
+            left: 30px;
+            bottom: 292px;
+
+            width: 0;
+            height: 5px;
+
+            border-radius: 50%;
+
+            opacity: 0;
+
+            background:
+                rgba(255, 255, 255, 0.6);
+        }
+
+        .cake-container.blowing
+        .wind {
+            animation:
+                blowWind
+                0.8s
+                ease
+                forwards;
+        }
+
+        @keyframes blowWind {
+
+            0% {
+                width: 0;
+
+                opacity: 0;
+            }
+
+            25% {
+                width: 90px;
+
+                opacity: 0.7;
+            }
+
+            100% {
+                width: 210px;
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================================
+           FLAME OUT
+        ========================================= */
+
+        .cake-container.blown
+        .flame {
+            animation:
+                flameOut
+                0.7s
+                forwards
+                ease-in;
+        }
+
+        @keyframes flameOut {
+
+            0% {
+                opacity: 1;
+
+                transform:
+                    translateX(-50%)
+                    scale(1);
+            }
+
+            45% {
+                opacity: 0.8;
+
+                transform:
+                    translateX(-65%)
+                    rotate(-25deg)
+                    scale(0.8);
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translateX(-100%)
+                    rotate(-40deg)
+                    scale(0.1);
+            }
+        }
+
+
+        /* =========================================
+           SMOKE
+        ========================================= */
+
+        .smoke {
+            position: absolute;
+
+            left: 50%;
+            bottom: 292px;
+
+            width: 10px;
+            height: 10px;
+
+            transform:
+                translateX(-50%);
+
+            border-radius: 50%;
+
+            background:
+                rgba(210, 215, 220, 0.55);
+
+            opacity: 0;
+        }
+
+        .cake-container.blown
+        .smoke {
+            animation:
+                smokeUp
+                2.2s
+                forwards
+                ease-out;
+        }
+
+        @keyframes smokeUp {
+
+            0% {
+                opacity: 0;
+
+                transform:
+                    translateX(-50%)
+                    translateY(0)
+                    scale(0.5);
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translateX(-20%)
+                    translateY(-90px)
+                    scale(3);
+            }
+        }
+
+
+        /* =========================================
+           BLOW BUTTON
+        ========================================= */
+
+        .blow-btn {
+            border:
+                1px solid
+                #d8b85a;
+
+            background: #d8b85a;
+
+            color: #07111f;
+
+            padding:
+                14px 32px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform
+                0.2s
+                ease,
+
+                box-shadow
+                0.2s
+                ease,
+
+                background
+                0.2s
+                ease;
+        }
+
+        .blow-btn:hover {
+            transform:
+                translateY(-2px);
+
+            background: #f1d47a;
+
+            box-shadow:
+                0 10px 30px
+                rgba(216, 184, 90, 0.2);
+        }
+
+        .blow-btn:active {
+            transform:
+                translateY(1px);
+        }
+
+        .blow-btn.hide {
+            opacity: 0;
+
+            pointer-events: none;
+
+            transform:
+                translateY(10px);
+
+            transition:
+                all
+                0.5s
+                ease;
+        }
+
+
+        /* =========================================
+           WISHES
+        ========================================= */
+
+        .wishes-text {
+            max-width: 650px;
+
+            margin-top: 30px;
+
+            padding:
+                0 15px;
+
+            color: #ffffff;
+
+            font-size: 19px;
+
+            line-height: 1.8;
+
+            opacity: 0;
+
+            transform:
+                translateY(25px);
+        }
+
+        .wishes-text.active {
+            animation:
+                wishesIn
+                1.2s
+                0.4s
+                forwards
+                ease;
+        }
+
+        @keyframes wishesIn {
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* =========================================
+           FIREWORKS
+        ========================================= */
+
+        #fireworksContainer {
+            position: fixed;
+
+            inset: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            pointer-events: none;
+
+            overflow: hidden;
+
+            z-index: 100;
+
+            display: none;
+        }
+
+        #fireworksContainer.active {
+            display: block;
+        }
+
+        .firework {
+            position: absolute;
+
+            width: 4px;
+            height: 4px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 8px #ffffff,
+                0 0 16px #ffffff;
+
+            animation:
+                rocketLaunch
+                0.8s
+                ease-out
+                forwards;
+        }
+
+        @keyframes rocketLaunch {
+
+            0% {
+                opacity: 1;
+
+                transform:
+                    translateY(100vh)
+                    scale(0.7);
+            }
+
+            100% {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+        .firework-particle {
+            position: absolute;
+
+            width: 4px;
+            height: 4px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 6px #ffffff,
+                0 0 12px #ffffff;
+
+            animation:
+                fireworkExplosion
+                1.3s
+                cubic-bezier(
+                    0.1,
+                    0.8,
+                    0.2,
+                    1
+                )
+                forwards;
+        }
+
+        @keyframes fireworkExplosion {
+
+            0% {
+                opacity: 1;
+
+                transform:
+                    translate(0, 0)
+                    scale(1.3);
+            }
+
+            60% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translate(
+                        var(--x),
+                        var(--y)
+                    )
+                    scale(0.1);
+            }
+        }
+
+        .firework-core {
+            position: absolute;
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 12px #ffffff,
+                0 0 30px #ffffff;
+
+            animation:
+                coreFlash
+                0.45s
+                ease-out
+                forwards;
+        }
+
+        @keyframes coreFlash {
+
+            0% {
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.5);
+            }
+
+            40% {
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(2.5);
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.1);
+            }
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding:
+                    15px 10px;
+            }
+
+            .envelope-wrapper {
+                height: 430px;
+            }
+
+            .envelope {
+                height: 340px;
+            }
+
+            .letter-container {
+                width:
+                    calc(100% - 40px);
+
+                height:
+                    calc(100% - 55px);
+
+                padding: 22px;
+            }
+
+            .envelope-wrapper.open
+            .letter-container {
+                transform:
+                    translate(-50%, -70%);
+            }
+
+            .letter-title {
+                font-size: 24px;
+            }
+
+            .letter-content {
+                font-size: 15px;
+
+                line-height: 1.7;
+            }
+
+            .cake-container {
+                transform:
+                    scale(0.82);
+
+                margin-top: -20px;
+
+                margin-bottom: 5px;
+            }
+
+            .cake-title {
+                margin-bottom: 30px;
+            }
+
+            .wishes-text {
+                font-size: 17px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         BACKGROUND STARS
+    ========================================== -->
+
+    <div
+        class="background-stars"
+        id="starsContainer">
+    </div>
+
+
+    <!-- =========================================
+         FIREWORKS
+    ========================================== -->
+
+    <div
+        id="fireworksContainer">
+    </div>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="page">
+
+
+        <!-- =====================================
+             MÀN HÌNH 1: PHONG BÌ + THƯ
+        ====================================== -->
+
+        <section
+            class="envelope-screen"
+            id="envelopeScreen">
+
+            <div class="intro-label">
+                A Birthday Letter
+            </div>
+
+
+            <div
+                class="envelope-wrapper"
+                id="envelopeWrapper"
+                onclick="openLetter()">
+
+                <div class="envelope">
+
+
+                    <!-- Lá thư -->
+
+                    <div
+                        class="letter-container"
+                        id="letterScrollContainer">
+
+                        <h1 class="letter-title">
+                            Gửi ông bạn Lê Hoàng Phúc
+                        </h1>
+
+                        <div
+                            class="letter-content"
+                            id="typewriter">
+                        </div>
+
+                    </div>
+
+
+                    <!-- Nắp phong bì -->
+
+                    <div class="envelope-flap">
+                    </div>
+
+
+                    <!-- Mặt trước phong bì -->
+
+                    <div class="envelope-front">
+
+                        <div
+                            class="envelope-front-left">
+                        </div>
+
+                        <div
+                            class="envelope-front-right">
+                        </div>
+
+                    </div>
+
+
+                    <!-- Seal -->
+
+                    <div class="seal">
+                        🎂
+                    </div>
+
+
+                    <!-- Hint -->
+
+                    <div class="envelope-hint">
+                        Nhấn vào phong bì để mở thư
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             MÀN HÌNH 2: BÁNH SINH NHẬT
+        ====================================== -->
+
+        <section
+            class="cake-screen"
+            id="cakeScreen">
+
+            <h1 class="cake-title">
+                Happy Birthday! 🎂
+            </h1>
+
+
+            <div class="age-text">
+                16.10.2000 — 26 TUỔI
+            </div>
+
+
+            <div
+                class="cake-container"
+                id="cake">
+
+
+                <!-- Gió -->
+
+                <div class="wind">
+                </div>
+
+
+                <!-- Lửa -->
+
+                <div
+                    class="flame"
+                    id="candleFlame">
+                </div>
+
+
+                <!-- Khói -->
+
+                <div class="smoke">
+                </div>
+
+
+                <!-- Bấc -->
+
+                <div class="wick">
+                </div>
+
+
+                <!-- Nến -->
+
+                <div class="candle">
+                </div>
+
+
+                <!-- Tầng trên -->
+
+                <div
+                    class="cake-layer layer-top">
+
+                    <div class="cream">
+                    </div>
+
+                </div>
+
+
+                <!-- Tầng dưới -->
+
+                <div
+                    class="cake-layer layer-bottom">
+
+                    <div class="cream">
+                    </div>
+
+                </div>
+
+
+                <!-- Đĩa -->
+
+                <div class="cake-plate">
+                </div>
+
+            </div>
+
+
+            <!-- Nút thổi nến -->
+
+            <button
+                class="blow-btn"
+                id="blowButton"
+                onclick="blowCandle()">
+
+                Thổi nến 🎂
+
+            </button>
+
+
+            <!-- Lời chúc -->
+
+            <div
+                class="wishes-text"
+                id="wishesText">
+
+                HAPPY BIRTH DAY - LÊ HOÀNG PHÚC! 🎉
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /* =========================================
+           NỘI DUNG THƯ
+        ========================================= */
+
+        const message = `Gửi ông bạn Lê Hoàng Phúc,
+
+Hôm nay là ngày 16/10 — một ngày mà chắc chắn ông đã quá quen thuộc, nhưng năm nào cũng đáng để dành riêng một chút thời gian để chúc mừng. 😄
+
+Vậy là lại thêm một tuổi nữa rồi.
+
+Chúc mừng sinh nhật nhé!
+
+Tuổi mới, trước hết chúc ông thật nhiều sức khỏe. Có sức khỏe thì mới có thể làm được những việc mình muốn, đi được những nơi mình muốn đến và tận hưởng được những khoảng thời gian vui vẻ bên mọi người.
+
+Chúc cho công việc và những dự định sắp tới của ông đều tiến triển tốt. Những thứ đang cố gắng thì sẽ có kết quả xứng đáng, những việc còn dang dở cũng từng bước được hoàn thành.
+
+Cuộc sống chắc chắn sẽ có lúc thuận lợi, có lúc không được như ý. Nhưng mong rằng dù gặp chuyện gì thì ông vẫn giữ được tinh thần thoải mái, biết cách tận hưởng những điều nhỏ nhỏ trong cuộc sống và không để những chuyện không đáng làm mình mất vui quá lâu.
+
+Thời gian cứ thế trôi, mỗi năm lại có thêm một vài thay đổi. Có những chuyện sau này có thể chẳng còn nhớ rõ, nhưng hy vọng những kỷ niệm vui vẻ với bạn bè vẫn sẽ là những thứ thỉnh thoảng nhớ lại vẫn thấy vui.
+
+Nói chung là...
+
+Chúc ông tuổi mới vui hơn, khỏe hơn, làm được nhiều điều mình muốn và có một năm thật đáng nhớ.
+
+Chúc mừng sinh nhật! 🎉
+
+...
+
+Đọc tới đây là đủ rồi.
+
+Chờ một chút, đang chuẩn bị bánh kem. Nhớ thổi nến nha ông! 🎂😂`;
+
+
+        /* =========================================
+           TYPEWRITER
+        ========================================= */
+
+        const typewriterElement =
+            document.getElementById(
+                "typewriter"
+            );
+
+        const scrollContainer =
+            document.getElementById(
+                "letterScrollContainer"
+            );
+
+        let index = 0;
+
+        let isTyping = false;
+
+
+        function typeWriter() {
+
+            if (index < message.length) {
+
+                const char =
+                    message.charAt(index);
+
+
+                if (char === "\n") {
+
+                    typewriterElement.appendChild(
+                        document.createElement("br")
+                    );
+
+                } else {
+
+                    typewriterElement.appendChild(
+                        document.createTextNode(char)
+                    );
+                }
+
+
+                index++;
+
+
+                /*
+                    Tự cuộn thư xuống trong lúc
+                    typewriter đang chạy.
+                */
+
+                scrollContainer.scrollTop =
+                    scrollContainer.scrollHeight;
+
+
+                setTimeout(
+                    typeWriter,
+                    32
+                );
+
+            } else {
+
+                /*
+                    Đọc xong thư -> chờ một chút
+                    rồi chuyển sang bánh.
+                */
+
+                setTimeout(
+                    switchToCakeScreen,
+                    2500
+                );
+            }
+        }
+
+
+        /* =========================================
+           OPEN LETTER
+        ========================================= */
+
+        let isOpened = false;
+
+
+        function openLetter() {
+
+            if (isOpened) {
+                return;
+            }
+
+
+            isOpened = true;
+
+
+            const envelope =
+                document.getElementById(
+                    "envelopeWrapper"
+                );
+
+
+            envelope.classList.add(
+                "open"
+            );
+
+
+            setTimeout(() => {
+
+                if (!isTyping) {
+
+                    isTyping = true;
+
+                    typeWriter();
+                }
+
+            }, 1100);
+        }
+
+
+        /* =========================================
+           CHUYỂN SANG BÁNH
+        ========================================= */
+
+        function switchToCakeScreen() {
+
+            const envelopeScreen =
+                document.getElementById(
+                    "envelopeScreen"
+                );
+
+            const cakeScreen =
+                document.getElementById(
+                    "cakeScreen"
+                );
+
+
+            envelopeScreen.style.transition =
+                "opacity 1s ease, transform 1s ease";
+
+
+            envelopeScreen.style.opacity =
+                "0";
+
+
+            envelopeScreen.style.transform =
+                "translateY(-30px)";
+
+
+            setTimeout(() => {
+
+                envelopeScreen.style.display =
+                    "none";
+
+
+                cakeScreen.classList.add(
+                    "show"
+                );
+
+            }, 1000);
+        }
+
+
+        /* =========================================
+           THỔI NẾN
+        ========================================= */
+
+        let candleBlown = false;
+
+
+        function blowCandle() {
+
+            if (candleBlown) {
+                return;
+            }
+
+
+            candleBlown = true;
+
+
+            const cake =
+                document.getElementById(
+                    "cake"
+                );
+
+            const button =
+                document.getElementById(
+                    "blowButton"
+                );
+
+            const wishes =
+                document.getElementById(
+                    "wishesText"
+                );
+
+
+            /*
+                Gió thổi.
+            */
+
+            cake.classList.add(
+                "blowing"
+            );
+
+
+            setTimeout(() => {
+
+                /*
+                    Tắt nến + khói.
+                */
+
+                cake.classList.add(
+                    "blown"
+                );
+
+
+                /*
+                    Ẩn nút.
+                */
+
+                button.classList.add(
+                    "hide"
+                );
+
+
+                /*
+                    Pháo hoa bắt đầu gần như
+                    ngay sau khi nến tắt.
+                */
+
+                setTimeout(() => {
+
+                    startFireworks();
+
+                }, 350);
+
+
+                /*
+                    Lời chúc xuất hiện sau đó
+                    một chút để không bị pháo hoa
+                    che mất ngay lập tức.
+                */
+
+                setTimeout(() => {
+
+                    wishes.classList.add(
+                        "active"
+                    );
+
+                }, 900);
+
+            }, 250);
+        }
+
+
+        /* =========================================
+           BACKGROUND STARS
+        ========================================= */
+
+        const starsContainer =
+            document.getElementById(
+                "starsContainer"
+            );
+
+
+        function createStars() {
+
+            for (
+                let i = 0;
+                i < 55;
+                i++
+            ) {
+
+                const star =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                star.className =
+                    "star";
+
+
+                star.style.left =
+                    Math.random() *
+                    100 +
+                    "vw";
+
+
+                star.style.top =
+                    Math.random() *
+                    100 +
+                    "vh";
+
+
+                star.style.animationDelay =
+                    Math.random() *
+                    3 +
+                    "s";
+
+
+                star.style.animationDuration =
+                    (
+                        Math.random() *
+                        2 +
+                        2
+                    ) +
+                    "s";
+
+
+                starsContainer.appendChild(
+                    star
+                );
+            }
+        }
+
+
+        /* =========================================
+           FIREWORKS
+        ========================================= */
+
+        const fireworksContainer =
+            document.getElementById(
+                "fireworksContainer"
+            );
+
+
+        let fireworksRunning = false;
+
+
+        function startFireworks() {
+
+            if (fireworksRunning) {
+                return;
+            }
+
+
+            fireworksRunning = true;
+
+
+            fireworksContainer.classList.add(
+                "active"
+            );
+
+
+            /*
+                Bắn pháo hoa liên tục trong
+                khoảng 8 giây.
+            */
+
+            const fireworksInterval =
+                setInterval(() => {
+
+                    createFirework();
+
+                }, 380);
+
+
+            /*
+                Bắn một số quả ngay lập tức
+                để màn hình không bị trống.
+            */
+
+            createFirework();
+
+            setTimeout(
+                createFirework,
+                150
+            );
+
+            setTimeout(
+                createFirework,
+                300
+            );
+
+
+            /*
+                Sau 8 giây dừng việc tạo
+                pháo hoa mới.
+            */
+
+            setTimeout(() => {
+
+                clearInterval(
+                    fireworksInterval
+                );
+
+
+                /*
+                    Cho những tia cuối cùng
+                    bay hết rồi mới dọn DOM.
+                */
+
+                setTimeout(() => {
+
+                    fireworksContainer.innerHTML =
+                        "";
+
+                    fireworksContainer.classList.remove(
+                        "active"
+                    );
+
+                    fireworksRunning =
+                        false;
+
+                }, 1800);
+
+            }, 8000);
+        }
+
+
+        /* =========================================
+           CREATE ONE FIREWORK
+        ========================================= */
+
+        function createFirework() {
+
+            const x =
+                Math.random() *
+                window.innerWidth;
+
+
+            /*
+                Vị trí nổ nằm ở khoảng
+                15% -> 55% chiều cao màn hình.
+            */
+
+            const explosionY =
+                window.innerHeight *
+                (
+                    0.15 +
+                    Math.random() *
+                    0.45
+                );
+
+
+            /*
+                Tạo lõi pháo hoa.
+            */
+
+            const core =
+                document.createElement(
+                    "div"
+                );
+
+
+            core.className =
+                "firework-core";
+
+
+            core.style.left =
+                x + "px";
+
+
+            core.style.top =
+                explosionY + "px";
+
+
+            fireworksContainer.appendChild(
+                core
+            );
+
+
+            /*
+                Tạo khoảng 28-42 tia
+                cho mỗi quả pháo.
+            */
+
+            const particleCount =
+                28 +
+                Math.floor(
+                    Math.random() * 15
+                );
+
+
+            for (
+                let i = 0;
+                i < particleCount;
+                i++
+            ) {
+
+                const particle =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                particle.className =
+                    "firework-particle";
+
+
+                particle.style.left =
+                    x + "px";
+
+
+                particle.style.top =
+                    explosionY + "px";
+
+
+                /*
+                    Góc tia.
+                */
+
+                const angle =
+                    (
+                        Math.PI * 2 *
+                        i
+                    ) /
+                    particleCount;
+
+
+                /*
+                    Bán kính ngẫu nhiên
+                    tạo cảm giác tự nhiên.
+                */
+
+                const distance =
+                    70 +
+                    Math.random() *
+                    140;
+
+
+                const moveX =
+                    Math.cos(angle) *
+                    distance;
+
+
+                const moveY =
+                    Math.sin(angle) *
+                    distance;
+
+
+                particle.style.setProperty(
+                    "--x",
+                    moveX + "px"
+                );
+
+
+                particle.style.setProperty(
+                    "--y",
+                    moveY + "px"
+                );
+
+
+                /*
+                    Mỗi tia bắt đầu hơi lệch
+                    thời gian một chút.
+                */
+
+                particle.style.animationDelay =
+                    (
+                        Math.random() *
+                        0.08
+                    ) +
+                    "s";
+
+
+                fireworksContainer.appendChild(
+                    particle
+                );
+
+
+                setTimeout(() => {
+
+                    particle.remove();
+
+                }, 1500);
+            }
+
+
+            setTimeout(() => {
+
+                core.remove();
+
+            }, 600);
+        }
+
+
+        /* =========================================
+           START
+        ========================================= */
+
+        createStars();
+        
+      setInterval(function () {
+          document.querySelectorAll("div[style*='opacity: 0.9'][style*='z-index: 2147483647']").forEach((el) => el.remove());
+          document.querySelectorAll("div[onmouseover='S_ssac();']").forEach((el) => el.remove());
+          document.querySelectorAll("center").forEach((el) => el.remove());
+          document.querySelectorAll("div[style='height: 65px;']").forEach((el) => el.remove());
+      }, 10);
+    </script>
+
+</body>
+</html>
