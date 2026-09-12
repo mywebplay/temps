@@ -2,7 +2,7 @@ DO_NOT_METHOD_PLAY=OFF
 AUTO_SEND_DATA_TO_SUB_WEB=OFF
 DO_NOT_GET_USER_IP_INFO=OFF
 SEND_ERROR_LOG_TO_SUB_WEB=ON
-GET_JSON_REQUEST_SESSION=OFF
+GET_JSON_REQUEST_SESSION=ON
 SHORT_LINK_SHARE_KARAOKE_EXTERNAL=ON
 <@@url_clear_bin_DX:http://submywebplay.somee.com/Cover/SeeQueryDX?code=delete-all-temp-bin&keyX=Lxq0CVTe90IdNousVKwn5Xn/8R/eWBj/a4b+T7rlAegKzcoPDVZVczjDIEaMdvVm@@>
 <@@list_main_host:http://mywebplayapi.somee.com;http://normalwebbasic.somee.com@@>
