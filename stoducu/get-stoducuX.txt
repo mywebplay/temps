@@ -97,6 +97,20 @@
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
 
+		#btnExport:disabled {
+		    opacity: 0.6;
+		    cursor: not-allowed;
+		    pointer-events: auto; /* vẫn nhận hover để hiện icon cấm, nhưng disabled đã chặn click */
+		    transform: none;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+		}
+		
+		#btnExport:disabled:hover {
+		    background: linear-gradient(135deg, #4caf50, #2e7d32); /* giữ nguyên màu, không đổi sang hover màu sáng hơn */
+		    transform: none;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+		}
+
         #btnExtend {
             position: fixed;
             top: 78px;
