@@ -232,6 +232,10 @@
         };
 
         document.getElementById("btnExport").onclick = async function () {
+			document.getElementById("btnExport").innerText = "Đang xử lý...";
+			document.getElementById("btnExport").disabled = true;
+			await new Promise(resolve => setTimeout(resolve, 3000));
+			
             document.getElementById("overlay2").style.display = "flex";
             window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
@@ -331,6 +335,8 @@
                     document.getElementById("btnExport").style.display = "flex";
                     document.getElementById("btnExtend").style.display = "flex";
                     document.getElementById("khoin").style.display = "flex";
+					document.getElementById("btnExport").innerText = "Download PDF";
+					document.getElementById("btnExport").disabled = false;
                 }, 3000);
             } catch (err) {
                 console.error("❌ Lỗi khi tạo PDF", err);
@@ -341,6 +347,8 @@
                 document.getElementById("btnExport").style.display = "flex";
                 document.getElementById("btnExtend").style.display = "flex";
                 document.getElementById("khoin").style.display = "flex";
+				document.getElementById("btnExport").innerText = "Download PDF";
+				document.getElementById("btnExport").disabled = false;
             }
         };
 
