@@ -232,7 +232,7 @@
         };
 
         document.getElementById("btnExport").onclick = async function () {
-			document.getElementById("btnExport").innerText = "Đang xử lý...";
+			document.getElementById("btnExport").innerText = "Chờ một lát...";
 			document.getElementById("btnExport").disabled = true;
 			await new Promise(resolve => setTimeout(resolve, 3000));
 			
