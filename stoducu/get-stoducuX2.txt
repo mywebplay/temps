@@ -232,7 +232,7 @@
         };
 
 		// =====================================================================
-		//  EXPORT PDF - toàn bộ logic (thay thế hoàn toàn đoạn cũ)
+		//  EXPORT PDF v2 - toàn bộ logic (thay thế hoàn toàn đoạn cũ)
 		//  Cần có sẵn trong trang: jsPDF, html2canvas, biến khogiay,
 		//  hàm updateProgress(percent), hàm hideOverlay()
 		//  Cần có trong HTML: #btnExport, #btnExtend, #khoin, #overlay, #overlay2,
@@ -259,15 +259,16 @@
 		    compression: "NONE",
 		};
 		
-		// Nhanh: render song song, ảnh nhỏ, bỏ các đoạn chờ
+		// Nhanh: tự chọn cách render rẻ nhất cho từng trang
 		const FAST_OPT = {
 		    preDelay: 50,
 		    targetWidth: 1000,    // bề rộng ảnh mỗi trang (px). 800 = nhanh/mờ hơn, 1200 = rõ/chậm hơn
 		    quality: 0.6,         // chất lượng JPEG (0..1)
-		    concurrency: 3,       // số trang render song song. Nếu lỗi/đơ máy thì hạ xuống 1
-		    minScale: 0.5,        // giới hạn scale để không quá mờ / quá nặng
+		    concurrency: 3,       // số trang xử lý song song. Nếu lỗi/đơ máy thì hạ xuống 1
+		    minScale: 0.5,        // giới hạn scale của html2canvas
 		    maxScale: 1.5,
-		    foreignObject: false, // true = thử render bằng SVG foreignObject (có thể nhanh hơn nhưng dễ lỗi ảnh/font)
+		    direct: true,         // tầng 1: lấy thẳng ảnh/canvas nếu trang chỉ là 1 ảnh
+		    foreignObject: true,  // tầng 2: để trình duyệt tự vẽ (tự rơi về tầng 3 nếu lỗi/trang trắng)
 		};
 		
 		// ===== Hàm dùng chung =====
@@ -332,16 +333,16 @@
 		    $("overlay2").style.display = "flex";
 		    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 		
-			const originalBodyOverflow = document.body.style.overflow;
-			const originalHtmlOverflow = document.documentElement.style.overflow;
-			const originalSlDisplay = sl ? sl.style.display : ""; // lưu display gốc của select
-			document.body.style.overflow = "hidden";
-			document.documentElement.style.overflow = "hidden";
-			btnExport.style.display = "none";
-			btnExtend.style.display = "none";
-			khoin.style.display = "none";
-			if (sl) sl.style.display = "none";
-					
+		    const originalBodyOverflow = document.body.style.overflow;
+		    const originalHtmlOverflow = document.documentElement.style.overflow;
+		    const originalSlDisplay = sl ? sl.style.display : "";
+		    document.body.style.overflow = "hidden";
+		    document.documentElement.style.overflow = "hidden";
+		    btnExport.style.display = "none";
+		    btnExtend.style.display = "none";
+		    khoin.style.display = "none";
+		    if (sl) sl.style.display = "none";
+		
 		    try {
 		        await work();
 		    } catch (err) {
@@ -405,6 +406,127 @@
 		    });
 		}
 		
+		// ===== Các hàm riêng của chế độ nhanh =====
+		
+		// canvas -> { data: Uint8Array (JPEG), ratio } ; giải phóng canvas sau khi dùng
+		async function canvasToJpeg(canvas, quality) {
+		    if (!canvas || canvas.width === 0 || canvas.height === 0) return null;
+		    const ratio = canvas.width / canvas.height;
+		    // toBlob mã hóa bất đồng bộ, nhanh và nhẹ hơn toDataURL (base64)
+		    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+		    canvas.width = canvas.height = 0; // trả bộ nhớ sớm
+		    if (!blob) return null;
+		    return { data: new Uint8Array(await blob.arrayBuffer()), ratio: ratio };
+		}
+		
+		// Kiểm tra canvas có phải trang trắng toàn bộ không (dấu hiệu foreignObject render hỏng).
+		// Ném lỗi nếu canvas bị "tainted" (ảnh khác nguồn) -> người gọi sẽ rơi về tầng sau.
+		function isBlankCanvas(canvas) {
+		    const S = 24;
+		    const small = document.createElement("canvas");
+		    small.width = small.height = S;
+		    const ctx = small.getContext("2d", { willReadFrequently: true });
+		    ctx.drawImage(canvas, 0, 0, S, S);
+		    const d = ctx.getImageData(0, 0, S, S).data;
+		    for (let i = 0; i < d.length; i += 4) {
+		        if (d[i + 3] < 10) continue; // pixel trong suốt
+		        if (d[i] < 250 || d[i + 1] < 250 || d[i + 2] < 250) return false;
+		    }
+		    return true;
+		}
+		
+		// Tầng 1: trang chỉ là 1 ảnh/canvas phủ gần kín -> lấy thẳng, không cần "chụp" DOM.
+		// Trả null nếu trang không đủ điều kiện (để không làm mất nội dung).
+		async function tryDirectImage(div, opt) {
+		    if (div.textContent.trim() !== "") return null;                                // có chữ -> không dùng
+		    if (div.querySelector("svg, video, iframe, object, embed")) return null;       // có thành phần khác
+		    const medias = div.querySelectorAll("img, canvas");
+		    if (medias.length !== 1) return null;
+		    const el = medias[0];
+		
+		    // Có ảnh nền ở đâu đó thì nội dung đó sẽ bị mất -> không dùng
+		    const all = [div, ...div.querySelectorAll("*")];
+		    if (all.some((n) => getComputedStyle(n).backgroundImage !== "none")) return null;
+		
+		    const d = div.getBoundingClientRect();
+		    const r = el.getBoundingClientRect();
+		    if (d.width < 1 || d.height < 1) return null;
+		    if (r.width * r.height < 0.9 * d.width * d.height) return null;                // ảnh không phủ gần kín trang
+		
+		    if (el.tagName === "IMG") {
+		        if (!(el.complete && el.naturalWidth > 0)) return null;
+		        const fit = getComputedStyle(el).objectFit;
+		        if (fit && fit !== "fill") return null;
+		    } else if (el.width === 0 || el.height === 0) {
+		        return null;
+		    }
+		
+		    const c = document.createElement("canvas");
+		    c.width = Math.round(opt.targetWidth);
+		    c.height = Math.max(1, Math.round((opt.targetWidth * d.height) / d.width));
+		    const sx = c.width / d.width;
+		    const ctx = c.getContext("2d");
+		    ctx.fillStyle = "#ffffff";
+		    ctx.fillRect(0, 0, c.width, c.height);
+		    ctx.imageSmoothingQuality = "high";
+		    ctx.drawImage(el, (r.left - d.left) * sx, (r.top - d.top) * sx, r.width * sx, r.height * sx);
+		
+		    // Ném SecurityError nếu ảnh khác nguồn không có CORS -> người gọi sẽ bắt lại
+		    return await canvasToJpeg(c, opt.quality);
+		}
+		
+		// Render 1 trang theo thứ tự: direct -> foreignObject -> html2canvas thường
+		// state: cờ dùng chung, tầng nào đã lỗi thì các trang sau bỏ qua luôn
+		async function renderPageFast(div, opt, state) {
+		    // --- Tầng 1 ---
+		    if (state.direct) {
+		        try {
+		            const r = await tryDirectImage(div, opt);
+		            if (r) return { ...r, method: "direct" };
+		        } catch (e) {
+		            state.direct = false;
+		        }
+		    }
+		
+		    const pageIdx = div.getAttribute("data-page-index");
+		    const w = div.offsetWidth || div.scrollWidth || 1;
+		    const scale = Math.min(Math.max(opt.targetWidth / w, opt.minScale), opt.maxScale);
+		    const baseOpts = {
+		        scale: scale,
+		        useCORS: true,
+		        backgroundColor: "#ffffff",
+		        logging: false,
+		        windowWidth: div.scrollWidth,
+		        windowHeight: div.scrollHeight,
+		        // Ẩn các trang khác trong bản clone để giảm khối lượng layout.
+		        // Nếu PDF ra bị lệch bố cục thì xóa khối onclone này.
+		        onclone: (clonedDoc) => {
+		            clonedDoc.querySelectorAll("#page-container > div[data-page-index]").forEach((el) => {
+		                if (el.getAttribute("data-page-index") !== pageIdx) el.style.display = "none";
+		            });
+		        },
+		    };
+		
+		    // --- Tầng 2 ---
+		    if (state.foreign) {
+		        try {
+		            const canvas = await html2canvas(div, { ...baseOpts, foreignObjectRendering: true });
+		            if (!isBlankCanvas(canvas)) {
+		                const r = await canvasToJpeg(canvas, opt.quality);
+		                if (r) return { ...r, method: "foreignObject" };
+		            }
+		            state.foreign = false; // ra trang trắng -> các trang sau khỏi thử lại
+		        } catch (e) {
+		            state.foreign = false;
+		        }
+		    }
+		
+		    // --- Tầng 3 ---
+		    const canvas = await html2canvas(div, { ...baseOpts, foreignObjectRendering: false });
+		    const r = await canvasToJpeg(canvas, opt.quality);
+		    return r ? { ...r, method: "standard" } : null;
+		}
+		
 		// ===== Chế độ 1: bình thường (nhanh) =====
 		function exportPdfFast() {
 		    const opt = FAST_OPT;
@@ -417,50 +539,27 @@
 		        const total = pages.length;
 		        if (total === 0) throw new Error("Không tìm thấy trang nào để xuất");
 		
-		        const results = new Array(total); // { data: Uint8Array, ratio }
+		        const results = new Array(total); // { data: Uint8Array, ratio, method }
+		        const state = { direct: opt.direct, foreign: opt.foreignObject };
+		        const methodCount = {};
 		        let next = 0;
 		        let done = 0;
+		        let overlayShown = false;
 		
-		        // Mỗi worker lấy trang kế tiếp, render rồi mã hóa JPEG
 		        async function worker() {
 		            while (true) {
 		                const i = next++;
 		                if (i >= total) return;
 		
-		                const div = pages[i];
-		                const pageIdx = div.getAttribute("data-page-index");
-		                const w = div.offsetWidth || div.scrollWidth || 1;
-		                const scale = Math.min(Math.max(opt.targetWidth / w, opt.minScale), opt.maxScale);
+		                const r = await renderPageFast(pages[i], opt, state);
 		
-		                const canvas = await html2canvas(div, {
-		                    scale: scale,
-		                    useCORS: true,
-		                    backgroundColor: "#ffffff",
-		                    logging: false,
-		                    foreignObjectRendering: opt.foreignObject,
-		                    windowWidth: div.scrollWidth,
-		                    windowHeight: div.scrollHeight,
-		                    // Ẩn các trang khác trong bản clone để giảm khối lượng layout.
-		                    // Nếu PDF ra bị lệch bố cục thì xóa khối onclone này.
-		                    onclone: (clonedDoc) => {
-		                        clonedDoc.querySelectorAll("#page-container > div[data-page-index]").forEach((el) => {
-		                            if (el.getAttribute("data-page-index") !== pageIdx) el.style.display = "none";
-		                        });
-		                    },
-		                });
-		
-		                showProgressOverlay();
-		
-		                if (canvas && canvas.width > 0 && canvas.height > 0) {
-		                    // toBlob mã hóa bất đồng bộ, nhanh và nhẹ hơn toDataURL
-		                    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", opt.quality));
-		                    if (blob) {
-		                        results[i] = {
-		                            data: new Uint8Array(await blob.arrayBuffer()),
-		                            ratio: canvas.width / canvas.height,
-		                        };
-		                    }
-		                    canvas.width = canvas.height = 0; // trả bộ nhớ sớm
+		                if (!overlayShown) {
+		                    overlayShown = true;
+		                    showProgressOverlay();
+		                }
+		                if (r) {
+		                    results[i] = r;
+		                    methodCount[r.method] = (methodCount[r.method] || 0) + 1;
 		                }
 		
 		                done++;
@@ -470,6 +569,7 @@
 		
 		        const workerCount = Math.min(opt.concurrency, total);
 		        await Promise.all(Array.from({ length: workerCount }, worker));
+		        console.log("Cách render mỗi trang:", methodCount);
 		
 		        // Ghép PDF theo đúng thứ tự trang
 		        let added = 0;
