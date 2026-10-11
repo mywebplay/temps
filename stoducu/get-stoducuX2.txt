@@ -603,15 +603,10 @@
 		                // Sau trang đầu: nếu ước tính quá lâu thì đề xuất chuyển sang chế độ in
 		                if (i === 0 && opt.suggestPrint && r && r.method !== "direct" && dt * total > opt.slowEstimateMs) {
 		                    const sec = Math.round((dt * total) / 1000);
-		                    const ok = confirm(
-		                        "Cách chụp ảnh với tài liệu này khá chậm (ước tính khoảng " + sec + " giây).\n\n" +
-		                        "Chuyển sang chế độ in bằng trình duyệt (nhanh hơn nhiều, bạn chọn 'Save as PDF')?\n\n" +
-		                        "OK = chuyển sang chế độ in | Cancel = tiếp tục chụp ảnh"
+		                    alert(
+		                        "Xử lý chụp ảnh PDF đối với tài liệu này có thể khá chậm (ước tính khoảng " + sec + " giây).\n\n" +
+		                        "Bấm [OK] để tiếp tục xử lý..."
 		                    );
-		                    if (ok) {
-		                        needPrint = true;
-		                        return; // finally bên dưới sẽ trả lại hiển thị các trang
-		                    }
 		                }
 		
 		                updateProgress(Math.round(((i + 1) / total) * 100));
