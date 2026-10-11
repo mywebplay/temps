@@ -332,14 +332,16 @@
 		    $("overlay2").style.display = "flex";
 		    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 		
-		    const originalBodyOverflow = document.body.style.overflow;
-		    const originalHtmlOverflow = document.documentElement.style.overflow;
-		    document.body.style.overflow = "hidden";
-		    document.documentElement.style.overflow = "hidden";
-		    btnExport.style.display = "none";
-		    btnExtend.style.display = "none";
-		    khoin.style.display = "none";
-		
+			const originalBodyOverflow = document.body.style.overflow;
+			const originalHtmlOverflow = document.documentElement.style.overflow;
+			const originalSlDisplay = sl ? sl.style.display : ""; // lưu display gốc của select
+			document.body.style.overflow = "hidden";
+			document.documentElement.style.overflow = "hidden";
+			btnExport.style.display = "none";
+			btnExtend.style.display = "none";
+			khoin.style.display = "none";
+			if (sl) sl.style.display = "none";
+					
 		    try {
 		        await work();
 		    } catch (err) {
@@ -352,6 +354,7 @@
 		        btnExport.style.display = "flex";
 		        btnExtend.style.display = "flex";
 		        khoin.style.display = "flex";
+		        if (sl) sl.style.display = originalSlDisplay;
 		        btnExport.innerText = "Download PDF";
 		        btnExport.disabled = false;
 		        if (sl) sl.disabled = false;
