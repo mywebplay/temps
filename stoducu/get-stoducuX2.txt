@@ -232,11 +232,14 @@
         };
 
 		// =====================================================================
-		//  EXPORT PDF v2 - toàn bộ logic (thay thế hoàn toàn đoạn cũ)
+		//  EXPORT PDF v3 - toàn bộ logic (thay thế hoàn toàn đoạn cũ)
 		//  Cần có sẵn trong trang: jsPDF, html2canvas, biến khogiay,
 		//  hàm updateProgress(percent), hàm hideOverlay()
 		//  Cần có trong HTML: #btnExport, #btnExtend, #khoin, #overlay, #overlay2,
-		//  #slOption (index 0 = chất lượng cao, index 1 = bình thường/nhanh),
+		//  #slOption với 3 option:
+		//     index 0 = Chất lượng cao (chậm)
+		//     index 1 = Bình thường (nhanh, tự đề xuất chuyển sang in nếu chậm)
+		//     index 2 = In nhanh bằng trình duyệt (chọn "Save as PDF")
 		//  #page-container > div[data-page-index]
 		// =====================================================================
 		
@@ -262,13 +265,14 @@
 		// Nhanh: tự chọn cách render rẻ nhất cho từng trang
 		const FAST_OPT = {
 		    preDelay: 50,
-		    targetWidth: 1000,    // bề rộng ảnh mỗi trang (px). 800 = nhanh/mờ hơn, 1200 = rõ/chậm hơn
-		    quality: 0.6,         // chất lượng JPEG (0..1)
-		    concurrency: 3,       // số trang xử lý song song. Nếu lỗi/đơ máy thì hạ xuống 1
-		    minScale: 0.5,        // giới hạn scale của html2canvas
+		    targetWidth: 1000,       // bề rộng ảnh mỗi trang (px). 800 = nhanh/mờ hơn, 1200 = rõ/chậm hơn
+		    quality: 0.6,            // chất lượng JPEG (0..1)
+		    minScale: 0.5,           // giới hạn scale của html2canvas
 		    maxScale: 1.5,
-		    direct: true,         // tầng 1: lấy thẳng ảnh/canvas nếu trang chỉ là 1 ảnh
-		    foreignObject: true,  // tầng 2: để trình duyệt tự vẽ (tự rơi về tầng 3 nếu lỗi/trang trắng)
+		    direct: true,            // tầng 1: lấy thẳng ảnh/canvas nếu trang chỉ là 1 ảnh
+		    foreignObject: true,     // tầng 2: để trình duyệt tự vẽ (tự rơi về tầng 3 nếu lỗi/trang trắng)
+		    suggestPrint: true,      // nếu ước tính quá chậm thì hỏi chuyển sang chế độ in
+		    slowEstimateMs: 8000,    // ngưỡng "quá chậm" (ước tính tổng thời gian, ms)
 		};
 		
 		// ===== Hàm dùng chung =====
@@ -488,7 +492,6 @@
 		        }
 		    }
 		
-		    const pageIdx = div.getAttribute("data-page-index");
 		    const w = div.offsetWidth || div.scrollWidth || 1;
 		    const scale = Math.min(Math.max(opt.targetWidth / w, opt.minScale), opt.maxScale);
 		    const baseOpts = {
@@ -498,13 +501,6 @@
 		        logging: false,
 		        windowWidth: div.scrollWidth,
 		        windowHeight: div.scrollHeight,
-		        // Ẩn các trang khác trong bản clone để giảm khối lượng layout.
-		        // Nếu PDF ra bị lệch bố cục thì xóa khối onclone này.
-		        onclone: (clonedDoc) => {
-		            clonedDoc.querySelectorAll("#page-container > div[data-page-index]").forEach((el) => {
-		                if (el.getAttribute("data-page-index") !== pageIdx) el.style.display = "none";
-		            });
-		        },
 		    };
 		
 		    // --- Tầng 2 ---
@@ -528,10 +524,11 @@
 		}
 		
 		// ===== Chế độ 1: bình thường (nhanh) =====
-		function exportPdfFast() {
+		async function exportPdfFast() {
 		    const opt = FAST_OPT;
+		    let needPrint = false;
 		
-		    return runExport(opt.preDelay, async () => {
+		    await runExport(opt.preDelay, async () => {
 		        const { jsPDF } = window.jspdf;
 		        const pdf = new jsPDF(khogiay, "mm", "a4");
 		
@@ -542,34 +539,55 @@
 		        const results = new Array(total); // { data: Uint8Array, ratio, method }
 		        const state = { direct: opt.direct, foreign: opt.foreignObject };
 		        const methodCount = {};
-		        let next = 0;
-		        let done = 0;
-		        let overlayShown = false;
 		
-		        async function worker() {
-		            while (true) {
-		                const i = next++;
-		                if (i >= total) return;
+		        // Ẩn tất cả trang, chỉ hiện từng trang một khi chụp.
+		        // html2canvas clone cả tài liệu cho mỗi lần chụp, nên ẩn bớt giúp bản clone nhỏ hơn nhiều.
+		        const savedDisplay = pages.map((p) => p.style.display);
+		        pages.forEach((p) => (p.style.display = "none"));
 		
-		                const r = await renderPageFast(pages[i], opt, state);
+		        const tStart = performance.now();
+		        try {
+		            for (let i = 0; i < total; i++) {
+		                const t0 = performance.now();
 		
-		                if (!overlayShown) {
-		                    overlayShown = true;
-		                    showProgressOverlay();
+		                pages[i].style.display = savedDisplay[i];
+		                let r = null;
+		                try {
+		                    r = await renderPageFast(pages[i], opt, state);
+		                } finally {
+		                    pages[i].style.display = "none";
 		                }
+		                const dt = performance.now() - t0;
+		
+		                if (i === 0) showProgressOverlay();
 		                if (r) {
 		                    results[i] = r;
 		                    methodCount[r.method] = (methodCount[r.method] || 0) + 1;
 		                }
 		
-		                done++;
-		                updateProgress(Math.round((done / total) * 100));
-		            }
-		        }
+		                // Sau trang đầu: nếu ước tính quá lâu thì đề xuất chuyển sang chế độ in
+		                if (i === 0 && opt.suggestPrint && r && r.method !== "direct" && dt * total > opt.slowEstimateMs) {
+		                    const sec = Math.round((dt * total) / 1000);
+		                    const ok = confirm(
+		                        "Cách chụp ảnh với tài liệu này khá chậm (ước tính khoảng " + sec + " giây).\n\n" +
+		                        "Chuyển sang chế độ in bằng trình duyệt (nhanh hơn nhiều, bạn chọn 'Save as PDF')?\n\n" +
+		                        "OK = chuyển sang chế độ in | Cancel = tiếp tục chụp ảnh"
+		                    );
+		                    if (ok) {
+		                        needPrint = true;
+		                        return; // finally bên dưới sẽ trả lại hiển thị các trang
+		                    }
+		                }
 		
-		        const workerCount = Math.min(opt.concurrency, total);
-		        await Promise.all(Array.from({ length: workerCount }, worker));
-		        console.log("Cách render mỗi trang:", methodCount);
+		                updateProgress(Math.round(((i + 1) / total) * 100));
+		                console.log(`Trang ${i}: ${r ? r.method : "lỗi"} - ${Math.round(dt)}ms`);
+		                await sleep(0);
+		            }
+		        } finally {
+		            // Luôn trả lại trạng thái hiển thị ban đầu của các trang
+		            pages.forEach((p, i) => (p.style.display = savedDisplay[i]));
+		        }
+		        console.log("Cách render mỗi trang:", methodCount, "| Tổng:", Math.round(performance.now() - tStart), "ms");
 		
 		        // Ghép PDF theo đúng thứ tự trang
 		        let added = 0;
@@ -585,10 +603,131 @@
 		
 		        downloadPdf(pdf);
 		    });
+		
+		    if (needPrint) return exportPdfPrint();
+		}
+		
+		// ===== Chế độ 2: in bằng trình duyệt (nhanh với mọi loại trang) =====
+		// Dựng iframe ẩn chỉ chứa các trang (đã co vừa A4) rồi gọi print().
+		// Người dùng chọn "Save as PDF" trong hộp thoại in.
+		function exportPdfPrint() {
+		    return runExport(0, async () => {
+		        const pages = getVisiblePages();
+		        if (pages.length === 0) throw new Error("Không tìm thấy trang nào để xuất");
+		
+		        const landscape = /^l/i.test(String(khogiay));
+		        const A4W = landscape ? 1122.5 : 793.7; // px ở 96dpi
+		        const A4H = landscape ? 793.7 : 1122.5;
+		        const mmW = landscape ? 297 : 210;
+		        const mmH = landscape ? 210 : 297;
+		
+		        // Xóa iframe của lần trước (nếu có), tạo iframe mới
+		        if (window.__printFrame) window.__printFrame.remove();
+		        const iframe = document.createElement("iframe");
+		        iframe.style.cssText = `position:fixed;left:-10000px;top:0;width:${A4W}px;height:${A4H}px;border:0;`;
+		        document.body.appendChild(iframe);
+		        window.__printFrame = iframe;
+		
+		        const doc = iframe.contentDocument;
+		        doc.open();
+		        doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><base href="${document.baseURI}"></head><body></body></html>`);
+		        doc.close();
+		
+		        // Sao chép CSS của trang (đọc từ CSSOM để lấy cả style được thêm bằng JS)
+		        for (const sheet of Array.from(document.styleSheets)) {
+		            try {
+		                const css = Array.from(sheet.cssRules).map((r) => r.cssText).join("\n");
+		                const st = doc.createElement("style");
+		                st.textContent = css;
+		                doc.head.appendChild(st);
+		            } catch (e) {
+		                // Stylesheet khác nguồn không đọc được rule -> nạp lại bằng link
+		                if (sheet.href) {
+		                    const l = doc.createElement("link");
+		                    l.rel = "stylesheet";
+		                    l.href = sheet.href;
+		                    doc.head.appendChild(l);
+		                }
+		            }
+		        }
+		
+		        // CSS dành cho bản in (đặt sau cùng để ghi đè)
+		        const printStyle = doc.createElement("style");
+		        printStyle.textContent = `
+		            @page { size: A4 ${landscape ? "landscape" : "portrait"}; margin: 0; }
+		            html, body { margin: 0; padding: 0; background: #fff; }
+		            * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+		            .pp { width: ${mmW}mm; height: ${mmH - 0.5}mm; overflow: hidden; display: flex;
+		                  align-items: center; justify-content: center;
+		                  break-after: page; page-break-after: always; }
+		            .pp:last-child { break-after: auto; page-break-after: auto; }
+		        `;
+		        doc.head.appendChild(printStyle);
+		
+		        // Dựng các trang: mỗi trang co vừa A4 (zoom) và căn giữa
+		        const container = $("page-container");
+		        const wrap = doc.createElement("div");
+		        wrap.id = "page-container";
+		        wrap.className = container.className;
+		        doc.body.appendChild(wrap);
+		
+		        for (const page of pages) {
+		            const W = page.offsetWidth || 1;
+		            const H = page.offsetHeight || 1;
+		            const z = Math.min(A4W / W, A4H / H);
+		
+		            const clone = page.cloneNode(true);
+		
+		            // canvas khi clone sẽ bị rỗng -> chép lại nội dung
+		            const srcCv = page.querySelectorAll("canvas");
+		            const dstCv = clone.querySelectorAll("canvas");
+		            srcCv.forEach((c, k) => {
+		                const d = dstCv[k];
+		                if (!d || c.width === 0 || c.height === 0) return;
+		                d.width = c.width;
+		                d.height = c.height;
+		                d.getContext("2d").drawImage(c, 0, 0);
+		            });
+		
+		            Object.assign(clone.style, {
+		                position: "relative",
+		                left: "auto", top: "auto", right: "auto", bottom: "auto",
+		                transform: "none",
+		                margin: "0",
+		                flex: "none",
+		                width: W + "px",
+		                height: H + "px",
+		                zoom: String(z),
+		            });
+		
+		            const sheetDiv = doc.createElement("div");
+		            sheetDiv.className = "pp";
+		            sheetDiv.appendChild(clone);
+		            wrap.appendChild(sheetDiv);
+		        }
+		
+		        // Chờ ảnh và font tải xong
+		        const imgs = Array.from(doc.images);
+		        imgs.forEach((img) => (img.loading = "eager"));
+		        await Promise.all(imgs.map((img) =>
+		            img.complete ? null : new Promise((res) => {
+		                img.onload = img.onerror = res;
+		                setTimeout(res, 8000);
+		            })
+		        ));
+		        if (doc.fonts && doc.fonts.ready) await Promise.race([doc.fonts.ready, sleep(3000)]);
+		        await sleep(150);
+		
+		        // Mở hộp thoại in (Chrome sẽ chờ ở đây cho đến khi đóng hộp thoại)
+		        iframe.contentWindow.focus();
+		        iframe.contentWindow.print();
+		    });
 		}
 		
 		// ===== Gắn sự kiện =====
 		$("btnExport").onclick = function () {
-		    // 0 = chất lượng cao (chậm), 1 = bình thường (nhanh)
-		    return $("slOption").selectedIndex === 1 ? exportPdfFast() : exportPdfHighQuality();
+		    const mode = $("slOption").selectedIndex;
+		    if (mode === 2) return exportPdfPrint();      // In nhanh bằng trình duyệt
+		    if (mode === 1) return exportPdfFast();       // Bình thường (nhanh)
+		    return exportPdfHighQuality();                // Chất lượng cao
 		};
