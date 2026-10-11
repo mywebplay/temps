@@ -131,16 +131,14 @@
       <div class="code-label">Lấy nội dung body của tài liệu</div>
   
       <div class="code-box">
-        <button class="copy-btn" onclick="copyTextExec(`var bvl_result = document.getElementById(&quot;page-container-wrapper&quot;).outerHTML;
-console.log(bvl_result);`, this)" title="Copy">
+        <button class="copy-btn" onclick="copyTextExec(`console.log(document.getElementById(&quot;page-container-wrapper&quot;).outerHTML);`, this)" title="Copy">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
               <path d="M216,32H88A16,16,0,0,0,72,48V72H40A16,16,0,0,0,24,88V216a16,16,0,0,0,16,16H168a16,16,0,0,0,16-16V192h32a16,16,0,0,0,16-16V48A16,16,0,0,0,216,32ZM160,208H48V96H160Zm48-40H184V88a16,16,0,0,0-16-16H96V48H208Z"/>
           </svg>
       </button>
   
           <code>
-  var bvl_result = document.getElementById("page-container-wrapper").outerHTML;
-  console.log(bvl_result);
+  console.log(document.getElementById("page-container-wrapper").outerHTML);
           </code>
       </div>
   </div>
