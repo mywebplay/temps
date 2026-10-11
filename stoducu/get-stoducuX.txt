@@ -184,6 +184,11 @@
         }
     </style>
 
+
+	<select id="slOption" style="height:32px;padding:0 8px;font-size:13px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;">
+	    <option value="0">Chất lượng cao (có thể xử lý hơi lâu)</option>
+	    <option value="1">Bình thường (xử lý nhanh, chất lượng hơi kém)</option>
+	</select>
     <button id="btnExport">Download PDF</button>
     <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
