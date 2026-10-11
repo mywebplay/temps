@@ -189,7 +189,7 @@
 	    <option value="0">Chế độ 1</option>
 	    <option value="1">Chế độ 2</option>
  		<option value="3">Chế độ 3</option>
-		<option value="2" style="background-color:grey;" disabled>(hiện chưa thể sử dụng)</option>
+		<option value="2" style="background-color:grey;" disabled>Chế độ 4 (hiện chưa thể sử dụng)</option>
 	</select>
     <button id="btnExport">Download PDF</button>
     <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
