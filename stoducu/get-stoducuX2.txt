@@ -231,131 +231,148 @@
             document.documentElement.style.overflow = "";
         };
 
+		// ===== Helpers =====
+		const $ = (id) => document.getElementById(id);
+		const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+		
+		function getFileName() {
+		    const now = new Date();
+		    const pad = (n) => n.toString().padStart(2, "0");
+		    return `TaiLieuStudocu_${pad(now.getDate())}${pad(now.getMonth() + 1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
+		}
+		
+		// ===== Cấu hình 2 chế độ =====
+		const PDF_PRESETS = {
+		    // Chất lượng cao: giống code gốc
+		    hq: {
+		        scale: window.devicePixelRatio * 2,
+		        quality: 1.0,
+		        preDelay: 3000,      // chờ trước khi bắt đầu
+		        holdDelay: 3000,     // giữ 100% trước khi tải
+		        compression: "NONE", // jsPDF không nén thêm
+		    },
+		    // Nhanh: ảnh nhỏ hơn, nén mạnh hơn, bỏ các đoạn chờ
+		    fast: {
+		        scale: 1,
+		        quality: 0.6,
+		        preDelay: 300,
+		        holdDelay: 300,
+		        compression: "FAST",
+		    },
+		};
+		
+		// ===== Hàm lõi dùng chung =====
+		async function exportPdf(opt) {
+		    const btnExport = $("btnExport");
+		    const btnExtend = $("btnExtend");
+		    const khoin = $("khoin");
+		
+		    // Chuẩn bị giao diện
+		    btnExport.innerText = "Chờ một lát...";
+		    btnExport.disabled = true;
+		    await sleep(opt.preDelay);
+		
+		    $("overlay2").style.display = "flex";
+		    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+		
+		    const originalBodyOverflow = document.body.style.overflow;
+		    const originalHtmlOverflow = document.documentElement.style.overflow;
+		    document.body.style.overflow = "hidden";
+		    document.documentElement.style.overflow = "hidden";
+		    btnExport.style.display = "none";
+		    btnExtend.style.display = "none";
+		    khoin.style.display = "none";
+		
+		    try {
+		        const { jsPDF } = window.jspdf;
+		        const pdf = new jsPDF(khogiay, "mm", "a4");
+		        const pageWidth = pdf.internal.pageSize.getWidth();
+		        const pageHeight = pdf.internal.pageSize.getHeight();
+		        const pageRatio = pageWidth / pageHeight;
+		
+		        const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
+		        const visibleDivs = divs.filter((div) => window.getComputedStyle(div).display !== "none");
+		        const totalDivs = visibleDivs.length;
+		        let processed = 0;
+		
+		        for (let i = 0; i < totalDivs; i++) {
+		            const div = visibleDivs[i];
+		
+		            const canvas = await html2canvas(div, {
+		                scale: opt.scale,
+		                useCORS: true,
+		                backgroundColor: "#ffffff",
+		                logging: false,
+		                windowWidth: div.scrollWidth,
+		                windowHeight: div.scrollHeight,
+		            });
+		
+		            $("overlay").style.display = "flex";
+		            $("overlay2").style.display = "none";
+		
+		            if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
+		
+		            const imgData = canvas.toDataURL("image/jpeg", opt.quality);
+		
+		            // "COVER": phủ kín trang, căn giữa
+		            const imgRatio = canvas.width / canvas.height;
+		            let imgWidth, imgHeight;
+		            if (imgRatio > pageRatio) {
+		                imgHeight = pageHeight;
+		                imgWidth = pageHeight * imgRatio;
+		            } else {
+		                imgWidth = pageWidth;
+		                imgHeight = pageWidth / imgRatio;
+		            }
+		            const x = (pageWidth - imgWidth) / 2;
+		            const y = (pageHeight - imgHeight) / 2;
+		
+		            if (processed > 0) pdf.addPage();
+		            pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight, undefined, opt.compression);
+		
+		            processed++;
+		            updateProgress(Math.round((processed / totalDivs) * 100));
+		
+		            // Nhường luồng cho trình duyệt cập nhật UI, giảm cảm giác bị đơ
+		            await sleep(0);
+		        }
+		
+		        await sleep(opt.holdDelay);
+		
+		        const pdfBlob = pdf.output("blob");
+		        const pdfUrl = URL.createObjectURL(pdfBlob);
+		        const a = document.createElement("a");
+		        a.href = pdfUrl;
+		        a.download = getFileName();
+		        a.click();
+		        window.open(pdfUrl, "_blank");
+		        // setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
+		    } catch (err) {
+		        console.error("❌ Lỗi khi tạo PDF", err);
+		        alert("Có lỗi xảy ra khi tạo PDF!");
+		    } finally {
+		        // Luôn khôi phục giao diện, kể cả khi lỗi
+		        hideOverlay();
+		        document.body.style.overflow = originalBodyOverflow;
+		        document.documentElement.style.overflow = originalHtmlOverflow;
+		        btnExport.style.display = "flex";
+		        btnExtend.style.display = "flex";
+		        khoin.style.display = "flex";
+		        btnExport.innerText = "Download PDF";
+		        btnExport.disabled = false;
+		    }
+		}
+		
+		// ===== 2 hàm công khai =====
+		function exportPdfHighQuality() {
+		    return exportPdf(PDF_PRESETS.hq);
+		}
+		
+		function exportPdfFast() {
+		    return exportPdf(PDF_PRESETS.fast);
+		}
+
         document.getElementById("btnExport").onclick = async function () {
-			document.getElementById("btnExport").innerText = "Chờ một lát...";
-			document.getElementById("btnExport").disabled = true;
-			await new Promise(resolve => setTimeout(resolve, 3000));
-			
-            document.getElementById("overlay2").style.display = "flex";
-            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-            const originalBodyOverflow = document.body.style.overflow;
-            const originalHtmlOverflow = document.documentElement.style.overflow;
-            document.body.style.overflow = "hidden";
-            document.documentElement.style.overflow = "hidden";
-            document.getElementById("btnExport").style.display = "none";
-            document.getElementById("btnExtend").style.display = "none";
-            document.getElementById("khoin").style.display = "none";
-
-            try {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF(khogiay, "mm", "a4");
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-
-                const divs = Array.from(document.querySelectorAll("#page-container > div[data-page-index]"));
-                const visibleDivs = divs.filter((div) => window.getComputedStyle(div).display !== "none");
-                const totalDivs = visibleDivs.length;
-                let processed = 0;
-
-                for (let i = 0; i < visibleDivs.length; i++) {
-                    const div = visibleDivs[i];
-
-                    try {
-                        const canvas = await html2canvas(div, {
-                            scale: window.devicePixelRatio * 2,
-                            useCORS: true,
-                            backgroundColor: "#ffffff",
-                            logging: false,
-                            windowWidth: div.scrollWidth,
-                            windowHeight: div.scrollHeight,
-                        });
-						
-						document.getElementById("overlay").style.display = "flex";
-						document.getElementById("overlay2").style.display = "none";
-
-                        if (!canvas || canvas.width === 0 || canvas.height === 0) continue;
-
-                        const imgData = canvas.toDataURL("image/jpeg", 1.0);
-
-                        // Fit nội dung phủ kín toàn bộ trang PDF (full page, không viền trắng)
-                        const pageWidth = pdf.internal.pageSize.getWidth();
-                        const pageHeight = pdf.internal.pageSize.getHeight();
-
-                        // Tính tỉ lệ giữa ảnh và trang PDF
-                        const imgRatio = canvas.width / canvas.height;
-                        const pageRatio = pageWidth / pageHeight;
-
-                        let imgWidth, imgHeight;
-
-                        // "COVER" - phóng để lấp kín toàn bộ trang (có thể cắt nhẹ mép)
-                        if (imgRatio > pageRatio) {
-                            // ảnh rộng hơn => scale theo chiều cao, sẽ bị crop ngang một chút
-                            imgHeight = pageHeight;
-                            imgWidth = pageHeight * imgRatio;
-                        } else {
-                            // ảnh cao hơn => scale theo chiều rộng, sẽ bị crop dọc một chút
-                            imgWidth = pageWidth;
-                            imgHeight = pageWidth / imgRatio;
-                        }
-
-                        // Căn giữa để hình phủ kín mà không bị lệch
-                        const x = (pageWidth - imgWidth) / 2;
-                        const y = (pageHeight - imgHeight) / 2;
-
-                        // Thêm trang PDF
-                        if (i > 0) pdf.addPage();
-                        pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight);
-
-                        processed++;
-                        const percent = Math.round((processed / totalDivs) * 100);
-                        updateProgress(percent);
-                    } catch (err) {
-                        console.error("❌ Lỗi khi render div " + i, err);
-                        alert("Có lỗi xảy ra khi tạo PDF!");
-                        return;
-                    }
-                }
-
-                // Giữ progress 100% thêm 3s
-                setTimeout(() => {
-                    const pdfBlob = pdf.output("blob");
-                    const pdfUrl = URL.createObjectURL(pdfBlob);
-                    const a = document.createElement("a");
-                    a.href = pdfUrl;
-                    a.download = getFileName();
-                    a.click();
-                    window.open(pdfUrl, "_blank"); // mở tab mới
-
-                    setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
-
-                    hideOverlay();
-                    document.body.style.overflow = originalBodyOverflow;
-                    document.documentElement.style.overflow = originalHtmlOverflow;
-                    document.getElementById("btnExport").style.display = "flex";
-                    document.getElementById("btnExtend").style.display = "flex";
-                    document.getElementById("khoin").style.display = "flex";
-					document.getElementById("btnExport").innerText = "Download PDF";
-					document.getElementById("btnExport").disabled = false;
-                }, 3000);
-            } catch (err) {
-                console.error("❌ Lỗi khi tạo PDF", err);
-                alert("Có lỗi xảy ra khi tạo PDF!");
-                hideOverlay();
-                document.body.style.overflow = originalBodyOverflow;
-                document.documentElement.style.overflow = originalHtmlOverflow;
-                document.getElementById("btnExport").style.display = "flex";
-                document.getElementById("btnExtend").style.display = "flex";
-                document.getElementById("khoin").style.display = "flex";
-				document.getElementById("btnExport").innerText = "Download PDF";
-				document.getElementById("btnExport").disabled = false;
-            }
+			var isFast = $("slOption").selectedIndex === 1; // 0 = chậm (HQ), 1 = nhanh
+  		 	return exportPdf(isFast ? PDF_PRESETS.fast : PDF_PRESETS.hq);
         };
-
-        // Hàm tạo tên file (nếu muốn download trực tiếp thay vì open tab)
-        function getFileName() {
-            const now = new Date();
-            const pad = (n) => n.toString().padStart(2, "0");
-            return `TaiLieuStudocu_${pad(now.getDate())}${pad(now.getMonth() + 1)}${now.getFullYear()}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.pdf`;
-        }
-   
