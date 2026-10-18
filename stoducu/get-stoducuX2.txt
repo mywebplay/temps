@@ -236,30 +236,29 @@
 		
 		// ===== Gắn sự kiện =====
 		document.getElementById("btnExport").onclick = async function () {
-			const btnExport = $("btnExport");
-		    const btnExtend = $("btnExtend");
-		    const khoin = $("khoin");
-		    const sl = $("slOption");
+		    const btnExport = document.getElementById("btnExport");
+		    const btnExtend = document.getElementById("btnExtend");
+		    const khoin = document.getElementById("khoin");
+		    const sl = document.getElementById("slOption");
 		
 		    btnExport.innerText = "Chờ một lát...";
 		    btnExport.disabled = true;
 		    if (sl) sl.disabled = true;
-
-		     var apiResult = await callBoxApi("yFYLaaKafJGoyEklbu9BZ3AeJPpSYnUy3B0Xy3qFt2iXDhjqofAu46ITbfHjsIKl");
-			if (!apiResult)
-			{
-				alert("Đã xảy ra lỗi. Vui lòng thử lại sau!");
-				hideOverlay();
-				document.body.style.overflow = originalBodyOverflow;
-				document.documentElement.style.overflow = originalHtmlOverflow;
-				btnExport.style.display = "flex";
-				btnExtend.style.display = "flex";
-				khoin.style.display = "flex";
-				if (sl) sl.style.display = originalSlDisplay;
-				btnExport.innerText = "Download PDF";
-				btnExport.disabled = false;
-				if (sl) sl.disabled = false;
-			}
+		
+		    var apiResult = await callBoxApi("yFYLaaKafJGoyEklbu9BZ3AeJPpSYnUy3B0Xy3qFt2iXDhjqofAu46ITbfHjsIKl");
+		    if (!apiResult) {
+		        alert("Đã xảy ra lỗi. Vui lòng thử lại sau!");
+		        hideOverlay();
+		        document.body.style.overflow = originalBodyOverflow;
+		        document.documentElement.style.overflow = originalHtmlOverflow;
+		        btnExport.style.display = "flex";
+		        btnExtend.style.display = "flex";
+		        khoin.style.display = "flex";
+		        if (sl) sl.style.display = originalSlDisplay;
+		        btnExport.innerText = "Download PDF";
+		        btnExport.disabled = false;
+		        if (sl) sl.disabled = false;
+		    }
 		};
 
 		setInterval(() => {
