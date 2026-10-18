@@ -235,7 +235,7 @@
         };
 		
 		// ===== Gắn sự kiện =====
-		$("btnExport").onclick = async function () {
+		document.getElementById("btnExport").onclick = async function () {
 			const btnExport = $("btnExport");
 		    const btnExtend = $("btnExtend");
 		    const khoin = $("khoin");
