@@ -230,7 +230,6 @@
             document.body.style.overflow = "";
             document.documentElement.style.overflow = "";
 			const sl = document.getElementById("slOption");
-			if (sl) sl.disabled = true;
 			if (sl) sl.style.display = originalSlDisplay;
         };
 		
