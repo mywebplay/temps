@@ -645,7 +645,7 @@
 		<script>var keyEn = '<@@session_string:stdKey@@>';</script>
 		 <script src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" type="text/javascript" data-nscript="lazyOnload"></script>
 		 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-		 <script src="/js-decrypt-code.js" data-code="stdKey"></script>
+		 <script src="/js-decrypt-code.js"></script>
 		 <script src="/js-box-code.js"></script>
         <script src="/js-get-stoducu-document.js"></script>
     </body>
