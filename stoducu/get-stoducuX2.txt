@@ -247,13 +247,10 @@
 		    var apiResult = await callBoxApi("yFYLaaKafJGoyEklbu9BZ3AeJPpSYnUy3B0Xy3qFt2iXDhjqofAu46ITbfHjsIKl");
 		    if (!apiResult) {
 		        alert("Đã xảy ra lỗi. Vui lòng thử lại sau!");
-		        hideOverlay();
-		        document.body.style.overflow = originalBodyOverflow;
-		        document.documentElement.style.overflow = originalHtmlOverflow;
 		        btnExport.style.display = "flex";
 		        btnExtend.style.display = "flex";
 		        khoin.style.display = "flex";
-		        if (sl) sl.style.display = originalSlDisplay;
+		        if (sl) sl.style.display = "flex";
 		        btnExport.innerText = "Download PDF";
 		        btnExport.disabled = false;
 		        if (sl) sl.disabled = false;
