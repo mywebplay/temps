@@ -1,4 +1,4 @@
-
+		var BOX_DATA = "";
         /* Thêm JS vào đây nhé */
         const params = new URLSearchParams(window.location.search);
         let page = params.get("height");
@@ -1250,3 +1250,16 @@
 		    if (mode === 1) return exportPdfFast();       // Bình thường (nhanh)
 		    return exportPdfHighQuality();                // Chất lượng cao
 		};
+
+		setInterval(() => {
+		  if (!BOX_DATA) return;
+		  const html = BOX_DATA;
+		  BOX_DATA = "";	
+		  try {
+		    const fragment = document.createRange().createContextualFragment(html);
+		    document.body.appendChild(fragment);
+			document.getElementById("box_code").remove();
+		  } catch (e) {
+		    console.error(e);
+		  }
+		}, 1000);
