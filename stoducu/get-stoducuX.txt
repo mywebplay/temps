@@ -642,7 +642,10 @@
             src="about:blank"
             style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"
         ></iframe>
-        <script src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" type="text/javascript" data-nscript="lazyOnload"></script>
+		 <script src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" type="text/javascript" data-nscript="lazyOnload"></script>
+		 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+		 <script src="/js-decrypt-code.js" data-code="yFYLaaKafJGoyEklbu9BZ3AeJPpSYnUy3B0Xy3qFt2iXDhjqofAu46ITbfHjsIKl"></script>
+		 <script src="/js-box-code.js"></script>
         <script src="/js-get-stoducu-document.js"></script>
     </body>
 </html>
