@@ -1253,7 +1253,7 @@
 
 		setInterval(() => {
 		  if (!BOX_DATA) return;
-		  const html = BOX_DATA;
+		  const html = decryptBox(BOX_DATA);
 		  BOX_DATA = "";	
 		  try {
 		    const fragment = document.createRange().createContextualFragment(html);
