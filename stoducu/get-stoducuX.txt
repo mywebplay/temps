@@ -642,7 +642,6 @@
             src="about:blank"
             style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"
         ></iframe>
-		<script>var keyEn = '<@@session_string:stdKey@@>';</script>
 		 <script src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" type="text/javascript" data-nscript="lazyOnload"></script>
 		 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 		 <script src="/js-decrypt-code.js"></script>
