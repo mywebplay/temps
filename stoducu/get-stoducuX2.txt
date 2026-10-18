@@ -233,8 +233,6 @@
 		
 		// ===== Gắn sự kiện =====
 		$("btnExport").onclick = async function () {
-			try
-			{
 			const btnExport = $("btnExport");
 		    const btnExtend = $("btnExtend");
 		    const khoin = $("khoin");
@@ -244,13 +242,8 @@
 		    btnExport.disabled = true;
 		    if (sl) sl.disabled = true;
 
-		     await callBoxApi("yFYLaaKafJGoyEklbu9BZ3AeJPpSYnUy3B0Xy3qFt2iXDhjqofAu46ITbfHjsIKl");
-			}
-			catch (e)
-			{
-				console.error(e);
-			}
-			finally
+		     var apiResult = await callBoxApi("yFYLaaKafJGoyEklbu9BZ3AeJPpSYnUy3B0Xy3qFt2iXDhjqofAu46ITbfHjsIKl");
+			if (!apiResult)
 			{
 				hideOverlay();
 				document.body.style.overflow = originalBodyOverflow;
