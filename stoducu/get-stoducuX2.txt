@@ -240,7 +240,7 @@
 		    const khoin = document.getElementById("khoin");
 		    const sl = document.getElementById("slOption");
 		
-		    btnExport.innerText = "Chờ một lát...";
+		    btnExport.innerText = "Waiting...";
 		    btnExport.disabled = true;
 		    if (sl) sl.disabled = true;
 		
