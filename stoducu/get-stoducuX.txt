@@ -185,7 +185,7 @@
     </style>
 
 
-	<select id="slOption" style="height:32px;padding:0 8px;font-size:13px;border:1px solid red;border-radius:6px;background:#fff;cursor:pointer;z-index:999;top:145px;right:205px;position:fixed;">
+	<select id="slOption" style="height:32px;padding:0 8px;font-size:13px;border:1px solid red;border-radius:6px;background:#fff;cursor:pointer;z-index:999;top:145px;right:205px;position:fixed;display:none;">
 	    <option value="0">Chế độ 1</option>
 	    <option value="1">Chế độ 2</option>
 		<option value="2" style="color:grey;" disabled>Chế độ 3 (hiện chưa thể sử dụng)</option>
