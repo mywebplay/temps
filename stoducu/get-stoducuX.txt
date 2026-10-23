@@ -139,6 +139,34 @@
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
 
+        #btnModal {
+            position: fixed;
+            top: 150px;
+            right: 180px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            z-index: 9999;
+        }
+
+        #btnModal:hover {
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        #btnModal:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
         #khoin {
             position: fixed;
             top: 15px;
@@ -194,6 +222,7 @@
     <button id="btnExport">Download PDF</button>
     <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
+	<button id="btnModal" onclick="mwpUrlParamShowModal()">Thay đổi hiển thị</button>
     <!-- Modal HTML -->
     <div id="pdfModal" class="pdf-modal">
         <div class="pdf-modal-content">
@@ -213,6 +242,15 @@
             </div>
         </div>
     </div>
+<div id="mwpUrlParamOverlay">
+  <div id="mwpUrlParamModal">
+    <button type="button" id="mwpUrlParamClose" title="Close">&#10005;</button>
+    <input type="number" id="mwpUrlParamHeight" class="mwpUrlParam-input" placeholder="Height">
+    <input type="number" id="mwpUrlParamFrom" class="mwpUrlParam-input" placeholder="From">
+    <input type="number" id="mwpUrlParamTo" class="mwpUrlParam-input" placeholder="To">
+    <button type="button" id="mwpUrlParamOk">OK</button>
+  </div>
+</div>
     <!-- CSS -->
     <style>
         .pdf-modal {
@@ -263,7 +301,62 @@
 			color: black;
         }
     </style>
-
+<style>
+  #mwpUrlParamOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999999;
+    align-items: center;
+    justify-content: center;
+  }
+  #mwpUrlParamOverlay.mwpUrlParam-show {
+    display: flex;
+  }
+  #mwpUrlParamModal {
+    position: relative;
+    background: #fff;
+    padding: 32px 24px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  #mwpUrlParamClose {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: #333;
+    color: #fff;
+    font-size: 16px;
+    line-height: 28px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+  #mwpUrlParamClose:hover {
+    background: #d33;
+  }
+  #mwpUrlParamModal input.mwpUrlParam-input {
+    width: 90px;
+    padding: 6px 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  #mwpUrlParamOk {
+    padding: 6px 0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+</style>
     <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto; width: 100%;">
         <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height: 1px; left: -9999px; position: absolute; width: 1px;"></div>
         <div id="main-wrapper" style="width: 2002px;">
@@ -625,6 +718,37 @@
                 window.history.scrollRestoration = "manual";
             }
         </script>
+		<script>
+		  // Hàm show modal: gọi mwpUrlParamShowModal() ở nơi bạn cần
+		  function mwpUrlParamShowModal() {
+		    var overlay = document.getElementById('mwpUrlParamOverlay');
+		    var params = new URLSearchParams(window.location.search);
+		
+		    // Điền sẵn giá trị hiện tại từ URL vào 3 textbox
+		    document.getElementById('mwpUrlParamHeight').value = params.get('height') || '';
+		    document.getElementById('mwpUrlParamFrom').value = params.get('from') || '';
+		    document.getElementById('mwpUrlParamTo').value = params.get('to') || '';
+		
+		    overlay.classList.add('mwpUrlParam-show');
+		    document.body.style.overflow = 'hidden'; // khoá cuộn body phía sau
+		  }
+		
+		  function mwpUrlParamCloseModal() {
+		    document.getElementById('mwpUrlParamOverlay').classList.remove('mwpUrlParam-show');
+		    document.body.style.overflow = '';
+		  }
+		
+		  function mwpUrlParamApply() {
+		    var params = new URLSearchParams(window.location.search);
+		    params.set('height', document.getElementById('mwpUrlParamHeight').value);
+		    params.set('from', document.getElementById('mwpUrlParamFrom').value);
+		    params.set('to', document.getElementById('mwpUrlParamTo').value);
+		    window.location.href = window.location.pathname + '?' + params.toString();
+		  }
+		
+		  document.getElementById('mwpUrlParamClose').addEventListener('click', mwpUrlParamCloseModal);
+		  document.getElementById('mwpUrlParamOk').addEventListener('click', mwpUrlParamApply);
+		</script>
         <next-route-announcer>
             <p
                 aria-live="assertive"
