@@ -221,6 +221,7 @@
             document.getElementById("btnExtend").style.display = "none";
 			document.getElementById("btnModal").style.display = "none";
             document.getElementById("khoin").style.display = "none";
+			document.getElementById("btnReload").style.display = "flex";
             document.getElementById("page-container").style.marginLeft = "300px";
             document.getElementById("page-container-wrapper").style.height = "0%";
             document.head.innerHTML = "";
