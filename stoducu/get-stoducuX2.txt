@@ -219,6 +219,7 @@
             window.scrollTo({ top: 0, left: 0, behavior: "instant" });
             document.getElementById("btnExport").style.display = "none";
             document.getElementById("btnExtend").style.display = "none";
+			document.getElementById("btnModal").style.display = "none";
             document.getElementById("khoin").style.display = "none";
             document.getElementById("page-container").style.marginLeft = "300px";
             document.getElementById("page-container-wrapper").style.height = "0%";
@@ -237,6 +238,7 @@
 		document.getElementById("btnExport").onclick = async function () {
 		    const btnExport = document.getElementById("btnExport");
 		    const btnExtend = document.getElementById("btnExtend");
+			const btnModal = document.getElementById("btnModal");
 		    const khoin = document.getElementById("khoin");
 		    const sl = document.getElementById("slOption");
 		
@@ -249,6 +251,7 @@
 		        alert("Đã xảy ra lỗi. Vui lòng thử lại sau!");
 		        btnExport.style.display = "flex";
 		        btnExtend.style.display = "flex";
+				btnModal.style.display = "flex";
 		        khoin.style.display = "flex";
 		        if (sl) sl.style.display = "flex";
 		        btnExport.innerText = "Download PDF";
