@@ -69,6 +69,36 @@
             min-height: 2000px; /* để test scroll */
         }
 
+		#btnReload {
+		  display: none;
+		  position: fixed;
+		  top: 10px;
+		  right: 10px;
+		  z-index: 9999;
+		  padding: 4px;
+		  border: none;
+		  background: transparent;
+		  color: #666;
+		  cursor: pointer;
+		  line-height: 0;
+		
+		  /* Không cho bôi đen / chọn */
+		  -webkit-user-select: none;
+		  user-select: none;
+		}
+		
+		#btnReload:hover {
+		  color: #000;
+		}
+		
+		#btnReload:hover svg {
+		  animation: spin 0.8s linear infinite;
+		}
+		
+		@keyframes spin {
+		  to { transform: rotate(360deg); }
+		}
+
         #btnExport {
             position: fixed;
             top: 15px;
@@ -223,6 +253,13 @@
     <button id="khoin" onclick="doikhogiay()"><b>Khổ giấy PDF: <span id="kho" style="color:blue">DỌC</span></b></button>
     <button id="btnExtend">Mở rộng (chỉ để copy text)</button>
 	<button id="btnModal" onclick="mwpUrlParamShowModal()">Thay đổi hiển thị</button>
+	<button id="btnReload" type="button" aria-label="Tải lại trang" title="Tải lại trang">
+	  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+	       stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+	    <path d="M21 12a9 9 0 1 1-3-6.7"/>
+	    <polyline points="21 3 21 9 15 9"/>
+	  </svg>
+	</button>
     <!-- Modal HTML -->
     <div id="pdfModal" class="pdf-modal">
         <div class="pdf-modal-content">
@@ -816,6 +853,10 @@
 		
 		  document.getElementById('mwpUrlParamClose').addEventListener('click', mwpUrlParamCloseModal);
 		  document.getElementById('mwpUrlParamOk').addEventListener('click', mwpUrlParamApply);
+
+		document.getElementById('btnReload').addEventListener('click', function () {
+		  location.reload();
+		});
 		</script>
         <next-route-announcer>
             <p
