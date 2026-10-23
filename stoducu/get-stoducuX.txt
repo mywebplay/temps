@@ -141,7 +141,7 @@
 
         #btnModal {
             position: fixed;
-            top: 150px;
+            top: 138px;
             right: 180px;
             padding: 12px 20px;
             background: linear-gradient(135deg, #4caf50, #2e7d32);
@@ -242,15 +242,28 @@
             </div>
         </div>
     </div>
-<div id="mwpUrlParamOverlay">
-  <div id="mwpUrlParamModal">
-    <button type="button" id="mwpUrlParamClose" title="Close">&#10005;</button>
-    <input type="number" id="mwpUrlParamHeight" class="mwpUrlParam-input" placeholder="Height">
-    <input type="number" id="mwpUrlParamFrom" class="mwpUrlParam-input" placeholder="From">
-    <input type="number" id="mwpUrlParamTo" class="mwpUrlParam-input" placeholder="To">
-    <button type="button" id="mwpUrlParamOk">OK</button>
-  </div>
-</div>
+	<div id="mwpUrlParamOverlay">
+	  <div id="mwpUrlParamModal">
+	    <button type="button" id="mwpUrlParamClose" title="Đóng">&#10005;</button>
+	
+	    <div class="mwpUrlParam-field">
+	      <label class="mwpUrlParam-label" for="mwpUrlParamHeight">Nhập height</label>
+	      <input type="number" id="mwpUrlParamHeight" class="mwpUrlParam-input" placeholder="Height">
+	    </div>
+	
+	    <div class="mwpUrlParam-field">
+	      <label class="mwpUrlParam-label" for="mwpUrlParamFrom">Nhập from</label>
+	      <input type="number" id="mwpUrlParamFrom" class="mwpUrlParam-input" placeholder="From">
+	    </div>
+	
+	    <div class="mwpUrlParam-field">
+	      <label class="mwpUrlParam-label" for="mwpUrlParamTo">Nhập to</label>
+	      <input type="number" id="mwpUrlParamTo" class="mwpUrlParam-input" placeholder="To">
+	    </div>
+	
+	    <button type="button" id="mwpUrlParamOk">OK</button>
+	  </div>
+	</div>
     <!-- CSS -->
     <style>
         .pdf-modal {
@@ -301,62 +314,124 @@
 			color: black;
         }
     </style>
-<style>
-  #mwpUrlParamOverlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 999999;
-    align-items: center;
-    justify-content: center;
-  }
-  #mwpUrlParamOverlay.mwpUrlParam-show {
-    display: flex;
-  }
-  #mwpUrlParamModal {
-    position: relative;
-    background: #fff;
-    padding: 32px 24px 20px;
-    border-radius: 8px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
-  }
-  #mwpUrlParamClose {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    background: #333;
-    color: #fff;
-    font-size: 16px;
-    line-height: 28px;
-    text-align: center;
-    padding: 0;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  }
-  #mwpUrlParamClose:hover {
-    background: #d33;
-  }
-  #mwpUrlParamModal input.mwpUrlParam-input {
-    width: 90px;
-    padding: 6px 8px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-  #mwpUrlParamOk {
-    padding: 6px 0;
-    font-size: 14px;
-    cursor: pointer;
-  }
-</style>
+	<style>
+	  #mwpUrlParamOverlay {
+	    display: none;
+	    position: fixed;
+	    inset: 0;
+	    background: rgba(15, 23, 42, 0.55);
+	    backdrop-filter: blur(3px);
+	    -webkit-backdrop-filter: blur(3px);
+	    z-index: 999999;
+	    align-items: center;
+	    justify-content: center;
+	    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+	  }
+	  #mwpUrlParamOverlay.mwpUrlParam-show {
+	    display: flex;
+	  }
+	
+	  #mwpUrlParamModal {
+	    position: relative;
+	    background: #ffffff;
+	    padding: 28px 28px 24px;
+	    border-radius: 14px;
+	    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.35);
+	    display: flex;
+	    flex-direction: column;
+	    gap: 14px;
+	    animation: mwpUrlParamPop 0.18s ease-out;
+	  }
+	  @keyframes mwpUrlParamPop {
+	    from { opacity: 0; transform: scale(0.92) translateY(8px); }
+	    to   { opacity: 1; transform: scale(1) translateY(0); }
+	  }
+	
+	  /* Nút X bo tròn góc phải trên */
+	  #mwpUrlParamClose {
+	    position: absolute;
+	    top: -14px;
+	    right: -14px;
+	    width: 32px;
+	    height: 32px;
+	    border-radius: 50%;
+	    border: 3px solid #ffffff;
+	    background: #ef4444;
+	    color: #ffffff;
+	    font-size: 14px;
+	    font-weight: bold;
+	    line-height: 1;
+	    padding: 0;
+	    cursor: pointer;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	    transition: background 0.15s, transform 0.15s;
+	  }
+	  #mwpUrlParamClose:hover {
+	    background: #dc2626;
+	    transform: rotate(90deg);
+	  }
+	
+	  .mwpUrlParam-field {
+	    display: flex;
+	    flex-direction: column;
+	    gap: 5px;
+	  }
+	  .mwpUrlParam-label {
+	    font-size: 13px;
+	    font-weight: 600;
+	    color: #334155;
+	  }
+	  .mwpUrlParam-input {
+	    width: 130px;
+	    padding: 9px 12px;
+	    font-size: 15px;
+	    color: #0f172a;
+	    background: #f8fafc;
+	    border: 1.5px solid #cbd5e1;
+	    border-radius: 8px;
+	    box-sizing: border-box;
+	    outline: none;
+	    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+	    -moz-appearance: textfield;
+	  }
+	  .mwpUrlParam-input::-webkit-outer-spin-button,
+	  .mwpUrlParam-input::-webkit-inner-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+	  }
+	  .mwpUrlParam-input::placeholder {
+	    color: #94a3b8;
+	  }
+	  .mwpUrlParam-input:focus {
+	    background: #ffffff;
+	    border-color: #3b82f6;
+	    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+	  }
+	
+	  #mwpUrlParamOk {
+	    margin-top: 4px;
+	    padding: 10px 0;
+	    font-size: 15px;
+	    font-weight: 600;
+	    color: #ffffff;
+	    background: linear-gradient(135deg, #3b82f6, #2563eb);
+	    border: none;
+	    border-radius: 8px;
+	    cursor: pointer;
+	    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+	    transition: transform 0.1s, box-shadow 0.15s, filter 0.15s;
+	  }
+	  #mwpUrlParamOk:hover {
+	    filter: brightness(1.08);
+	    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.45);
+	  }
+	  #mwpUrlParamOk:active {
+	    transform: translateY(1px);
+	  }
+	</style>
     <body class="scroll-direction-up" style="--current-alarm-bar-height: 0px; --top-bar-bottom: 72px; overflow: auto; width: 100%;">
         <div class="adsbox ad-box ad-block advert sponslink banner banner-ads block-adv amp-ad" id="adbox" style="height: 1px; left: -9999px; position: absolute; width: 1px;"></div>
         <div id="main-wrapper" style="width: 2002px;">
