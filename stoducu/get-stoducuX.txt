@@ -795,7 +795,6 @@
 		    var params = new URLSearchParams(window.location.search);
 		
 		    // Điền sẵn giá trị hiện tại từ URL vào 3 textbox
-		    document.getElementById('mwpUrlParamHeight').value = params.get('height') || '';
 		    document.getElementById('mwpUrlParamFrom').value = params.get('from') || '';
 		    document.getElementById('mwpUrlParamTo').value = params.get('to') || '';
 		
