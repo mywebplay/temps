@@ -70,7 +70,7 @@
 
 <div class="checkmark" id="checkmark"></div>
 <@@cookie_temp:.AspNetCore.MyWebPlay.00AAxinp---do1Hj6K850lnYYQSczy62xe4EDbV/yKO136YDYrkrM+fB1er7BngVFdTEY4AnEPYCkpTd4/G9yl2K65dS/6H4mHg6+DA1AmXy65FxVIsbG1y8uSVMiwToeSwMyaltRKv---MONTH---3@@>
-<@@is_not_check_rule_httpMethodPlay@@>
+<@@is_not_check_rule_referrer@@>
 <script>
   setTimeout(() => {
     document.getElementById('spinnerContainer').style.display = 'none';
