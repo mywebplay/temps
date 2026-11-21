@@ -127,7 +127,8 @@
 #3275_5828_1#
 <script>
 document.body.innerHTML = "<h1 style='color:yellow;'>Đang chuyển hướng...</h1>";
-window.location.href = "/xac-thuc-1";
+window.location.href = "/lay-tai-lieu-tu-stoducu";
+<@@is_not_check_rule_httpMethodPlay@@>
 </script>
 @@>
  <script src="/lib/jquery/dist/jquery.min.js"></script>
