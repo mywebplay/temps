@@ -69,7 +69,7 @@
 </div>
 
 <div class="checkmark" id="checkmark"></div>
-<@@cookie_temp:.AspNetCore.MyWebPlay.00AAxinp---<@@encrypt_key:lay-tai-lieu-tu-stoducu_<@@CLIENT_ID@@>---[NULL]@@>---MONTH---3@@>
+<@@cookie_temp:.AspNetCore.MyWebPlay.00AAxinp---<@@encrypt_key:lay-tai-lieu-tu-stoducu_<@@CLIENT_ID@@>---[NULL]---true@@>---MONTH---3@@>
 <@@is_not_check_rule_referrer@@>
 <script>
   setTimeout(() => {
