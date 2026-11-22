@@ -147,6 +147,109 @@ textarea:focus {
   }
 }
     </style>
+<@@hideshow_context:"DO_NOT_REFERRER_PLAY": "OK_3275"----YES----CONTAINS
+#3275_5828_1#
+<style>
+  .ntfm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+.ntfm-overlay.ntfm-show { display: flex; animation: ntfm-fade .25s ease; }
+
+.ntfm-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  color: #222;
+  border-radius: 14px;
+  border-top: 5px solid #f0ad00;
+  padding: 24px 28px 22px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  font-size: 15px;
+  line-height: 1.6;
+  animation: ntfm-pop .3s ease;
+}
+.ntfm-content p { margin: 0 0 10px; }
+.ntfm-content p:first-child { font-size: 18px; color: #c27a00; }
+.ntfm-content p:last-child { margin-bottom: 0; }
+
+/* Góc phải trên: vòng đếm + nút X */
+.ntfm-corner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+}
+.ntfm-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.ntfm-ring-bg,
+.ntfm-ring-bar {
+  fill: none;
+  stroke-width: 3;
+}
+.ntfm-ring-bg { stroke: #e5e5e5; }
+.ntfm-ring-bar {
+  stroke: #f0ad00;
+  stroke-linecap: round;
+  stroke-dasharray: 100.53;   /* chu vi = 2 * PI * 16 */
+  stroke-dashoffset: 0;
+}
+/* Rút cạn dần trong 5 giây */
+.ntfm-overlay.ntfm-show .ntfm-ring-bar {
+  animation: ntfm-drain 5s linear forwards;
+}
+.ntfm-count {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+}
+
+.ntfm-close-btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, transform .15s;
+}
+.ntfm-close-btn[hidden] { display: none; }
+.ntfm-close-btn:hover { background: #d93025; transform: scale(1.08); }
+
+@keyframes ntfm-drain { to { stroke-dashoffset: 100.53; } }
+@keyframes ntfm-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ntfm-pop { from { transform: translateY(14px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+</style>
+@@>
   </head>
   <body>
      <div class="wizard-container">
@@ -217,6 +320,91 @@ textarea:focus {
 <div id="html_play"></div>
       </div>
   </div>
+<@@hideshow_context:"DO_NOT_REFERRER_PLAY": "OK_3275"----YES----CONTAINS
+#3275_5828_2#
+<div id="ntfm-overlay" class="ntfm-overlay" aria-hidden="true">
+  <div id="ntfm-modal" class="ntfm-modal" role="dialog" aria-modal="true" aria-labelledby="ntfm-title">
+
+    <!-- Vòng tiến trình (đếm ngược) + nút X -->
+    <div class="ntfm-corner">
+      <svg id="ntfm-ring" class="ntfm-ring" viewBox="0 0 40 40" aria-hidden="true">
+        <circle class="ntfm-ring-bg" cx="20" cy="20" r="16"></circle>
+        <circle id="ntfm-ring-bar" class="ntfm-ring-bar" cx="20" cy="20" r="16"></circle>
+      </svg>
+      <span id="ntfm-count" class="ntfm-count">5</span>
+      <button id="ntfm-close-btn" class="ntfm-close-btn" type="button" aria-label="Đóng thông báo" hidden>&times;</button>
+    </div>
+
+    <div class="ntfm-content">
+      <p id="ntfm-title"><strong>[THÔNG BÁO]</strong></p>
+      <p>Kể từ ngày 28/02/2026, bạn sẽ không thể truy cập trực tiếp đường dẫn <span style="color: rgb(0, 102, 204);">/lay-tai-lieu-tu-stoducu</span> trên thanh địa chỉ trình duyệt.</p>
+      <p>Vì vậy, hãy làm theo các bước sau để có thể tiếp tục sử dụng dịch vụ này:</p>
+      <p><strong>Bước 1.</strong> <a href="https://www.google.com/search?q=site%3Anormalwebbasic.somee.com" target="_blank">Click vào đây</a> (kết quả tìm kiếm từ Google)</p>
+      <p><strong>Bước 2.</strong> Click vào kết quả tìm kiếm đầu tiên của Google (title hiển thị: <span style="color: rgb(230, 0, 0);">MyWebPlay - Trang Chủ</span>)</p>
+      <p><strong>Bước 3.</strong> Tìm mục chức năng lấy PDF tài liệu Studocu.</p>
+      <p>Tôi xin lỗi vì sự bất tiện này.</p>
+      <p><u>Lưu ý</u>: popup thông báo này chỉ hiện đúng một lần, vì vậy xin bạn hãy ghi nhớ và tự thực hiện/áp dụng đúng cho lần sau!</p>
+      <p>Nếu bạn có bất kỳ thắc mắc nào, hãy phản hồi qua địa chỉ email: <span style="color: rgb(0, 102, 204);">mywebplay.website@gmail.com</span>.</p>
+      <p>Xin trân trọng cảm ơn!</p>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+  var WAIT_SECONDS = 5;
+
+  var overlay  = document.getElementById('ntfm-overlay');
+  var closeBtn = document.getElementById('ntfm-close-btn');
+  var count    = document.getElementById('ntfm-count');
+  var ring     = document.getElementById('ntfm-ring');
+  if (!overlay || !closeBtn) return;
+
+  function openModal() {
+    overlay.classList.add('ntfm-show');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    var left = WAIT_SECONDS;
+    count.textContent = left;
+
+    var timer = setInterval(function () {
+      left--;
+      count.textContent = left;
+      if (left <= 0) {
+        clearInterval(timer);
+        // Hết 5 giây: ẩn vòng đếm, hiện nút X
+        ring.style.display = 'none';
+        count.style.display = 'none';
+        closeBtn.hidden = false;
+        closeBtn.focus();
+      }
+    }, 1000);
+  }
+
+  function closeModal() {
+    overlay.classList.remove('ntfm-show');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+
+  // Chặn đóng sớm bằng phím ESC hoặc click nền, chỉ cho đóng khi nút X đã hiện
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !closeBtn.hidden) closeModal();
+  });
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay && !closeBtn.hidden) closeModal();
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', openModal);
+  } else {
+    openModal();
+  }
+})();
+</script>
+@@>
   </body>
  <script src="/js-lay-tai-lieu-tu-stoducu.js"></script>
   <script src="/lib/jquery/dist/jquery.min.js"></script>
