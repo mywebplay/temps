@@ -71,6 +71,7 @@
 <div class="checkmark" id="checkmark"></div>
 <@@hideshow_context:"QueryString": "?path=lay-tai-lieu-tu-stoducu"----YES----CONTAINS
 #3275_5828_1#
+<!-- Xác thực sử dụng: lay-tai-lieu-tu-stoducu -->
 <@@cookie_temp:.AspNetCore.MyWebPlay.00AAxinp---<@@encrypt_key:lay-tai-lieu-tu-stoducu_<@@CLIENT_ID@@>---[NULL]---true@@>---MONTH---3@@>
 @@>
 <@@is_not_check_rule_referrer@@>
