@@ -810,6 +810,7 @@
         <div id="onetrust-consent-sdk" data-nosnippet="true">
             <div class="onetrust-pc-dark-filter ot-hide ot-fade-in"></div>
         </div>
+<!--
         <iframe height="0" width="0" style="display: none; visibility: hidden;" src="./???_files/saved_resource.html"></iframe>
         <iframe
             id="_hjSafeContext_40185474"
@@ -819,6 +820,7 @@
             src="./???_files/saved_resource(1).html"
             style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"
         ></iframe>
+-->
         <script src="./???_files/tp.widget.bootstrap.min.js.download" type="text/javascript" data-nscript="lazyOnload"></script>
         <script defer="" id="scroll-restoration" type="text/javascript" data-nscript="afterInteractive">
             if ("scrollRestoration" in window.history) {
