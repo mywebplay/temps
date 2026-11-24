@@ -182,15 +182,16 @@
             margin-bottom: 18px;
         }
 
+        /* MỚI (v2): height giảm còn 150px, resize: none */
         .modal-textarea {
             width: 100%;
-            height: 280px;
+            height: 150px;
             padding: 12px 15px;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 16px;
             line-height: 1.5;
-            resize: vertical;
+            resize: none;
             transition: all 0.3s ease;
         }
 
@@ -198,6 +199,19 @@
             border-color: #5563DE;
             box-shadow: 0 0 8px rgba(85, 99, 222, 0.3);
             outline: none;
+        }
+
+        /* MỚI (v2): bộ đếm ký tự */
+        .modal-counter {
+            text-align: right;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .modal-counter.full {
+            color: #e53935;
+            font-weight: bold;
         }
 
         .modal-actions {
@@ -258,8 +272,9 @@
                 padding: 10px 12px;
             }
 
+            /* MỚI (v2): giảm từ 200px xuống 130px */
             .modal-textarea {
-                height: 200px;
+                height: 130px;
             }
 
             .modal-actions .submit-btn {
@@ -336,7 +351,9 @@
                 Thông tin mà bạn cung cấp có thể sẽ giúp tôi quyết định thêm email của bạn vào danh sách phê duyệt trên hệ thống sớm nhất có thể. Còn nếu email của bạn đã từng được phê duyệt trước đó thì dù sao tôi cũng đã biết bạn là ai rồi.
             </div>
 
-            <textarea class="modal-textarea" id="txtBoSungModal" placeholder="Nhập thông tin của bạn tại đây..."></textarea>
+            <!-- MỚI (v2): maxlength 150 + bộ đếm -->
+            <textarea class="modal-textarea" id="txtBoSungModal" maxlength="150" placeholder="Nhập thông tin của bạn tại đây..."></textarea>
+            <div class="modal-counter" id="txtBoSungCounter">0/150</div>
 
             <div class="modal-actions">
                 <button type="button" class="submit-btn" id="btnBoSung">Bổ Sung</button>
@@ -352,12 +369,45 @@
   <!-- MỚI: script xử lý modal -->
   <script>
       (function () {
+          var MAX_LEN = 150;
           var modal = document.getElementById('modalBoSung');
           var txtModal = document.getElementById('txtBoSungModal');
           var txtHidden = document.getElementById('txtBoSung');
+          var counter = document.getElementById('txtBoSungCounter');
+
+          // MỚI (v2): cập nhật bộ đếm
+          function updateCounter() {
+              var len = txtModal.value.length;
+              counter.textContent = len + '/' + MAX_LEN;
+              if (len >= MAX_LEN) {
+                  counter.classList.add('full');
+              } else {
+                  counter.classList.remove('full');
+              }
+          }
+
+          // MỚI (v2): đổi mọi dấu xuống dòng thành khoảng trắng (khi paste)
+          function stripNewLines() {
+              if (/[\r\n]/.test(txtModal.value)) {
+                  txtModal.value = txtModal.value.replace(/[\r\n]+/g, ' ').substring(0, MAX_LEN);
+              }
+          }
+
+          // MỚI (v2): chặn phím Enter
+          txtModal.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.keyCode === 13) {
+                  e.preventDefault();
+              }
+          });
+
+          txtModal.addEventListener('input', function () {
+              stripNewLines();
+              updateCounter();
+          });
 
           function openModal() {
               txtModal.value = txtHidden.value;
+              updateCounter();
               modal.classList.add('show');
               txtModal.focus();
           }
@@ -370,6 +420,7 @@
           document.getElementById('btnCloseModal').addEventListener('click', closeModal);
 
           document.getElementById('btnBoSung').addEventListener('click', function () {
+              stripNewLines();
               txtHidden.value = txtModal.value;
               closeModal();
           });
