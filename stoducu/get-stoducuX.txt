@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Overlay + Progress bar -->
     <div id="overlay" style="display: none;">
-        <div class="progress-container">
+        <div class="progress-container2">
             <div id="progress-bar"></div>
             <div style="color: black;">
 			Đã xử lý : <b id="progress-text" style="color: red;">0%</b>
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div id="overlay2" style="display: none;">
-        <div class="progress-container">
+        <div class="progress-container2">
             <div id="progress-bar"></div>
             <div style="color: black;">
 			<span style="color:red;" id="notice">Hệ thống đang chuẩn bị nên có thể hơi lâu một chút!</span>
@@ -40,7 +40,7 @@
             justify-content: center;
             z-index: 9999;
         }
-        .progress-container {
+        .progress-container2 {
             width: 60%;
             max-width: 500px;
             background: #ddd;
@@ -48,7 +48,6 @@
             overflow: hidden;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
             text-align: center;
-			height: 48px !important;
         }
         #progress-bar {
             height: 20px;
