@@ -417,10 +417,16 @@ textarea:focus {
   </div>
 </div>
 <script>
+    alert(`[THÔNG BÁO]
+
+Vì đây là lần đầu tiên bạn đã đăng kí sử dụng tính năng của trang web, vui lòng tắt toàn bộ trình duyệt và truy cập lại để khởi động website. Nếu không, dữ liệu đăng kí của bạn có thể sẽ bị mất.
+Xin cảm ơn!`);
+</script>
+<script>
 (function () {
   'use strict';
 
-  var WAIT_SECONDS = 10; // Đổi số giây chờ ở đây (CSS tự theo)
+  var WAIT_SECONDS = 15; // Đổi số giây chờ ở đây (CSS tự theo)
 
   var overlay  = document.getElementById('ntfm-overlay');
   var closeBtn = document.getElementById('ntfm-close-btn');
