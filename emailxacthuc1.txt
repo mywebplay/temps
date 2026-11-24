@@ -86,7 +86,7 @@
             border: none;
             padding: 0;
             color: #5563DE;
-            font-size: 15px;
+            font-size: 13px;
             text-decoration: underline;
             cursor: pointer;
             text-align: left;
@@ -131,15 +131,24 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            width: 34px;
-            height: 34px;
+            width: 34px !important;
+            height: 34px !important;
+            min-width: 34px !important;
+            max-width: 34px !important;
+            min-height: 34px !important;
+            max-height: 34px !important;
+            padding: 0 !important;
+            margin: 0 !important;
             border: none;
-            border-radius: 50%;
+            border-radius: 50% !important;
             background: #e53935;
             color: #fff;
-            font-size: 22px;
-            line-height: 34px;
-            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -318,8 +327,9 @@
             <h3 class="modal-title">Bạn có thể cung cấp một vài thông tin về bạn để tôi có thể biết bạn là ai được không?</h3>
 
             <ul class="modal-list">
+                <li>Một vài thông tin cá nhân của bạn để tôi có thể biết bạn là ai?</li>
                 <li>Bạn đã biết đến trang dịch vụ này như thế nào?</li>
-                <li>Ai đã giới thiệu cho bạn?</li>
+                <li>Ai đã giới thiệu trang dịch vụ này cho bạn?</li>
                 <li>Vì sao bạn muốn sử dụng trang dịch vụ này?</li>
             </ul>
 
