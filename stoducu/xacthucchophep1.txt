@@ -73,7 +73,6 @@
 #3275_5828_1#
 <!-- Xác thực sử dụng: lay-tai-lieu-tu-stoducu -->
 <@@cookie_temp:.AspNetCore.MyWebPlay.00AAxinp---<@@encrypt_key:lay-tai-lieu-tu-stoducu_<@@CLIENT_ID@@>---[NULL]---true@@>---MONTH---3@@>
-<@@session_temp:.AspNetCore.MyWebPlay.00AAxinp_checked---<@@encrypt_key:lay-tai-lieu-tu-stoducu_<@@CLIENT_ID@@>---[NULL]---true@@>@@>
 @@>
 <@@is_not_check_rule_referrer@@>
 <script>
